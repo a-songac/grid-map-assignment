@@ -10,7 +10,7 @@ class MapEditor {
 
         static const string ADD_WALL_PROMPT;
         static const string WALL_LOCATION_PROMPT;
-        static const string WALL_LOCATION_REGEX;
+        static const string CELL_LOCATION_REGEX;
 
         MapEditor(Map* map);
 

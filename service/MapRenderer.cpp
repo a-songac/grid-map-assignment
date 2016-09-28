@@ -7,7 +7,7 @@ using namespace std;
 const string MapRenderer::HORIZONTAL_BORDER = "*";
 const string MapRenderer::VERTICAL_BORDER = "*";
 const string MapRenderer::FLOOR = " ";
-const string MapRenderer::WALL = "x";
+const string MapRenderer::WALL = "*";
 
 void MapRenderer::renderMap(Map* map) {
 
@@ -40,7 +40,10 @@ void MapRenderer::renderMap(Map* map) {
 
                     cout << MapRenderer::VERTICAL_BORDER;
                     for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++)
-                        cout << MapRenderer::FLOOR;
+                        if (grid[i][j].getType() == Cell::WALL)
+                            cout << MapRenderer::WALL;
+                        else
+                            cout << MapRenderer::FLOOR;
                 }
                 if (j == width -1) {
                     cout << MapRenderer::VERTICAL_BORDER;
@@ -64,7 +67,7 @@ void displayHeaderNavigation(int charsWidth, int cellWidth) {
 
     for (int i = 0; i < charsWidth; i++) {
         if ((i-(cellWidth-1)/2)%(cellWidth-1) == 0)
-            cout << (char)((i)/(cellWidth-1) + 65);
+            cout << (char)((i)/(cellWidth-1) + 'A');
         else
             cout << " ";
     }
