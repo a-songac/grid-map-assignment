@@ -37,8 +37,12 @@
 		<Unit filename="entity/Map.cpp" />
 		<Unit filename="entity/Map.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="service/MapEditor.cpp" />
+		<Unit filename="service/MapEditor.h" />
 		<Unit filename="service/MapRenderer.cpp" />
 		<Unit filename="service/MapRenderer.h" />
+		<Unit filename="utils/IOUtils.cpp" />
+		<Unit filename="utils/IOUtils.h" />
 		<Extensions>
 			<code_completion />
 			<debugger />
