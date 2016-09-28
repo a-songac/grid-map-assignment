@@ -10,7 +10,7 @@
 
 using namespace std;
 
-const string MapEditor::ADD_WALL_PROMPT = "Do you want to add a wall?[Y/n] ";
+const string MapEditor::ADD_WALL_PROMPT = "Do you want to toggle a cell's type?[Y/n] ";
 const string MapEditor::WALL_LOCATION_PROMPT = "On which cell do you want to add the wall?[A1] ";
 const string MapEditor::CELL_LOCATION_REGEX = "^([A-Z]+)([0-9]+)$";
 
@@ -60,8 +60,14 @@ void MapEditor::addWall() {
                     error = true;
                 }
                 else {
-                    cout << "Set wall at cell [" << rowIndex << ", " << columnIndex << "]" << endl;
-                    (map->getGrid()[rowIndex][columnIndex]).setType(Cell::WALL);
+
+                    Cell *cell = &(map->getGrid()[rowIndex][columnIndex]);
+
+                    if (cell->getType() == Cell::WALL)
+                        cell->setType(Cell::FLOOR);
+                    else
+                        cell->setType(Cell::WALL);
+
                     MapRenderer::renderMap(map);
                 }
             }
