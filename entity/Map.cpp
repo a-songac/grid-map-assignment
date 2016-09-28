@@ -15,9 +15,9 @@ void initializeGrid(Cell** grid, int height, int width) {
 }
 
 Map::Map() {
-    height = 10;
-    width = 10;
-//    initializeGrid(grid, height, width);
+    height = 7;
+    width = 7;
+//    initializeGrid(grid, height, width); // TOTO Export in method
     grid = new Cell* [height];
 
     for(int i = 0; i < height; ++i) {

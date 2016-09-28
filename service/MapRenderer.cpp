@@ -55,6 +55,7 @@ void MapRenderer::renderMap(Map* map) {
 
     for (int x=0;x<charsWidth;x++)
         cout << MapRenderer::HORIZONTAL_BORDER;
+    cout << endl << endl;
 
 }
 
@@ -63,16 +64,17 @@ void displayHeaderNavigation(int charsWidth, int cellWidth) {
 
     for (int i = 0; i < charsWidth; i++) {
         if ((i-(cellWidth-1)/2)%(cellWidth-1) == 0)
-            cout << (i)/(cellWidth-1) + 1;
+            cout << (char)((i)/(cellWidth-1) + 65);
         else
             cout << " ";
     }
 }
 
+// TODO Support height greater than 26 since I use letters
 void displayLeftMargin(bool displayNavigation, int n, int margin) {
     for(int i = 0; i < margin; i++) {
         if (displayNavigation &&  i == margin/2)
-            cout << (char)(n+65);
+            cout << n+1;
         else
             cout << " ";
     }
