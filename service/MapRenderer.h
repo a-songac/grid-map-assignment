@@ -12,6 +12,8 @@ class MapRenderer {
         static const string VERTICAL_BORDER;
         static const string FLOOR;
         static const string WALL;
+        static const string ENTRY_DOOR;
+        static const string EXIT_DOOR;
         static void renderMap(Map* map);
 
 };

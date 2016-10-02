@@ -8,6 +8,8 @@ const string MapRenderer::HORIZONTAL_BORDER = "*";
 const string MapRenderer::VERTICAL_BORDER = "*";
 const string MapRenderer::FLOOR = " ";
 const string MapRenderer::WALL = "*";
+const string MapRenderer::ENTRY_DOOR = "+";
+const string MapRenderer::EXIT_DOOR = "-";
 
 void MapRenderer::renderMap(Map* map) {
 
@@ -42,6 +44,10 @@ void MapRenderer::renderMap(Map* map) {
                     for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++)
                         if (grid[i][j].getType() == Cell::WALL)
                             cout << MapRenderer::WALL;
+                        else if (grid[i][j].getType() == Cell::DOOR_IN)
+                            cout << MapRenderer::ENTRY_DOOR;
+                        else if (grid[i][j].getType() == Cell::DOOR_OUT)
+                            cout << MapRenderer::EXIT_DOOR;
                         else
                             cout << MapRenderer::FLOOR;
                 }

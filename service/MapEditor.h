@@ -1,5 +1,4 @@
 #pragma once
-#include <iostream>
 
 #include "../entity/Map.h"
 
@@ -12,6 +11,7 @@ class MapEditor {
         static const string WALL_LOCATION_PROMPT;
         static const string CELL_LOCATION_REGEX;
 
+        MapEditor();
         MapEditor(Map* map);
 
         void buildMapContent();
