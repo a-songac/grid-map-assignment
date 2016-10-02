@@ -41,6 +41,10 @@
 		<Unit filename="service/MapEditor.h" />
 		<Unit filename="service/MapRenderer.cpp" />
 		<Unit filename="service/MapRenderer.h" />
+		<Unit filename="service/MapValidator.cpp" />
+		<Unit filename="service/MapValidator.h" />
+		<Unit filename="utils/ArrayUtils.cpp" />
+		<Unit filename="utils/ArrayUtils.h" />
 		<Unit filename="utils/IOUtils.cpp" />
 		<Unit filename="utils/IOUtils.h" />
 		<Extensions>
