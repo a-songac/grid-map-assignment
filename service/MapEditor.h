@@ -16,9 +16,16 @@ class MapEditor {
 
         void buildMapContent();
         void addWall();
+        bool validateMap();
+        bool backTrack(int row, int column, int entryRow, int entryColumn);
+        bool inbound(int i, int j, int height, int width);
 
     private:
         Map* map;
+        bool** reachable;
+        bool** visited;
+
 
 
 };
+
