@@ -25,9 +25,9 @@ string getCellTypeName(char type) {
     switch(type) {
     case Cell::WALL:
         return "Wall";
-    case Cell::DOOR_IN:
+    case Cell::DOOR_ENTRY:
         return "Entry Door";
-    case Cell::DOOR_OUT:
+    case Cell::DOOR_EXIT:
         return "Exit Door";
     case Cell::FLOOR:
         return "Floor";

@@ -11,6 +11,44 @@ const string MapRenderer::WALL = "*";
 const string MapRenderer::ENTRY_DOOR = "+";
 const string MapRenderer::EXIT_DOOR = "-";
 
+const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', 'E', 'N', 'T', 'R', 'Y', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+    const char EXIT_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', 'E', 'X', 'I', 'T', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+    const char OPPONENT_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', 'M', 'E', 'A', 'N', ' ', ' ',},
+        {' ', ' ', 'G', 'U', 'Y', '!', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+    const char CHEST_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', 'C', 'H', 'E', 'S', 'T', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+
+
 void MapRenderer::renderMap(Map* map) {
 
     int height = map->getHeight();
@@ -41,15 +79,19 @@ void MapRenderer::renderMap(Map* map) {
                 } else {
 
                     cout << MapRenderer::VERTICAL_BORDER;
-                    for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++)
+                    for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++) {
                         if (grid[i][j].getType() == Cell::WALL)
                             cout << MapRenderer::WALL;
-                        else if (grid[i][j].getType() == Cell::DOOR_IN)
-                            cout << MapRenderer::ENTRY_DOOR;
-                        else if (grid[i][j].getType() == Cell::DOOR_OUT)
-                            cout << MapRenderer::EXIT_DOOR;
-                        else
+                        else if (grid[i][j].getType() == Cell::DOOR_ENTRY)
+                            cout << ENTRY_DOOR_PATTERN[h][x];
+                        else if (grid[i][j].getType() == Cell::DOOR_EXIT)
+                            cout << EXIT_DOOR_PATTERN[h][x];
+                        else {
                             cout << MapRenderer::FLOOR;
+
+
+                        }
+                    }
                 }
                 if (j == width -1) {
                     cout << MapRenderer::VERTICAL_BORDER;

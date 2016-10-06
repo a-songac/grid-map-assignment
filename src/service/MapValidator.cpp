@@ -32,22 +32,13 @@ bool MapValidator::validateMap() {
 
     reset2DArray(reachable, height, width);
 
-    cout << "Start map validation" << endl;
-
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
 
-            cout << "Start validation of cell [" << i << "][" <<j <<"]" << endl;
-
-
-            if ( map->isWall(i, j) || map->isEntryDoor(i, j)) {
+            if ( map->isWall(i, j) || map->isEntryDoor(i, j) || reachable[i][j] > 0) {
                 continue;
             }
-            if (reachable[i][j] > 0) {
-                cout << "Skip; cell was tested and is reachable" << endl;
-            }
 
-            cout << "Validate for entry door" << endl;
             if (!validateForDoor(i, j, map->getEntryDoor())) {
                 invalid = true;
                 break;
@@ -126,9 +117,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
 
 
 bool inbound(int i, int j, int height, int width) {
-
     return i >= 0 && j >= 00 && i < height && j < width;
-
 }
 
 

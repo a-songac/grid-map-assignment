@@ -1,5 +1,7 @@
 #include <iostream>
 #include "Map.h"
+#include "../service/MapRenderer.h"
+#include "../service/MapValidator.h"
 
 using namespace std;
 
@@ -25,8 +27,8 @@ Map::Map() {
     exitDoors = new Coordinate[nbExitDoors];
     exitDoors[0] = {height-1, width-1};
 
-    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_IN);
-    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_OUT);
+    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_ENTRY);
+    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_EXIT);
 
 }
 
@@ -42,8 +44,8 @@ Map::Map(int height, int width) {
     exitDoors = new Coordinate[nbExitDoors];
     exitDoors[0] = {height-1, width-1};
 
-    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_IN);
-    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_OUT);
+    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_ENTRY);
+    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_EXIT);
 
 
 }
@@ -94,22 +96,34 @@ bool Map::isEntryDoor(int row, int column) {
 
 bool Map::isDoor(int row, int column) {
 
-    return grid[row][column].getType() == Cell::DOOR_IN
-        || grid[row][column].getType() == Cell::DOOR_OUT;
+    return grid[row][column].getType() == Cell::DOOR_ENTRY
+        || grid[row][column].getType() == Cell::DOOR_EXIT;
 }
-
 
 
 std::ostream& operator<<(std::ostream &strm, const Map &map) {
     return strm << map.height << " by " << map.width << " map." << endl;
 }
 
-void Map::destroyMap() {
+void Map::render() {
+    MapRenderer::renderMap(this);
+}
+
+bool Map::validate() {
+    MapValidator validator(this);
+    return validator.validateMap();
+}
+
+
+
+Map::~Map() {
 
     for(int i = 0; i < height; ++i) {
         delete [] grid[i];
     }
     delete [] grid;
+
+    delete [] exitDoors;
 }
 
 

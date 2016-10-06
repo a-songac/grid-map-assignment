@@ -6,9 +6,11 @@ using namespace std;
 class Cell {
     public:
         static const char WALL = 'w';
-        static const char DOOR_IN = 'i';
-        static const char DOOR_OUT = 'o';
+        static const char DOOR_ENTRY = 'e';
+        static const char DOOR_EXIT = 'x';
         static const char FLOOR = 'f';
+        static const char CHEST = 'c';
+        static const char OPONENT = 'o';
 
         Cell();
         Cell(char type);

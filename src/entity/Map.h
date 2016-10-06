@@ -13,6 +13,7 @@ class Map {
 
         Map(int h, int w);
         Map();
+        ~Map();
 
 
         int getHeight();
@@ -31,6 +32,9 @@ class Map {
         bool isEntryDoor(int row, int column);
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
+
+        void render();
+        bool validate();
 
         Cell **grid;
     private:
