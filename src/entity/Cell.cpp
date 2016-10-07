@@ -21,6 +21,14 @@ void Cell::setType(char type) {
     this->type = type;
 }
 
+char Cell::getOccupant() {
+    return occupant;
+}
+
+void Cell::setOccupant(char occupant) {
+    this->occupant = occupant;
+}
+
 string getCellTypeName(char type) {
     switch(type) {
     case Cell::WALL:

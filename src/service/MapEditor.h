@@ -14,8 +14,13 @@ class MapEditor {
         MapEditor();
         MapEditor(Map* map);
 
+        Map* createMap();
+
         void buildMapContent();
         void addWall();
+        void setDoors();
+        void setDimensions();
+        void setEntryDoor();
         bool validateMap();
         bool backTrack(int row, int column, int entryRow, int entryColumn);
         bool inbound(int i, int j, int height, int width);
@@ -29,3 +34,5 @@ class MapEditor {
 
 };
 
+Coordinate computeDoorCoordinate(int cardinal, int location, int width, int height);
+void cardinalChoiceConfirmation(int choice);

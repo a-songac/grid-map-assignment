@@ -13,14 +13,13 @@ int main()
 
     cout << "************** Map Creator **************" << endl << endl;
 
-    Map *map = new Map();
-    MapEditor *mapEditor = new MapEditor(map);
-    cout << "Generated Map: " << *map << endl;
-
-    cout << "Display Map: " << endl << endl;
-    MapRenderer::renderMap(map);
-
-    mapEditor->buildMapContent();
+//    Map *map = new Map();
+    MapEditor mapEditor;
+//    cout << "Generated Map: " << *map << endl;
+//
+//    cout << "Display Map: " << endl << endl;
+    Map* map = mapEditor.createMap();
+    mapEditor.buildMapContent();
 
 
 

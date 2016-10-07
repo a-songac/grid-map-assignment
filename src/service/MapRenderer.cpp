@@ -47,6 +47,25 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
+    const char FRIEND_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', 'F', 'R', 'I', 'E', 'N', 'D', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+    const char PLAYER_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+    {
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', '*', 'M', 'E', '*', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+    };
+
+
 
 
 void MapRenderer::renderMap(Map* map) {

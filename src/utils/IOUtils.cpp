@@ -46,8 +46,14 @@ int readIntegerInput(string prompt, int defaultAns) {
     getline(cin, input);
 
     if (input != "") {
+        try {
+            result = stoi(input, nullptr);
+        } catch (int e) {
 
-        result = stoi(input, nullptr);
+            cout << "Invalid input, default chosen";
+            return defaultAns;
+
+        }
         return result;
     }
     return defaultAns;
