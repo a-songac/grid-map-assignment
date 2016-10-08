@@ -33,9 +33,11 @@ class Map {
         void destroyMap();
         bool isDoor(int row, int column);
         bool isEntryDoor(int row, int column);
+        bool isExitDoor(int row, int column);
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
         bool isOccupied(int row, int column);
+        bool isInbound(int row, int column);
 
         void setCellType(int row, int column, char type);
         void fillCell(int row, int column, char occupant);

@@ -8,7 +8,7 @@ class MapEditor {
     public:
 
         static const string ADD_WALL_PROMPT;
-        static const string WALL_LOCATION_PROMPT;
+        static const string ADD_OCCUPANT_PROMPT;
         static const string CELL_LOCATION_REGEX;
 
         MapEditor();
@@ -18,21 +18,16 @@ class MapEditor {
 
         void buildMapContent();
         void addWall();
-        void setDoors();
-        void setDimensions();
-        void setEntryDoor();
-        bool validateMap();
-        bool backTrack(int row, int column, int entryRow, int entryColumn);
-        bool inbound(int i, int j, int height, int width);
+        void addOccupant();
+        Coordinate defineDoor(string message, Map* map, string defaultLocation);
+        Coordinate promptForMapLocation(string message, string defaultLocation);
+        char setOccupantOnMap();
 
     private:
         Map* map;
-        bool** reachable;
-        bool** visited;
-
 
 
 };
 
-Coordinate computeDoorCoordinate(int cardinal, int location, int width, int height);
-void cardinalChoiceConfirmation(int choice);
+int readMapDimension(string message, int defaultValue, int min, int max);
+

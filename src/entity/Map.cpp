@@ -11,6 +11,7 @@ void initializeGrid(Cell** grid, int height, int width) {
         grid[i] = new Cell[width];
         for (int j = 0; j < width; j++) {
             (grid[i][j]).setType(Cell::FLOOR);
+            (grid[i][j]).setOccupant(' ');
         }
     }
 }
@@ -115,7 +116,11 @@ bool Map::isWall(int row, int column) {
 }
 
 bool Map::isEntryDoor(int row, int column) {
-    return row == entryDoor.row && column == entryDoor.column;
+    return grid[row][column].getType() == Cell::DOOR_ENTRY;
+}
+
+bool Map::isExitDoor(int row, int column) {
+    return grid[row][column].getType() == Cell::DOOR_EXIT;
 }
 
 bool Map::isDoor(int row, int column) {
@@ -160,6 +165,10 @@ bool Map::validate() {
     return validator.validateMap();
 }
 
+bool Map::isInbound(int row, int column) {
+    return row >= 0 && row < height && column >= 0 && column < width;
+
+}
 
 
 Map::~Map() {

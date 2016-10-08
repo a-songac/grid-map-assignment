@@ -59,8 +59,6 @@ bool MapValidator::validateForDoor(int row, int column, Coordinate door) {
 
 bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
 
-    int height = map->getHeight();
-    int width = map->getWidth();
     Cell **grid = map->getGrid();
 
     visited[row][column] = true;
@@ -69,7 +67,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
         return true;
 
     // NORTH
-    if (inbound(row+1, column, height, width)
+    if (map->isInbound(row+1, column)
             && !visited[row+1][column]
             && grid[row +1][column].getType() != Cell::WALL) {
 
@@ -80,7 +78,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     }
 
     // SOUTH
-    if (inbound(row-1, column, height, width)
+    if (map->isInbound(row-1, column)
             && !visited[row-1][column]
             && grid[row -1][column].getType() != Cell::WALL) {
 
@@ -91,7 +89,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     }
 
     // EAST
-    if (inbound(row, column+1, height, width)
+    if (map->isInbound(row, column+1)
             && !visited[row][column+1]
             && grid[row][column+1].getType() != Cell::WALL) {
 
@@ -102,7 +100,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     }
 
     // WEST
-    if (inbound(row, column-1, height, width)
+    if (map->isInbound(row, column-1)
             && !visited[row][column-1]
             && grid[row][column-1].getType() != Cell::WALL) {
 
@@ -114,10 +112,5 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     return false;
 }
 
-
-
-bool inbound(int i, int j, int height, int width) {
-    return i >= 0 && j >= 00 && i < height && j < width;
-}
 
 

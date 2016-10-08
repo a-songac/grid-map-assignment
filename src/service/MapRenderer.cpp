@@ -20,7 +20,7 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-    const char EXIT_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char EXIT_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -29,7 +29,7 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-    const char OPPONENT_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char OPPONENT_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -38,7 +38,7 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-    const char CHEST_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char CHEST_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -47,7 +47,7 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-    const char FRIEND_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char FRIEND_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -56,13 +56,13 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-    const char PLAYER_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char PLAYER_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
-        {' ', ' ', '*', 'M', 'E', '*', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
-        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
+        {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
+        {' ', ' ', '*', 'M', 'E', '*', ' ', ' ',}
     };
 
 
@@ -99,17 +99,31 @@ void MapRenderer::renderMap(Map* map) {
 
                     cout << MapRenderer::VERTICAL_BORDER;
                     for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++) {
-                        if (grid[i][j].getType() == Cell::WALL)
+                        if (map->isWall(i,j))
                             cout << MapRenderer::WALL;
-                        else if (grid[i][j].getType() == Cell::DOOR_ENTRY)
+                        else if (map->isOccupied(i,j)) {
+
+                            switch (map->getOccupant(i,j)) {
+                                case Cell::FRIEND:
+                                    cout << FRIEND_PATTERN[h][x];
+                                    break;
+                                case Cell::OPPONENT:
+                                    cout << OPPONENT_PATTERN[h][x];
+                                    break;
+                                case Cell::CHEST:
+                                    cout << CHEST_PATTERN[h][x];
+                                    break;
+                            }
+                        }
+                        else if (map->isEntryDoor(i,j))
                             cout << ENTRY_DOOR_PATTERN[h][x];
-                        else if (grid[i][j].getType() == Cell::DOOR_EXIT)
+                        else if (map->isExitDoor(i,j))
                             cout << EXIT_DOOR_PATTERN[h][x];
                         else {
                             cout << MapRenderer::FLOOR;
-
-
                         }
+
+
                     }
                 }
                 if (j == width -1) {

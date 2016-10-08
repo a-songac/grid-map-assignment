@@ -21,6 +21,3 @@ class MapValidator {
         bool backTrack(int row, int column, int doorRow, int doorColumn);
 
 };
-
-bool inbound(int i, int j, int height, int width);
-

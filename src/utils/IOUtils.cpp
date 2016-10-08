@@ -38,42 +38,59 @@ string readStringInput(string prompt, string defaultAns) {
 }
 
 int readIntegerInput(string prompt, int defaultAns) {
-
+    bool error = false;
     string input;
     int result;
 
-    cout << prompt;
-    getline(cin, input);
+    do {
+        error =false;
+        cout << prompt;
+        getline(cin, input);
 
-    if (input != "") {
-        try {
-            result = stoi(input, nullptr);
-        } catch (int e) {
+        if (input != "") {
+            try {
+                result = stoi(input, nullptr);
+            } catch (const std::invalid_argument& ia) {
 
-            cout << "Invalid input, default chosen";
+                cout << "Invalid input, please retry" << endl;;
+                error = true;
+            }
+        } else {
+
             return defaultAns;
-
         }
-        return result;
-    }
-    return defaultAns;
 
+    } while (error);
+
+    return result;
 
 }
 
 double readDoubleInput(string prompt, double defaultAns) {
 
+    bool error = false;
     string input;
     double result;
 
-    cout << prompt;
-    getline(cin, input);
+    do {
+        error =false;
+        cout << prompt;
+        getline(cin, input);
 
-    if (input != "") {
+        if (input != "") {
+            try {
+                result = stod(input, nullptr);
+            } catch (const std::invalid_argument& ia) {
+                cout << "Invalid input, please retry" << endl;;
+                error = true;
+            }
+        } else {
 
-        result = stod(input, nullptr);
-        return result;
-    }
-    return defaultAns;
+            return defaultAns;
+        }
+
+    } while (error);
+
+    return result;
 
 }
