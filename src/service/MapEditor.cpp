@@ -12,9 +12,9 @@
 
 using namespace std;
 
-const string MapEditor::ADD_WALL_PROMPT = "Do you want to add or remove a wall?[Y/n] ";
-const string MapEditor::ADD_OCCUPANT_PROMPT = "Do you want to add or remove an occupant?[Y/n] ";
-const string MapEditor::CELL_LOCATION_REGEX = "^([A-Z]+)([0-9]+)$";
+const string ADD_WALL_PROMPT = "Do you want to add or remove a wall?[Y/n] ";
+const string ADD_OCCUPANT_PROMPT = "Do you want to add or remove an occupant?[Y/n] ";
+const string CELL_LOCATION_REGEX = "^([a-zA-Z]+)([0-9]+)$";
 
 
 MapEditor::MapEditor(Map* map) {
@@ -25,15 +25,12 @@ MapEditor::MapEditor() {
     this->map = nullptr;
 }
 
-void MapEditor::buildMapContent() {
-
+void MapEditor::buildMap() {
     cout << "It is now time to build the walls of your map..." << endl << endl;
     addWall();
     cout << "It is now time to add occupants on your map..." << endl << endl;
     addOccupant();
-
 }
-
 
 Map* MapEditor::createMap() {
 
@@ -93,7 +90,7 @@ void MapEditor::addWall() {
     Coordinate location;
 
 
-    addWall = readYesNoInput(MapEditor::ADD_WALL_PROMPT, true);
+    addWall = readYesNoInput(ADD_WALL_PROMPT, true);
 
     while (addWall) {
 
@@ -109,21 +106,21 @@ void MapEditor::addWall() {
             else {
 
                 if (map->isWall(location.row, location.column)) {
-                    map->setCellType(location.row, location.column, Cell::FLOOR);
+                    map->setCellType(location.row, location.column, Cell::TYPE_FLOOR);
                 }
                 else {
-                    map->setCellType(location.row, location.column, Cell::WALL);
+                    map->setCellType(location.row, location.column, Cell::TYPE_WALL);
                     error = !validator.validateMap();
                     if (error) {
                         cout << "Error, adding a wall at this position makes the map invalid, please add a wall elsewhere" << endl;
-                        map->setCellType(location.row, location.column, Cell::FLOOR);
+                        map->setCellType(location.row, location.column, Cell::TYPE_FLOOR);
                     }
                 }
                 MapRenderer::renderMap(map);
             }
         } while(error);
 
-        addWall = readYesNoInput(MapEditor::ADD_WALL_PROMPT, true);
+        addWall = readYesNoInput(ADD_WALL_PROMPT, true);
     }
 }
 
@@ -133,7 +130,7 @@ void MapEditor::addOccupant() {
     Coordinate location;
 
 
-    addOccupant = readYesNoInput(MapEditor::ADD_OCCUPANT_PROMPT, true);
+    addOccupant = readYesNoInput(ADD_OCCUPANT_PROMPT, true);
 
     while (addOccupant) {
 
@@ -166,7 +163,7 @@ void MapEditor::addOccupant() {
             }
         } while(error);
 
-        addOccupant = readYesNoInput(MapEditor::ADD_OCCUPANT_PROMPT, true);
+        addOccupant = readYesNoInput(ADD_OCCUPANT_PROMPT, true);
     }
 
 }
@@ -204,7 +201,7 @@ Coordinate MapEditor::promptForMapLocation(string message, string defaultLocatio
     do {
         error = false;
         string cellLocation = readStringInput(message, defaultLocation);
-        regex regex (MapEditor::CELL_LOCATION_REGEX);
+        regex regex (CELL_LOCATION_REGEX);
         smatch match;
 
         if (regex_search(cellLocation, match, regex)) {
@@ -212,6 +209,8 @@ Coordinate MapEditor::promptForMapLocation(string message, string defaultLocatio
             column = match.str(1);
             rowIndex = stoi(row, nullptr) - 1;
             columnIndex = column.at(0) - 'A'; //TODO Handle over 26 case
+            if (columnIndex + 'A' >= 97 && columnIndex + 'A' <= 122) // if lowercase was given
+                columnIndex -= 32;
 
             if (!map->isInbound(rowIndex, columnIndex)) {
                 cout << "Out of range, please retry" << endl;
@@ -243,18 +242,17 @@ char MapEditor::setOccupantOnMap() {
     while (choice != 1 && choice != 2 && choice != 3) {
         cout << "This is not a choice, please retry" << endl;
         choice = readIntegerInput("Your choice[1]:", 1);
-
     }
 
     switch (choice) {
         case 1:
-            return Cell::OPPONENT;
+            return Cell::OCCUPANT_OPPONENT;
         case 2:
-            return Cell::FRIEND;
+            return Cell::OCCUPANT_FRIEND;
         case 3:
-            return Cell::CHEST;
+            return Cell::OCCUPANT_CHEST;
     }
-    return Cell::OPPONENT;
+    return Cell::OCCUPANT_OPPONENT;
 }
 
 

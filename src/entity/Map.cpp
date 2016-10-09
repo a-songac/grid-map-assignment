@@ -5,16 +5,6 @@
 
 using namespace std;
 
-void initializeGrid(Cell** grid, int height, int width) {
-
-    for(int i = 0; i < height; ++i) {
-        grid[i] = new Cell[width];
-        for (int j = 0; j < width; j++) {
-            (grid[i][j]).setType(Cell::FLOOR);
-            (grid[i][j]).setOccupant(' ');
-        }
-    }
-}
 
 Map::Map() {
     height = 7;
@@ -24,14 +14,13 @@ Map::Map() {
     initializeGrid(grid, height, width);
 
     entryDoor = {0,0};
-    nbExitDoors = 1;
-    exitDoors = new Coordinate[nbExitDoors];
-    exitDoors[0] = {height-1, width-1};
+    exitDoor = {height-1, width-1};
 
-    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_ENTRY);
-    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_EXIT);
+    grid[entryDoor.row][entryDoor.column].setType(Cell::TYPE_DOOR_ENTRY);
+    grid[exitDoor.row][exitDoor.column].setType(Cell::TYPE_DOOR_EXIT);
 
 }
+
 
 Map::Map(int height, int width) {
     this->height = height;
@@ -51,28 +40,41 @@ Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
     this->entryDoor.column = entryDoor.column;
     this->entryDoor.row = entryDoor.row;
 
-    nbExitDoors = 1;
-    exitDoors = new Coordinate[nbExitDoors];
-    exitDoors[0].column = exitDoor.column;
-    exitDoors[0].row = exitDoor.row;
+    this->exitDoor.column = exitDoor.column;
+    this->exitDoor.row = exitDoor.row;
 
-    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_ENTRY);
-    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_EXIT);
+    grid[entryDoor.row][entryDoor.column].setType(Cell::TYPE_DOOR_ENTRY);
+    grid[exitDoor.row][exitDoor.column].setType(Cell::TYPE_DOOR_EXIT);
 
 }
 
+
+Map::~Map() {
+
+    for(int i = 0; i < height; ++i) {
+        delete [] grid[i];
+    }
+    delete [] grid;
+
+}
+
+void initializeGrid(Cell** grid, int height, int width) {
+
+    for(int i = 0; i < height; ++i) {
+        grid[i] = new Cell[width];
+    }
+}
+
 void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
-    nbExitDoors = 1;
 
     this->entryDoor.column = entryDoor.column;
     this->entryDoor.row = entryDoor.row;
 
-    exitDoors = new Coordinate[nbExitDoors];
-    exitDoors[0].column = exitDoor.column;
-    exitDoors[0].row = exitDoor.row;
+    this->exitDoor.column = exitDoor.column;
+    this->exitDoor.row = exitDoor.row;
 
-    grid[entryDoor.row][entryDoor.column].setType(Cell::DOOR_ENTRY);
-    grid[exitDoors[0].row][exitDoors[0].column].setType(Cell::DOOR_EXIT);
+    grid[entryDoor.row][entryDoor.column].setType(Cell::TYPE_DOOR_ENTRY);
+    grid[exitDoor.row][exitDoor.column].setType(Cell::TYPE_DOOR_EXIT);
 }
 
 int Map::getHeight() {
@@ -83,11 +85,7 @@ int Map::getWidth() {
     return width;
 }
 
-Cell** Map::getGrid() {
-    return grid;
-}
-
-Coordinate Map::getEntryDoor() {
+Coordinate Map::getEntryDoorCoordinate() {
     return entryDoor;
 }
 
@@ -95,43 +93,38 @@ void Map::setEntryDoor(Coordinate entryDoor) {
     this->entryDoor = entryDoor;
 }
 
-Coordinate* Map::getExitDoors() {
-    return exitDoors;
+Coordinate Map::getExitDoorCoordinate() {
+    return exitDoor;
 }
 
-int Map::getNbExitDoors() {
-    return nbExitDoors;
-}
-
-void Map::setExitDoors(Coordinate* exitDoors) {
-    this->exitDoors = exitDoors;
+void Map::setExitDoor(Coordinate exitDoor) {
+    this->exitDoor = exitDoor;
 }
 
 bool Map::isFloor(int row, int column) {
-    return grid[row][column].getType() == Cell::FLOOR;
+    return grid[row][column].getType() == Cell::TYPE_FLOOR;
 }
 
 bool Map::isWall(int row, int column) {
-    return grid[row][column].getType() == Cell::WALL;
+    return grid[row][column].getType() == Cell::TYPE_WALL;
 }
 
 bool Map::isEntryDoor(int row, int column) {
-    return grid[row][column].getType() == Cell::DOOR_ENTRY;
+    return grid[row][column].getType() == Cell::TYPE_DOOR_ENTRY;
 }
 
 bool Map::isExitDoor(int row, int column) {
-    return grid[row][column].getType() == Cell::DOOR_EXIT;
+    return grid[row][column].getType() == Cell::TYPE_DOOR_EXIT;
 }
 
 bool Map::isDoor(int row, int column) {
 
-    return grid[row][column].getType() == Cell::DOOR_ENTRY
-        || grid[row][column].getType() == Cell::DOOR_EXIT;
+    return grid[row][column].getType() == Cell::TYPE_DOOR_ENTRY
+        || grid[row][column].getType() == Cell::TYPE_DOOR_EXIT;
 }
 
 char Map::getOccupant(int row, int column) {
     if (isWall(row, column)) {
-        cerr << "Error, this is a wall!" << endl;
         return '0';
     }
     return grid[row][column].getOccupant();
@@ -141,19 +134,16 @@ void Map::setCellType(int row, int column, char type) {
     grid[row][column].setType(type);
 }
 
-void Map::fillCell(int row, int column, char occupant) {
+bool Map::fillCell(int row, int column, char occupant) {
     if (isWall(row, column)) {
-        cerr << "Error, cannot occupy a wall!" << endl;
+        return false;
     }
     grid[row][column].setOccupant(occupant);
+    return true;
 }
 
 bool Map::isOccupied(int row, int column) {
     return getOccupant(row, column) != ' ';
-}
-
-std::ostream& operator<<(std::ostream &strm, const Map &map) {
-    return strm << map.height << " by " << map.width << " map." << endl;
 }
 
 void Map::render() {
@@ -171,15 +161,6 @@ bool Map::isInbound(int row, int column) {
 }
 
 
-Map::~Map() {
-
-    for(int i = 0; i < height; ++i) {
-        delete [] grid[i];
-    }
-    delete [] grid;
-
-    delete [] exitDoors;
-}
 
 
 

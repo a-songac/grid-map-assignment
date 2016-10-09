@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 MapValidator::MapValidator(Map* map) {
 
     this->map = map;
@@ -39,7 +38,7 @@ bool MapValidator::validateMap() {
                 continue;
             }
 
-            if (!validateForDoor(i, j, map->getEntryDoor())) {
+            if (!validateForDoor(i, j, map->getEntryDoorCoordinate())) {
                 invalid = true;
                 break;
             }
@@ -59,8 +58,6 @@ bool MapValidator::validateForDoor(int row, int column, Coordinate door) {
 
 bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
 
-    Cell **grid = map->getGrid();
-
     visited[row][column] = true;
 
     if (row == doorRow && column == doorColumn)
@@ -69,7 +66,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     // NORTH
     if (map->isInbound(row+1, column)
             && !visited[row+1][column]
-            && grid[row +1][column].getType() != Cell::WALL) {
+            && !map->isWall(row+1, column)) {
 
         if (backTrack(row+1, column, doorRow, doorColumn)) {
             reachable[row][column]++;
@@ -80,7 +77,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     // SOUTH
     if (map->isInbound(row-1, column)
             && !visited[row-1][column]
-            && grid[row -1][column].getType() != Cell::WALL) {
+            && !map->isWall(row-1, column)) {
 
         if (backTrack(row-1, column, doorRow, doorColumn)) {
             reachable[row][column]++;
@@ -91,7 +88,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     // EAST
     if (map->isInbound(row, column+1)
             && !visited[row][column+1]
-            && grid[row][column+1].getType() != Cell::WALL) {
+            &&!map->isWall(row, column+1)) {
 
         if (backTrack(row, column+1, doorRow, doorColumn)) {
             reachable[row][column]++;
@@ -102,7 +99,7 @@ bool MapValidator::backTrack(int row, int column, int doorRow, int doorColumn) {
     // WEST
     if (map->isInbound(row, column-1)
             && !visited[row][column-1]
-            && grid[row][column-1].getType() != Cell::WALL) {
+            && !map->isWall(row, column-1)) {
 
         if (backTrack(row, column-1, doorRow, doorColumn)) {
             reachable[row][column]++;

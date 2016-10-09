@@ -4,14 +4,17 @@
 
 using namespace std;
 
-const string MapRenderer::HORIZONTAL_BORDER = "*";
-const string MapRenderer::VERTICAL_BORDER = "*";
-const string MapRenderer::FLOOR = " ";
-const string MapRenderer::WALL = "*";
-const string MapRenderer::ENTRY_DOOR = "+";
-const string MapRenderer::EXIT_DOOR = "-";
+const int CELL_HEIGHT = 5;
+const int CELL_WIDTH = 10;
+const int LEFT_MARGIN = 5;
+const string HORIZONTAL_BORDER = "*";
+const string VERTICAL_BORDER = "*";
+const string FLOOR = " ";
+const string WALL = "*";
+const string ENTRY_DOOR = "+";
+const string EXIT_DOOR = "-";
 
-const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char ENTRY_DOOR_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -20,7 +23,7 @@ const char ENTRY_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-const char EXIT_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char EXIT_DOOR_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -29,7 +32,7 @@ const char EXIT_DOOR_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-const char OPPONENT_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char OPPONENT_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -38,7 +41,7 @@ const char OPPONENT_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2]
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-const char CHEST_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char CHEST_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -47,7 +50,7 @@ const char CHEST_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-const char FRIEND_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char FRIEND_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -56,7 +59,7 @@ const char FRIEND_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',}
     };
 
-const char PLAYER_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
+const char PLAYER_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     {
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
         {' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ',},
@@ -66,51 +69,48 @@ const char PLAYER_PATTERN[MapRenderer::CELL_HEIGHT][MapRenderer::CELL_WIDTH-2] =
     };
 
 
-
-
 void MapRenderer::renderMap(Map* map) {
 
     int height = map->getHeight();
     int width = map->getWidth();
-    Cell **grid = map->getGrid();
-    int charsWidth = (MapRenderer::CELL_WIDTH-1)*width + 1;
+    int charsWidth = (CELL_WIDTH-1)*width + 1;
 
-    displayLeftMargin(false, -1, MapRenderer::LEFT_MARGIN);
-    displayHeaderNavigation(charsWidth, MapRenderer::CELL_WIDTH);
+    displayLeftMargin(false, -1, LEFT_MARGIN);
+    displayHeaderNavigation(charsWidth, CELL_WIDTH);
     cout << endl << endl;
 
     for (int i = 0; i < height; i++) {
 
-        for (int h = 0; h < MapRenderer::CELL_HEIGHT; h++) {
+        for (int h = 0; h < CELL_HEIGHT; h++) {
 
-        displayLeftMargin(
-                        h == MapRenderer::CELL_HEIGHT/2,
+        MapRenderer::displayLeftMargin(
+                        h == CELL_HEIGHT/2,
                         i,
-                        MapRenderer::LEFT_MARGIN);
+                        LEFT_MARGIN);
 
             for (int j = 0; j < width; j++) {
 
                 if (h == 0) {
 
-                    for (int x=0;x<MapRenderer::CELL_WIDTH-1;x++)
-                        cout << MapRenderer::HORIZONTAL_BORDER;
+                    for (int x=0;x<CELL_WIDTH-1;x++)
+                        cout << HORIZONTAL_BORDER;
 
                 } else {
 
-                    cout << MapRenderer::VERTICAL_BORDER;
-                    for (int x=0;x<MapRenderer::CELL_WIDTH - 2;x++) {
+                    cout << VERTICAL_BORDER;
+                    for (int x=0;x<CELL_WIDTH - 2;x++) {
                         if (map->isWall(i,j))
-                            cout << MapRenderer::WALL;
+                            cout << WALL;
                         else if (map->isOccupied(i,j)) {
 
                             switch (map->getOccupant(i,j)) {
-                                case Cell::FRIEND:
+                                case Cell::OCCUPANT_FRIEND:
                                     cout << FRIEND_PATTERN[h][x];
                                     break;
-                                case Cell::OPPONENT:
+                                case Cell::OCCUPANT_OPPONENT:
                                     cout << OPPONENT_PATTERN[h][x];
                                     break;
-                                case Cell::CHEST:
+                                case Cell::OCCUPANT_CHEST:
                                     cout << CHEST_PATTERN[h][x];
                                     break;
                             }
@@ -120,14 +120,14 @@ void MapRenderer::renderMap(Map* map) {
                         else if (map->isExitDoor(i,j))
                             cout << EXIT_DOOR_PATTERN[h][x];
                         else {
-                            cout << MapRenderer::FLOOR;
+                            cout << FLOOR;
                         }
 
 
                     }
                 }
                 if (j == width -1) {
-                    cout << MapRenderer::VERTICAL_BORDER;
+                    cout << VERTICAL_BORDER;
                 }
 
             } // end width loop
@@ -135,16 +135,16 @@ void MapRenderer::renderMap(Map* map) {
         } // end cell height loop
     }// cell grid height loop
 
-    displayLeftMargin(false, -1, MapRenderer::LEFT_MARGIN);
+    displayLeftMargin(false, -1, LEFT_MARGIN);
 
     for (int x=0;x<charsWidth;x++)
-        cout << MapRenderer::HORIZONTAL_BORDER;
+        cout << HORIZONTAL_BORDER;
     cout << endl << endl;
 
 }
 
 
-void displayHeaderNavigation(int charsWidth, int cellWidth) {
+void MapRenderer::displayHeaderNavigation(int charsWidth, int cellWidth) {
 
     for (int i = 0; i < charsWidth; i++) {
         if ((i-(cellWidth-1)/2)%(cellWidth-1) == 0)
@@ -155,7 +155,7 @@ void displayHeaderNavigation(int charsWidth, int cellWidth) {
 }
 
 // TODO Support height greater than 26 since I use letters
-void displayLeftMargin(bool displayNavigation, int n, int margin) {
+void MapRenderer::displayLeftMargin(bool displayNavigation, int n, int margin) {
     for(int i = 0; i < margin; i++) {
         if (displayNavigation &&  i == margin/2)
             cout << n+1;

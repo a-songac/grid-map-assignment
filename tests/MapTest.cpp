@@ -23,6 +23,9 @@ class MapTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testMapCellEmpty);
 	CPPUNIT_TEST(testValidPath);
 	CPPUNIT_TEST(testInvalidPath);
+	CPPUNIT_TEST(testWallCell);
+	CPPUNIT_TEST(testIsDoorCell);
+	CPPUNIT_TEST(tetstFillCellFailure);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void setUp();
@@ -32,6 +35,9 @@ protected:
 	void testMapCellEmpty();
 	void testValidPath();
 	void testInvalidPath();
+	void testWallCell();
+	void testIsDoorCell();
+	void tetstFillCellFailure();
 private:
 	Map *map;
 };
@@ -92,9 +98,46 @@ void MapTest::testInvalidPath()
 {
 	// context: create a map without a valid path: seperate entry and exit door by a wall
 	for (int i = 0; i < map->getWidth(); i++) {
-        map->setCellType(2,i, Cell::WALL);
+
+        CPPUNIT_ASSERT(true == map->validate());
+        map->setCellType(2,i, Cell::TYPE_WALL);
 	}
 
 	// test: validatePath() should return false
 	CPPUNIT_ASSERT(false == map->validate());
+}
+
+//! test method to test the isWall() method of the Map class
+//! Test Case: the returned value should be true if the cell is of type wall
+//! Tested item: Map::isWall()
+void MapTest::testWallCell()
+{
+    map->setCellType(0,1, Cell::TYPE_WALL);
+
+	// test: validatePath() should return false
+	CPPUNIT_ASSERT(true == map->isWall(0,1));
+}
+
+//! test method to test the isWall() method of the Map class
+//! Test Case: the returned value should be true if the cell is of type entry door or exit door
+//! Tested item: Map::isDoor()
+void MapTest::testIsDoorCell()
+{
+
+	// context: upper left corner and lower right cornor of the 7x7 are the entry and exit doors
+	// test: is door should return true for bot coordinates
+	CPPUNIT_ASSERT(true == map->isDoor(0,0));
+	CPPUNIT_ASSERT(true == map->isDoor(6,6));
+}
+
+//! test method to test the fillCell() method of the Map class
+//! Test Case: the returned value should be true if an occupant was successfully added on the cell
+//! Tested item: Map::fillCell()
+void MapTest::tetstFillCellFailure()
+{
+
+	// context: set a wall cell
+	map->setCellType(0,1, Cell::TYPE_WALL);
+	// test: fillCell should return false since the cell is actually a wall
+	CPPUNIT_ASSERT(false == map->fillCell(0,1, Cell::OCCUPANT_FRIEND));
 }

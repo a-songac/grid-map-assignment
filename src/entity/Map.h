@@ -1,13 +1,21 @@
+/// @file
+/// @brief Header file containing class declaration for Map.class
+///        and struct declaration for Coordinate.struct
+/// @details  No specific game rule enforced by the class except that a wall cannot be occupied.
+/// Design wise, the Map class is a container of a 2D array of Cell objects.
+/// The map does not use any specific library.
+
 #pragma once
 #include <iostream>
 #include "Cell.h"
 
+/// Struct that represents a map coordinate
 struct Coordinate {
     int row;
     int column;
 
 };
-
+/// Class to implement the game map
 class Map {
     public:
 
@@ -16,46 +24,35 @@ class Map {
         Map();
         ~Map();
 
-
         int getHeight();
         int getWidth();
-        Cell** getGrid();
-        Coordinate getEntryDoor();
+
+        Coordinate getEntryDoorCoordinate();
+        Coordinate getExitDoorCoordinate();
         void setEntryDoor(Coordinate entryDoor);
-        Coordinate* getExitDoors();
-        void setExitDoors(Coordinate* exitDoors);
-        void setExitDoor(Coordinate* exitDoors);
-        int getNbExitDoors();
-
+        void setExitDoor(Coordinate exitDoors);
         void initDoors(Coordinate entryDoor, Coordinate exitDoor);
-
-
-        void destroyMap();
         bool isDoor(int row, int column);
         bool isEntryDoor(int row, int column);
         bool isExitDoor(int row, int column);
+
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
         bool isOccupied(int row, int column);
-        bool isInbound(int row, int column);
-
-        void setCellType(int row, int column, char type);
-        void fillCell(int row, int column, char occupant);
+        bool fillCell(int row, int column, char occupant);
         char getOccupant(int row, int column);
+
         void render();
         bool validate();
+        void setCellType(int row, int column, char type);
+        bool isInbound(int row, int column);
 
-
-        Cell **grid;
     private:
+        Cell **grid;
         int height;
         int width;
         Coordinate entryDoor;
-        int nbExitDoors;
-        Coordinate* exitDoors;
-
-
-        friend std::ostream& operator<<(std::ostream &strm, const Map &map);
+        Coordinate exitDoor;
 
 };
 

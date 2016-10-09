@@ -19,6 +19,9 @@ int main()
     runner.addTest(suite);
     runner.setOutputter( new CppUnit::CompilerOutputter( &runner.result(), std::cerr ) );
     bool wasSucessful = runner.run();
+    if (!wasSucessful) {
+        return 0;
+    }
 
 
 
@@ -26,7 +29,7 @@ int main()
 
     MapEditor mapEditor;
     Map* map = mapEditor.createMap();
-    mapEditor.buildMapContent();
+    mapEditor.buildMap();
 
 
     return 0;

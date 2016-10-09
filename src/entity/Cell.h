@@ -1,17 +1,25 @@
+/// @file
+/// @brief Header file containing class declaration for Cell.class
+/// @details  No specific game rule enforced by the class.
+/// Simple object to informs a bout the type of a cell and its occupant
+/// No specific library used.
+
 #pragma once
 #include <iostream>
 
 using namespace std;
 
+/// Class to implement a cell
 class Cell {
     public:
-        static const char WALL = 'w';
-        static const char DOOR_ENTRY = 'e';
-        static const char DOOR_EXIT = 'x';
-        static const char FLOOR = 'f';
-        static const char CHEST = 'c';
-        static const char OPPONENT = 'o';
-        static const char FRIEND = 'r';
+        static const char TYPE_WALL = 'w';
+        static const char TYPE_DOOR_ENTRY = 'e';
+        static const char TYPE_DOOR_EXIT = 'x';
+        static const char TYPE_FLOOR = 'f';
+        static const char OCCUPANT_CHEST = 'c';
+        static const char OCCUPANT_OPPONENT = 'o';
+        static const char OCCUPANT_FRIEND = 'r';
+        static const char OCCUPANT_EMPTY = ' ';
 
         Cell();
         Cell(char type);
@@ -21,11 +29,8 @@ class Cell {
         char getOccupant();
         void setOccupant(char occupant);
 
-
-        friend std::ostream& operator<<(std::ostream &strm, const Cell &cell);
     private:
         char type;
         char occupant;
-
-
 };
+        void initializeGrid(Cell** grid, int height, int width);

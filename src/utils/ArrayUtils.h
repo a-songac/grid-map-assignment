@@ -1,3 +1,9 @@
+/// @file
+/// @brief Header file containing method declarations for useful 2D array manipulations
+/// @details  No specific game rule enforced by the class.
+/// No specific library is used.
+
+
 #pragma once
 
 void initialize2DArray(bool** grid, int height, int width);

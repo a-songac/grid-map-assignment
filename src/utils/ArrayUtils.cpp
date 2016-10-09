@@ -1,7 +1,5 @@
 #include "ArrayUtils.h"
 
-
-
 void initialize2DArray(bool** grid, int height, int width) {
     for(int i = 0; i < height; ++i) {
         grid[i] = new bool[width];
@@ -33,7 +31,6 @@ void reset2DArray(int** grid, int height, int width) {
         }
     }
 }
-
 
 void destroy2DArray(bool** grid, int height, int width) {
 
