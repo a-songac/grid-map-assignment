@@ -55,6 +55,7 @@
 		<Unit filename="src/utils/ArrayUtils.h" />
 		<Unit filename="src/utils/IOUtils.cpp" />
 		<Unit filename="src/utils/IOUtils.h" />
+		<Unit filename="tests/MapTest.cpp" />
 		<Extensions>
 			<code_completion />
 			<debugger />

@@ -1,0 +1,86 @@
+\hypertarget{classMap}{}\section{Map Class Reference}
+\label{classMap}\index{Map@{Map}}
+
+
+Class to implement the game map.  
+
+
+
+
+{\ttfamily \#include $<$Map.\+h$>$}
+
+\subsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\hypertarget{classMap_a3f402a90ac4a9e2c23f7d03baf593cd1}{}\label{classMap_a3f402a90ac4a9e2c23f7d03baf593cd1} 
+{\bfseries Map} (int h, int w, \hyperlink{structCoordinate}{Coordinate} entry, \hyperlink{structCoordinate}{Coordinate} exit)
+\item 
+\hypertarget{classMap_a3bd3343daa6ffb33f400bff5d945a086}{}\label{classMap_a3bd3343daa6ffb33f400bff5d945a086} 
+{\bfseries Map} (int h, int w)
+\item 
+\hypertarget{classMap_a2b09c8875af2efb711fc3a022e70427d}{}\label{classMap_a2b09c8875af2efb711fc3a022e70427d} 
+int {\bfseries get\+Height} ()
+\item 
+\hypertarget{classMap_afd34d12227676b3cebeed9f5fae2508f}{}\label{classMap_afd34d12227676b3cebeed9f5fae2508f} 
+int {\bfseries get\+Width} ()
+\item 
+\hypertarget{classMap_a02e6b6fa2643d26d51c8707b97c8271e}{}\label{classMap_a02e6b6fa2643d26d51c8707b97c8271e} 
+\hyperlink{structCoordinate}{Coordinate} {\bfseries get\+Entry\+Door\+Coordinate} ()
+\item 
+\hypertarget{classMap_a08d73b6cc9dbb0447b550f1c7a9927be}{}\label{classMap_a08d73b6cc9dbb0447b550f1c7a9927be} 
+\hyperlink{structCoordinate}{Coordinate} {\bfseries get\+Exit\+Door\+Coordinate} ()
+\item 
+\hypertarget{classMap_af2fc81e7365bae619097c4996845ed21}{}\label{classMap_af2fc81e7365bae619097c4996845ed21} 
+void {\bfseries set\+Entry\+Door} (\hyperlink{structCoordinate}{Coordinate} entry\+Door)
+\item 
+\hypertarget{classMap_a86022f2db7773e6ea097605ad19f2569}{}\label{classMap_a86022f2db7773e6ea097605ad19f2569} 
+void {\bfseries set\+Exit\+Door} (\hyperlink{structCoordinate}{Coordinate} exit\+Doors)
+\item 
+\hypertarget{classMap_ad06345e2fda83141117cf2260623b51f}{}\label{classMap_ad06345e2fda83141117cf2260623b51f} 
+void {\bfseries init\+Doors} (\hyperlink{structCoordinate}{Coordinate} entry\+Door, \hyperlink{structCoordinate}{Coordinate} exit\+Door)
+\item 
+\hypertarget{classMap_ab8f7b8df6f5cfd061e37ceffefdad8c0}{}\label{classMap_ab8f7b8df6f5cfd061e37ceffefdad8c0} 
+bool {\bfseries is\+Door} (int row, int column)
+\item 
+\hypertarget{classMap_ac00d085ca1148f6d8c282fbc85a38f71}{}\label{classMap_ac00d085ca1148f6d8c282fbc85a38f71} 
+bool {\bfseries is\+Entry\+Door} (int row, int column)
+\item 
+\hypertarget{classMap_a6c85e5a96ec1e13c86b30a5054e2e260}{}\label{classMap_a6c85e5a96ec1e13c86b30a5054e2e260} 
+bool {\bfseries is\+Exit\+Door} (int row, int column)
+\item 
+\hypertarget{classMap_a6dfb55208049862a7f66b177f6861878}{}\label{classMap_a6dfb55208049862a7f66b177f6861878} 
+bool {\bfseries is\+Wall} (int row, int column)
+\item 
+\hypertarget{classMap_a6101fc8e14be52dba55b00584a8f0a1e}{}\label{classMap_a6101fc8e14be52dba55b00584a8f0a1e} 
+bool {\bfseries is\+Floor} (int row, int column)
+\item 
+\hypertarget{classMap_aa088c6b9eb1ecfee30836e3046aee0db}{}\label{classMap_aa088c6b9eb1ecfee30836e3046aee0db} 
+bool {\bfseries is\+Occupied} (int row, int column)
+\item 
+\hypertarget{classMap_ac303e5d0077a39a04855309df364d3fb}{}\label{classMap_ac303e5d0077a39a04855309df364d3fb} 
+bool {\bfseries fill\+Cell} (int row, int column, char occupant)
+\item 
+\hypertarget{classMap_ad4279b4ede306ee50726ad391f35894c}{}\label{classMap_ad4279b4ede306ee50726ad391f35894c} 
+char {\bfseries get\+Occupant} (int row, int column)
+\item 
+\hypertarget{classMap_a3be698445324a0d0e18b49d0730b9bea}{}\label{classMap_a3be698445324a0d0e18b49d0730b9bea} 
+void {\bfseries render} ()
+\item 
+\hypertarget{classMap_a1e9b663a93c89e7775c66f5cb1b80573}{}\label{classMap_a1e9b663a93c89e7775c66f5cb1b80573} 
+bool {\bfseries validate} ()
+\item 
+\hypertarget{classMap_a1b1fd198fc27787115aae3112e7bb5f1}{}\label{classMap_a1b1fd198fc27787115aae3112e7bb5f1} 
+void {\bfseries set\+Cell\+Type} (int row, int column, char type)
+\item 
+\hypertarget{classMap_a6269d92c3dbdfddf220665beed78adae}{}\label{classMap_a6269d92c3dbdfddf220665beed78adae} 
+bool {\bfseries is\+Inbound} (int row, int column)
+\end{DoxyCompactItemize}
+
+
+\subsection{Detailed Description}
+Class to implement the game map. 
+
+The documentation for this class was generated from the following files\+:\begin{DoxyCompactItemize}
+\item 
+src/entity/\hyperlink{Map_8h}{Map.\+h}\item 
+src/entity/Map.\+cpp\end{DoxyCompactItemize}
