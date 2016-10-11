@@ -1,3 +1,5 @@
+
+
 #include <iostream>
 
 #include <cppunit/CompilerOutputter.h>
@@ -6,14 +8,17 @@
 
 #include "entity/Cell.h"
 #include "entity/Map.h"
-#include "service/MapRenderer.h"
-#include "service/MapEditor.h"
+#include "view/MapView.h"
+#include "controller/MapEditorController.h"
+
 
 using namespace std;
 
 int main()
 {
-    // Run tests prior to the execution of the driver
+
+#ifdef RUN_TESTS
+
     CppUnit::Test *suite = CppUnit::TestFactoryRegistry::getRegistry().makeTest();
     CppUnit::TextUi::TestRunner runner;
     runner.addTest(suite);
@@ -23,11 +28,11 @@ int main()
         return 0;
     }
 
-
+#endif // RUN_TESTS
 
     cout << "************** Map Creator **************" << endl << endl;
 
-    MapEditor mapEditor;
+    MapEditorController mapEditor;
     Map* map = mapEditor.createMap();
     mapEditor.buildMap();
 

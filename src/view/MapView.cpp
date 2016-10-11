@@ -75,8 +75,8 @@ void MapView::renderMap(Map* map) {
     int width = map->getWidth();
     int charsWidth = (CELL_WIDTH-1)*width + 1;
 
-    displayLeftMargin(false, -1, LEFT_MARGIN);
-    displayHeaderNavigation(charsWidth, CELL_WIDTH);
+    MapView::displayLeftMargin(false, -1, LEFT_MARGIN);
+    MapView::displayHeaderNavigation(charsWidth, CELL_WIDTH);
     cout << endl << endl;
 
     for (int i = 0; i < height; i++) {
@@ -135,7 +135,7 @@ void MapView::renderMap(Map* map) {
         } // end cell height loop
     }// cell grid height loop
 
-    displayLeftMargin(false, -1, LEFT_MARGIN);
+    MapView::displayLeftMargin(false, -1, LEFT_MARGIN);
 
     for (int x=0;x<charsWidth;x++)
         cout << HORIZONTAL_BORDER;

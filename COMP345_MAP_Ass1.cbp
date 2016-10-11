@@ -40,21 +40,23 @@
 			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.a" />
 			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.so" />
 		</Linker>
+		<Unit filename="src/controller/MapEditorController.cpp" />
+		<Unit filename="src/controller/MapEditorController.h" />
 		<Unit filename="src/entity/Cell.cpp" />
 		<Unit filename="src/entity/Cell.h" />
 		<Unit filename="src/entity/Map.cpp" />
 		<Unit filename="src/entity/Map.h" />
 		<Unit filename="src/main.cpp" />
-		<Unit filename="src/service/MapEditor.cpp" />
-		<Unit filename="src/service/MapEditor.h" />
-		<Unit filename="src/service/MapRenderer.cpp" />
-		<Unit filename="src/service/MapRenderer.h" />
 		<Unit filename="src/service/MapValidator.cpp" />
 		<Unit filename="src/service/MapValidator.h" />
 		<Unit filename="src/utils/ArrayUtils.cpp" />
 		<Unit filename="src/utils/ArrayUtils.h" />
 		<Unit filename="src/utils/IOUtils.cpp" />
 		<Unit filename="src/utils/IOUtils.h" />
+		<Unit filename="src/view/MapRenderer.cpp" />
+		<Unit filename="src/view/MapRenderer.h" />
+		<Unit filename="src/view/MapView.cpp" />
+		<Unit filename="src/view/MapView.h" />
 		<Unit filename="tests/MapTest.cpp" />
 		<Extensions>
 			<code_completion />

@@ -1,6 +1,6 @@
 #include <iostream>
 #include "Map.h"
-#include "../service/MapRenderer.h"
+#include "../view/MapView.h"
 #include "../service/MapValidator.h"
 
 using namespace std;
@@ -147,7 +147,7 @@ bool Map::isOccupied(int row, int column) {
 }
 
 void Map::render() {
-    MapRenderer::renderMap(this);
+    MapView::renderMap(this);
 }
 
 bool Map::validate() {

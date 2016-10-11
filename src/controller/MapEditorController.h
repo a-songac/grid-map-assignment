@@ -11,10 +11,10 @@
 using namespace std;
 
 /// Class that implements the editor of the map
-class MapEditor {
+class MapEditorController {
     public:
-        MapEditor();
-        MapEditor(Map* map);
+        MapEditorController();
+        MapEditorController(Map* map);
 
         void buildMap();
         Map* createMap();

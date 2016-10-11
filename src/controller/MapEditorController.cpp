@@ -5,7 +5,7 @@
 
 #include "../entity/Map.h"
 #include "../entity/Cell.h"
-#include "MapEditor.h"
+#include "MapEditorController.h"
 #include "../service/MapValidator.h"
 #include "../utils/IOUtils.h"
 
@@ -16,22 +16,22 @@ const string ADD_OCCUPANT_PROMPT = "Do you want to add or remove an occupant?[Y/
 const string CELL_LOCATION_REGEX = "^([a-zA-Z]+)([0-9]+)$";
 
 
-MapEditor::MapEditor(Map* map) {
+MapEditorController::MapEditorController(Map* map) {
     this->map = map;
 }
 
-MapEditor::MapEditor() {
+MapEditorController::MapEditorController() {
     this->map = nullptr;
 }
 
-void MapEditor::buildMap() {
+void MapEditorController::buildMap() {
     cout << "It is now time to build the walls of your map..." << endl << endl;
     addWall();
     cout << "It is now time to add occupants on your map..." << endl << endl;
     addOccupant();
 }
 
-Map* MapEditor::createMap() {
+Map* MapEditorController::createMap() {
 
     bool error = false;
     int height, width, exitDefaultRow;
@@ -81,7 +81,7 @@ Map* MapEditor::createMap() {
 }
 
 
-void MapEditor::addWall() {
+void MapEditorController::addWall() {
 
     bool addWall = false;
     string column, row;
@@ -123,7 +123,7 @@ void MapEditor::addWall() {
     }
 }
 
-void MapEditor::addOccupant() {
+void MapEditorController::addOccupant() {
     bool addOccupant = false;
     string column, row;
     Coordinate location;
@@ -168,7 +168,7 @@ void MapEditor::addOccupant() {
 }
 
 
-Coordinate MapEditor::defineDoor(string message, Map* map, string defaultLocation) {
+Coordinate MapEditorController::defineDoor(string message, Map* map, string defaultLocation) {
 
     bool error = false;
     string row, column;
@@ -191,7 +191,7 @@ Coordinate MapEditor::defineDoor(string message, Map* map, string defaultLocatio
 
 
 
-Coordinate MapEditor::promptForMapLocation(string message, string defaultLocation) {
+Coordinate MapEditorController::promptForMapLocation(string message, string defaultLocation) {
 
     bool error = false;
     string row, column;
@@ -229,7 +229,7 @@ Coordinate MapEditor::promptForMapLocation(string message, string defaultLocatio
 }
 
 
-char MapEditor::setOccupantOnMap() {
+char MapEditorController::setOccupantOnMap() {
 
     int choice;
 
