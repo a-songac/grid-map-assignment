@@ -6,8 +6,7 @@
 #include "../entity/Map.h"
 #include "../entity/Cell.h"
 #include "MapEditor.h"
-#include "MapRenderer.h"
-#include "MapValidator.h"
+#include "../service/MapValidator.h"
 #include "../utils/IOUtils.h"
 
 using namespace std;
@@ -116,7 +115,7 @@ void MapEditor::addWall() {
                         map->setCellType(location.row, location.column, Cell::TYPE_FLOOR);
                     }
                 }
-                MapRenderer::renderMap(map);
+                map->render();
             }
         } while(error);
 
@@ -159,7 +158,7 @@ void MapEditor::addOccupant() {
                     map->fillCell(location.row, location.column, setOccupantOnMap());
 
                 }
-                MapRenderer::renderMap(map);
+                map->render();
             }
         } while(error);
 
