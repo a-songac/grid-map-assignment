@@ -1,8 +1,10 @@
 /// @file
 /// @brief Header file containing class declaration for MapEditor.class
-/// @details  No specific game rule enforced by the class
-/// Class that encapsulates all the logic to communicate with the user to create a map
-/// No specific library used.
+/// @details  1. Game Rules: The code allows the player to create a map and populate it with the elements
+/// allowed by the game rules: friend character, enemy character, chest, door or wall. \n\n
+/// 2. Design: Controller class from the MVC pattern. It encapsulates all the logic to communicate with the user to create a map \n\n
+/// 3. Libraries: The implementation uses the string and regex libraries in order to parse the user input.
+/// The regex allows to validate the user provided a valid input
 
 #pragma once
 

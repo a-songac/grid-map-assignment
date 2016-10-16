@@ -16,4 +16,13 @@ class \hyperlink{classMapValidator}{Map\+Validator}
 \subsection{Detailed Description}
 Header file containing class declaration for Map\+Validator.\+class. 
 
-No specific game rule enforced by the class. The class encapsulates the logic to validate a map. Concretely, it checks that each non-\/wall cell can be reached from the entry door of the map using a recursive function. The assumption is made that one can navigate from a cell to another in the following manner\+: up, down, right, left. To increase the performance of the algorithm, a cell not yet tested that was used in the path to reach the entry door while testing another cell is flagged as reachable. Consequently, this cell will be skipped when its turn comes for validation. No specific library is used. 
+
+\begin{DoxyEnumerate}
+\item Game Rules\+: Enforces that all cells on the map are reachable from the entry door. ~\newline
+~\newline
+
+\item Design\+: The class acts as a service. It encapsulates the logic to validate a map. Concretely, it checks that each non-\/wall cell can be reached from the entry door of the map using a recursive function. The assumption is made that one can navigate from a cell to another in the following manner\+: up, down, right or left. To increase the performance of the algorithm, a cell not yet tested but that was used in the path to reach the entry door while testing another cell, is flagged as reachable. Consequently, this cell will be skipped when its turn comes for validation. ~\newline
+~\newline
+
+\item Libraries\+: No specific library is used aprt from iostream. 
+\end{DoxyEnumerate}

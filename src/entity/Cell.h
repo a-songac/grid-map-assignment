@@ -1,8 +1,8 @@
 /// @file
 /// @brief Header file containing class declaration for Cell.class
-/// @details  No specific game rule enforced by the class.
-/// Simple object to informs a bout the type of a cell and its occupant
-/// No specific library used.
+/// @details  1. Game Rules: A cell can be of type and/or contain game specific items: door, wall, friend or enemy character, and a chest \n\n
+/// 2. Design: Modlel class from the MVC pattern.  Keeps the state of a cell by providing a type and an occupant \n\n
+/// 3. Libraries: No specific library used.
 
 #pragma once
 #include <iostream>

@@ -1,5 +1,3 @@
-#include <iostream>
-
 #include "MapValidator.h"
 #include "../entity/Map.h"
 #include "../entity/Cell.h"

@@ -25,7 +25,7 @@ class MapTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testInvalidPath);
 	CPPUNIT_TEST(testWallCell);
 	CPPUNIT_TEST(testIsDoorCell);
-	CPPUNIT_TEST(tetstFillCellFailure);
+	CPPUNIT_TEST(testFillCellFailure);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void setUp();
@@ -37,7 +37,7 @@ protected:
 	void testInvalidPath();
 	void testWallCell();
 	void testIsDoorCell();
-	void tetstFillCellFailure();
+	void testFillCellFailure();
 private:
 	Map *map;
 };
@@ -133,7 +133,7 @@ void MapTest::testIsDoorCell()
 //! test method to test the fillCell() method of the Map class
 //! Test Case: the returned value should be true if an occupant was successfully added on the cell
 //! Tested item: Map::fillCell()
-void MapTest::tetstFillCellFailure()
+void MapTest::testFillCellFailure()
 {
 
 	// context: set a wall cell

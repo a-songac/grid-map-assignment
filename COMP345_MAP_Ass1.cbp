@@ -53,7 +53,6 @@
 		<Unit filename="src/utils/ArrayUtils.h" />
 		<Unit filename="src/utils/IOUtils.cpp" />
 		<Unit filename="src/utils/IOUtils.h" />
-		<Unit filename="src/view/MapRenderer.cpp" />
 		<Unit filename="src/view/MapRenderer.h" />
 		<Unit filename="src/view/MapView.cpp" />
 		<Unit filename="src/view/MapView.h" />

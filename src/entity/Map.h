@@ -1,12 +1,11 @@
 /// @file
 /// @brief Header file containing class declaration for Map.class
 ///        and struct declaration for Coordinate.struct
-/// @details  No specific game rule enforced by the class except that a wall cannot be occupied.
-/// Design wise, the Map class is a container of a 2D array of Cell objects.
-/// The map does not use any specific library.
+/// @details  1. Game Rules: The Map enforces that a cell of type wall cannot be occupied \n\n
+/// 2. Model class from the MVP pattern. The Map keeps the state of the map, which consists of a 2D array of cells. The coordinate struct helps represent locations on the map. \n\n
+/// 3. Libraries: The map does not use any specific library.
 
 #pragma once
-#include <iostream>
 #include "Cell.h"
 
 /// Struct that represents a map coordinate

@@ -1,4 +1,4 @@
-
+#define RUN_TESTS
 
 #include <iostream>
 

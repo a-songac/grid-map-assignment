@@ -1,7 +1,8 @@
 /// @file
 /// @brief Header file containing method declarations for useful 2D array manipulations
-/// @details  No specific game rule enforced by the class.
-/// No specific library is used.
+/// @details  1. Game Rules: No specific game rule enforced by the class. \n\n
+/// 2. Design: Helper class for 2D array initialization and destruction. \n\n
+/// 3. No specific library is used.
 
 
 #pragma once

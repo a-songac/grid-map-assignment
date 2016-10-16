@@ -71,8 +71,7 @@ $(function() {
 
 <p>Header file containing class declaration for Map.class and struct declaration for Coordinate.struct.  
 <a href="#details">More...</a></p>
-<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
-<code>#include &quot;<a class="el" href="Cell_8h_source.html">Cell.h</a>&quot;</code><br />
+<div class="textblock"><code>#include &quot;<a class="el" href="Cell_8h_source.html">Cell.h</a>&quot;</code><br />
 </div>
 <p><a href="Map_8h_source.html">Go to the source code of this file.</a></p>
 <table class="memberdecls">
@@ -87,7 +86,15 @@ Classes</h2></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Header file containing class declaration for Map.class and struct declaration for Coordinate.struct. </p>
-<p>No specific game rule enforced by the class except that a wall cannot be occupied. Design wise, the <a class="el" href="classMap.html" title="Class to implement the game map. ">Map</a> class is a container of a 2D array of <a class="el" href="classCell.html" title="Class to implement a cell. ">Cell</a> objects. The map does not use any specific library. </p>
+<ol type="1">
+<li>Game Rules: The <a class="el" href="classMap.html" title="Class to implement the game map. ">Map</a> enforces that a cell of type wall cannot be occupied <br />
+<br />
+</li>
+<li>Model class from the MVP pattern. The <a class="el" href="classMap.html" title="Class to implement the game map. ">Map</a> keeps the state of the map, which consists of a 2D array of cells. The coordinate struct helps represent locations on the map. <br />
+<br />
+</li>
+<li>Libraries: The map does not use any specific library. </li>
+</ol>
 </div></div><!-- contents -->
 <!-- start footer part -->
 <hr class="footer"/><address class="footer"><small>

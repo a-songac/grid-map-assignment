@@ -1,9 +1,8 @@
 /// @file
 /// @brief Header file containing class declaration for MapRenderer.class
-/// @details  No specific game rule enforced by the class.
-/// The class provides a static methods to render the map in a command line interface.
-/// It is used to avoid bloating the Map class
-/// No specific library is used.
+/// @details  1. Game Rules: No specific game rule enforced by the class. \n\n
+/// 2. Design: View of the MVC pattern. Implements a Command Line Interface View of the Map. \n\n
+/// 3. Libraries: No specific library is used apart from the iostream in order to display the map on the console
 
 #pragma once
 

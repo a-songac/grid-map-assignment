@@ -1,9 +1,8 @@
 /// @file
 /// @brief Header file containing method declarations for useful IO operations
-/// @details  No specific game rule enforced by the class.
-/// Provides method that encapsulate command line user input validation
-/// No specific library is used.
-
+/// @details  1. Game Rules: No specific game rule enforced by the class. \n\n
+/// 2. Design: Provides method that encapsulate command line user input validation \n\n
+/// 3. Libraries: Uses the string std library to perform conversion from string to numbers
 #pragma once
 
 #include <iostream>
