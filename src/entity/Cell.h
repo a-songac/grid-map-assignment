@@ -33,4 +33,25 @@ class Cell {
         char type;
         char occupant;
 };
-        void initializeGrid(Cell** grid, int height, int width);
+
+inline Cell::Cell(char type) {
+    this->type = type;
+}
+
+inline char Cell::getType() {
+    return type;
+}
+
+inline void Cell::setType(char type) {
+    this->type = type;
+}
+
+inline char Cell::getOccupant() {
+    return occupant;
+}
+
+inline void Cell::setOccupant(char occupant) {
+    this->occupant = occupant;
+}
+
+

@@ -4,12 +4,15 @@
 /// 2. Design: Helper class for 2D array initialization and destruction. \n\n
 /// 3. No specific library is used.
 
-
 #pragma once
 
+#include "../entity/Cell.h"
+
+void initialize2DArray(Cell** grid, int height, int width);
 void initialize2DArray(bool** grid, int height, int width);
 void initialize2DArray(int** grid, int height, int width);
 void reset2DArray(bool** grid, int height, int width);
 void reset2DArray(int** grid, int height, int width);
 void destroy2DArray(bool** grid, int height, int width);
 void destroy2DArray(int** grid, int height, int width);
+void destroy2DArray(Cell** grid, int height, int width);

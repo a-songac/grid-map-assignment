@@ -55,3 +55,63 @@ class Map {
 
 };
 
+
+
+
+
+
+inline int Map::getHeight() {
+    return height;
+}
+
+inline int Map::getWidth() {
+    return width;
+}
+
+inline Coordinate Map::getEntryDoorCoordinate() {
+    return entryDoor;
+}
+
+inline void Map::setEntryDoor(Coordinate entryDoor) {
+    this->entryDoor = entryDoor;
+}
+
+inline Coordinate Map::getExitDoorCoordinate() {
+    return exitDoor;
+}
+
+inline void Map::setExitDoor(Coordinate exitDoor) {
+    this->exitDoor = exitDoor;
+}
+
+inline bool Map::isFloor(int row, int column) {
+    return grid[row][column].getType() == Cell::TYPE_FLOOR;
+}
+
+inline bool Map::isWall(int row, int column) {
+    return grid[row][column].getType() == Cell::TYPE_WALL;
+}
+
+inline bool Map::isEntryDoor(int row, int column) {
+    return grid[row][column].getType() == Cell::TYPE_DOOR_ENTRY;
+}
+
+inline bool Map::isExitDoor(int row, int column) {
+    return grid[row][column].getType() == Cell::TYPE_DOOR_EXIT;
+}
+
+inline bool Map::isDoor(int row, int column) {
+
+    return grid[row][column].getType() == Cell::TYPE_DOOR_ENTRY
+        || grid[row][column].getType() == Cell::TYPE_DOOR_EXIT;
+}
+
+inline bool Map::isInbound(int row, int column) {
+    return row >= 0 && row < height && column >= 0 && column < width;
+
+}
+
+inline void Map::setCellType(int row, int column, char type) {
+    grid[row][column].setType(type);
+}
+
