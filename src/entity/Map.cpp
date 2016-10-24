@@ -85,6 +85,7 @@ bool Map::fillCell(int row, int column, char occupant) {
         return false;
     }
     grid[row][column].setOccupant(occupant);
+    notify();
     return true;
 }
 
@@ -98,8 +99,9 @@ bool Map::validate() {
 }
 
 void Map::render() {
-    MapView::renderMap(this);
+    notify();
 }
+
 
 
 

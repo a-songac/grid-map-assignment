@@ -42,6 +42,10 @@
 		</Linker>
 		<Unit filename="src/controller/MapEditorController.cpp" />
 		<Unit filename="src/controller/MapEditorController.h" />
+		<Unit filename="src/core/Observer.cpp" />
+		<Unit filename="src/core/Observer.h" />
+		<Unit filename="src/core/Subject.cpp" />
+		<Unit filename="src/core/Subject.h" />
 		<Unit filename="src/entity/Cell.cpp" />
 		<Unit filename="src/entity/Cell.h" />
 		<Unit filename="src/entity/Map.cpp" />
@@ -53,7 +57,6 @@
 		<Unit filename="src/utils/ArrayUtils.h" />
 		<Unit filename="src/utils/IOUtils.cpp" />
 		<Unit filename="src/utils/IOUtils.h" />
-		<Unit filename="src/view/MapRenderer.h" />
 		<Unit filename="src/view/MapView.cpp" />
 		<Unit filename="src/view/MapView.h" />
 		<Unit filename="tests/MapTest.cpp" />

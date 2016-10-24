@@ -20,3 +20,7 @@
 
 *.depend  
 *.layout  
+
+## Doxygen documentation
+html/
+latex/

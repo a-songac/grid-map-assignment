@@ -2,11 +2,13 @@
 /// @brief Header file containing class declaration for Map.class
 ///        and struct declaration for Coordinate.struct
 /// @details  1. Game Rules: The Map enforces that a cell of type wall cannot be occupied \n\n
-/// 2. Model class from the MVP pattern. The Map keeps the state of the map, which consists of a 2D array of cells. The coordinate struct helps represent locations on the map. \n\n
+/// 2. Model class from the MVP pattern. The Map keeps the state of the map, which consists of a 2D array of cells. The coordinate struct helps represent locations on the map. \n
+/// The map also implements the Observer pattern and consists of the Subject (Observable)
 /// 3. Libraries: The map does not use any specific library.
 
 #pragma once
 #include "Cell.h"
+#include "../core/Subject.h"
 
 /// Struct that represents a map coordinate
 struct Coordinate {
@@ -15,7 +17,7 @@ struct Coordinate {
 
 };
 /// Class to implement the game map
-class Map {
+class Map : public Subject {
     public:
 
         Map(int h, int w, Coordinate entry, Coordinate exit);
@@ -74,6 +76,7 @@ inline Coordinate Map::getEntryDoorCoordinate() {
 
 inline void Map::setEntryDoor(Coordinate entryDoor) {
     this->entryDoor = entryDoor;
+    notify();
 }
 
 inline Coordinate Map::getExitDoorCoordinate() {
@@ -82,6 +85,7 @@ inline Coordinate Map::getExitDoorCoordinate() {
 
 inline void Map::setExitDoor(Coordinate exitDoor) {
     this->exitDoor = exitDoor;
+    notify();
 }
 
 inline bool Map::isFloor(int row, int column) {
@@ -113,5 +117,6 @@ inline bool Map::isInbound(int row, int column) {
 
 inline void Map::setCellType(int row, int column, char type) {
     grid[row][column].setType(type);
+    notify();
 }
 
