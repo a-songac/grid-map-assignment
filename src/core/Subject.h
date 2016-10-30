@@ -14,6 +14,7 @@ class Subject {
         virtual void attach(Observer* o);
         virtual void detach(Observer* o);
         virtual void notify();
+        int getNbObservers();
         Subject();
         ~Subject();
 

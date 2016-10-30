@@ -72,6 +72,10 @@ const char PLAYER_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
 MapView::MapView(){
 }
 
+MapView::~MapView(){
+    map->detach(this);
+}
+
 MapView::MapView(Map* m) {
     map = m;
     map->attach(this);

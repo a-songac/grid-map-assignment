@@ -21,3 +21,7 @@ void Subject::notify() {
     for (; i!= _observers->end(); i++)
         (*i)->update();
 }
+
+int Subject::getNbObservers() {
+    return _observers->size();
+}

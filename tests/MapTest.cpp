@@ -13,6 +13,8 @@
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/XmlOutputter.h>
 #include "../src/entity/Map.h"
+#include "../src/view/MapView.h"
+
 using namespace CppUnit;
 
 //! Test Class for the Map class
@@ -26,6 +28,8 @@ class MapTest : public CppUnit::TestFixture
 	CPPUNIT_TEST(testWallCell);
 	CPPUNIT_TEST(testIsDoorCell);
 	CPPUNIT_TEST(testFillCellFailure);
+	CPPUNIT_TEST(testAttachMapObserver);
+	CPPUNIT_TEST(testDetachMapObserver);
 	CPPUNIT_TEST_SUITE_END();
 public:
 	void setUp();
@@ -38,6 +42,8 @@ protected:
 	void testWallCell();
 	void testIsDoorCell();
 	void testFillCellFailure();
+	void testAttachMapObserver();
+	void testDetachMapObserver();
 private:
 	Map *map;
 };
@@ -141,3 +147,29 @@ void MapTest::testFillCellFailure()
 	// test: fillCell should return false since the cell is actually a wall
 	CPPUNIT_ASSERT(false == map->fillCell(0,1, Cell::OCCUPANT_FRIEND));
 }
+
+//! test method to test that the creation of an observer attaches an observer to the map
+//! Test Case: the number of observers should be 1 after creating a mapview
+//! Tested item: Map::attach() alled in MapView constructor
+void MapTest::testAttachMapObserver()
+{
+    MapView mapView(map);
+    CPPUNIT_ASSERT(1 == map->getNbObservers());
+
+}
+
+//! test method to test that the deletion of an observer detaches the observer from the map
+//! Test Case: the number of obsers should be 0 after creating then deleting a mapview
+//! Tested item: Map::detach() called in MapView destructor
+void MapTest::testDetachMapObserver()
+{
+    MapView* mapView = new MapView(map);
+    CPPUNIT_ASSERT(1 == map->getNbObservers());
+    delete mapView;
+    CPPUNIT_ASSERT(0 == map->getNbObservers());
+
+}
+
+
+
+
