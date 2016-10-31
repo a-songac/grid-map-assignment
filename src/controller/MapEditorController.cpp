@@ -14,7 +14,8 @@ using namespace std;
 
 const string ADD_WALL_PROMPT = "Do you want to add or remove a wall?[Y/n] ";
 const string ADD_OCCUPANT_PROMPT = "Do you want to add or remove an occupant?[Y/n] ";
-const string CELL_LOCATION_REGEX = "^([a-zA-Z]+)([0-9]+)$";
+const string CELL_LOCATION_REGEX = "^([a-zA-Z]{1})([0-9]+)$";
+const string MAP_NAME_REGEX = "^[a-zA-Z_0-9]+$";
 
 
 MapEditorController::MapEditorController(Map* map) {
@@ -35,6 +36,7 @@ void MapEditorController::buildMap() {
 Map* MapEditorController::createMap() {
 
     bool error = false;
+    string name;
     int height, width, exitDefaultRow;
     stringstream ss;
     Coordinate entryDoor , exitDoor;
@@ -43,10 +45,13 @@ Map* MapEditorController::createMap() {
 
 
     cout << "Let's create a map!" << endl;
+
+    name = readMapName("Please provide a name for this new map (alphanumeric and underscore characters): ");
+
     height = readMapDimension("Please provide the height of your map (between 2 and 15)[7]:", 7, 2, 15);
     width = readMapDimension("Please provide the width of your map (between 2 and 15)[7]:", 7, 2, 15);
 
-    Map* map = new Map(height, width);
+    Map* map = new Map(name, height, width);
     MapView* mapView = new MapView(map);
     this->map = map;
     cout << "Your map will look like this: " << endl;
@@ -257,7 +262,7 @@ char MapEditorController::setOccupantOnMap() {
 }
 
 
-int readMapDimension(string message, int defaultValue, int min, int max) {
+int MapEditorController::readMapDimension(string message, int defaultValue, int min, int max) {
 
     bool error = false;
     int result;
@@ -271,6 +276,28 @@ int readMapDimension(string message, int defaultValue, int min, int max) {
         }
     } while(error);
     return result;
+}
+
+string MapEditorController::readMapName(string message) {
+    bool error = false;
+    regex regex (MAP_NAME_REGEX);
+    smatch match;
+    string name;
+
+    do {
+        error = false;
+        name = readStringInput(message, "%%"); // provide faulty input as default to force loop
+
+
+        if (!regex_search(name, match, regex)
+            || name == "_map_references") {
+            error = true;
+            cout << "Invalid input, please retry" << endl;
+        }
+
+    } while(error);
+    return name;
+
 }
 
 

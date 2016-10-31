@@ -28,7 +28,8 @@ class MapEditorController {
         Coordinate promptForMapLocation(string message, string defaultLocation);
         char setOccupantOnMap();
         Map* map;
+        int readMapDimension(string message, int defaultValue, int min, int max);
+        string readMapName(string message);
 };
 
-int readMapDimension(string message, int defaultValue, int min, int max);
 

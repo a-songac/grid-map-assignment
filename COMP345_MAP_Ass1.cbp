@@ -50,11 +50,17 @@
 		<Unit filename="src/entity/Cell.h" />
 		<Unit filename="src/entity/Map.cpp" />
 		<Unit filename="src/entity/Map.h" />
+		<Unit filename="src/entity/MapProxy.cpp" />
+		<Unit filename="src/entity/MapProxy.h" />
 		<Unit filename="src/main.cpp" />
+		<Unit filename="src/persistence/MapRepository.cpp" />
+		<Unit filename="src/persistence/MapRepository.h" />
 		<Unit filename="src/service/MapValidator.cpp" />
 		<Unit filename="src/service/MapValidator.h" />
 		<Unit filename="src/utils/ArrayUtils.cpp" />
 		<Unit filename="src/utils/ArrayUtils.h" />
+		<Unit filename="src/utils/FileUtils.cpp" />
+		<Unit filename="src/utils/FileUtils.h" />
 		<Unit filename="src/utils/IOUtils.cpp" />
 		<Unit filename="src/utils/IOUtils.h" />
 		<Unit filename="src/view/MapView.cpp" />

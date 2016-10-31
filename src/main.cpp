@@ -1,15 +1,17 @@
-#define RUN_TESTS
+// #define RUN_TESTS
 
 #include <iostream>
 
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/extensions/TestFactoryRegistry.h>
 #include <cppunit/ui/text/TestRunner.h>
+#include <list>
 
 #include "entity/Cell.h"
 #include "entity/Map.h"
 #include "view/MapView.h"
 #include "controller/MapEditorController.h"
+#include "persistence/MapRepository.h"
 
 
 using namespace std;
@@ -29,6 +31,14 @@ int main()
     }
 
 #endif // RUN_TESTS
+
+    MapRepository* mapRepo = MapRepository::instance();
+    //
+    Map* aMap;
+    aMap = new Map("XMap");
+    mapRepo->save(aMap);
+    mapRepo->remove("XMap");
+
 
     cout << "************** Map Creator **************" << endl << endl;
 

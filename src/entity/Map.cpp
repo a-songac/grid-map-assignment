@@ -23,8 +23,13 @@ Map::Map() {
 
 }
 
+Map::Map(string name): Map() {
+    this->name = name;
+}
 
-Map::Map(int height, int width) {
+
+Map::Map(string name, int height, int width) {
+    this->name = name;
     this->height = height;
     this->width = width;
 
@@ -32,7 +37,8 @@ Map::Map(int height, int width) {
     initialize2DArray(grid, height, width);
 }
 
-Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
+Map::Map(string name, int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
+    this->name = name;
     this->height = height;
     this->width = width;
 
@@ -60,6 +66,7 @@ Map::~Map() {
 
 void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
 
+    this->name = name;
     this->entryDoor.column = entryDoor.column;
     this->entryDoor.row = entryDoor.row;
 

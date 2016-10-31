@@ -1,0 +1,112 @@
+#include "MapRepository.h"
+#include "../utils/FileUtils.h"
+
+#include <fstream>
+#include <iostream>
+#include <stdio.h>
+
+using namespace std;
+
+const string PERSISTENCE_MAPS_LOCATION = "persistence/map/";
+const string PERSISTENCE_MAPS_REFERENCES = "_map_references";
+const string PERSISTENCE_CHARACTER_LOCATION = "persistence/character/";
+const string PERSISTENCE_CHARACTER_REFERENCES = "_character_references";
+
+MapRepository* MapRepository::_instance;
+
+MapRepository* MapRepository::instance() {
+    if (!_instance) {
+        _instance = new MapRepository;
+    }
+    return _instance;
+}
+
+MapRepository::~MapRepository() {
+    // TODO Delete map proxies held in the list, how is that done?
+    delete _proxies;
+}
+
+///  Load proxies of persisted map in the memory from _map_references
+/// _map_references holds a list of all names of persisted map
+MapRepository::MapRepository() {
+    this->_proxies = new list<MapProxy*>;
+    string mapName;
+    MapProxy* proxy;
+
+    ifstream in = loadInputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+    while (in >> mapName) {
+        proxy = new MapProxy(mapName);
+        this->_proxies->push_back(proxy);
+    }
+    in.close();
+}
+
+
+list<MapProxy*>* MapRepository::listAll() {
+    return this->_proxies;
+}
+
+/// Save changes in the _map_references file
+void MapRepository::flush() {
+    ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+
+    list<MapProxy*>::iterator i = this->_proxies->begin();
+    for (; i!= this->_proxies->end(); i++) {
+        out << (*i)->getFileName() << endl;
+    }
+    out.close();
+}
+
+/// persist map
+/// create new map file and update _map_references if creating a new map
+void MapRepository::save(Map* map) {
+
+    string mapName = map->getName();
+    MapProxy* proxy = this->find(mapName);
+    if (nullptr == proxy) {
+
+        MapProxy* proxy = new MapProxy(mapName);
+        this->_proxies->push_back(proxy);
+        this->flush();
+    }
+
+
+    ofstream in = loadOutputFileStream(PERSISTENCE_MAPS_LOCATION + mapName);
+    // TODO Persist map in the file
+    in.close();
+}
+
+MapProxy* MapRepository::find(string name) {
+
+    list<MapProxy*>::iterator i = this->_proxies->begin();
+    for (; i != this->_proxies->end(); i++) {
+        if (name == (*i)->getFileName()) {
+            return (*i);
+        }
+    }
+    return nullptr;
+
+}
+
+bool MapRepository::remove(string name) {
+
+    MapProxy* proxy = this->find(name);
+    if (nullptr != proxy) {
+
+        this->_proxies->remove(proxy);
+        delete proxy;
+        this->flush();
+        string fileName = PERSISTENCE_MAPS_LOCATION + name;
+        if( std::remove(fileName.c_str()) != 0 ) {
+            cout << "MapRepository::remove::error deleting file: " << PERSISTENCE_MAPS_LOCATION << name << endl;
+            return false;
+        }
+
+    }
+    return false;
+}
+
+
+
+
+

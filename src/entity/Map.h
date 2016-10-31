@@ -20,13 +20,17 @@ struct Coordinate {
 class Map : public Subject {
     public:
 
-        Map(int h, int w, Coordinate entry, Coordinate exit);
-        Map(int h, int w);
+        Map(string name, int h, int w, Coordinate entry, Coordinate exit);
+        Map(string name, int h, int w);
         Map();
+        Map(string name);
         ~Map();
 
         int getHeight();
         int getWidth();
+
+        void setName(string name);
+        string getName();
 
         Coordinate getEntryDoorCoordinate();
         Coordinate getExitDoorCoordinate();
@@ -54,6 +58,7 @@ class Map : public Subject {
         int width;
         Coordinate entryDoor;
         Coordinate exitDoor;
+        string name;
 
 };
 
@@ -118,5 +123,13 @@ inline bool Map::isInbound(int row, int column) {
 inline void Map::setCellType(int row, int column, char type) {
     grid[row][column].setType(type);
     notify();
+}
+
+inline void Map::setName(string name) {
+    this->name = name;
+}
+
+inline string Map::getName() {
+    return this->name;
 }
 
