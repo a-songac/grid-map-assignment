@@ -1,4 +1,5 @@
 #include "MapProxy.h"
+#include "../persistence/MapRepository.h"
 
 MapProxy::~MapProxy() {
     if (this->map != nullptr)
@@ -12,7 +13,7 @@ MapProxy::MapProxy() {
 
 MapProxy::MapProxy(Map* map) {
     this->map = map;
-    this->fileName = "";
+    this->fileName = map->getName();
 }
 
 MapProxy::MapProxy(string fileName) {
@@ -23,9 +24,8 @@ MapProxy::MapProxy(string fileName) {
 
 Map* MapProxy::getMap() {
     if (nullptr == this->map) {
-        // TODO load map from persistence and set the map pointer
+        this->map = MapRepository::instance()->loadMap(this->fileName);
     }
-
     return this->map;
 }
 

@@ -17,12 +17,13 @@ class MapRepository {
         Map* getMap(string mapName);
         bool remove(string name);
         MapProxy* find(string name);
+        Map* loadMap(string name);
 
 
     private:
         list<MapProxy*>* _proxies;
         static MapRepository* _instance;
         MapRepository();
-        void flush();
+        void updateRepoReference();
 
 };

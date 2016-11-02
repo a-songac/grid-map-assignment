@@ -29,25 +29,37 @@ MapRepository::~MapRepository() {
 ///  Load proxies of persisted map in the memory from _map_references
 /// _map_references holds a list of all names of persisted map
 MapRepository::MapRepository() {
+
+#ifdef DEBUG
+    cout << "Initialization of MapRepository; loading persisted map references..." << endl;
+#endif // DEBUG
+
     this->_proxies = new list<MapProxy*>;
     string mapName;
     MapProxy* proxy;
 
     ifstream in = loadInputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
     while (in >> mapName) {
+#ifdef DEBUG
+        cout << "Load " << mapName <<  endl;
+#endif // DEBUG
         proxy = new MapProxy(mapName);
         this->_proxies->push_back(proxy);
     }
     in.close();
+#ifdef DEBUG
+    cout << "Total of " << this->_proxies->size() << " map references loaded." <<  endl;
+#endif // DEBUG
 }
 
-
+/// Return the list of proxies
 list<MapProxy*>* MapRepository::listAll() {
     return this->_proxies;
 }
 
 /// Save changes in the _map_references file
-void MapRepository::flush() {
+/// Essential when deleting or adding
+void MapRepository::updateRepoReference() {
     ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
 
     list<MapProxy*>::iterator i = this->_proxies->begin();
@@ -67,7 +79,7 @@ void MapRepository::save(Map* map) {
 
         MapProxy* proxy = new MapProxy(mapName);
         this->_proxies->push_back(proxy);
-        this->flush();
+        this->updateRepoReference();
     }
 
 
@@ -76,6 +88,7 @@ void MapRepository::save(Map* map) {
     in.close();
 }
 
+/// Work with proxy since finding a map does not mean we will need it.  To be discussed
 MapProxy* MapRepository::find(string name) {
 
     list<MapProxy*>::iterator i = this->_proxies->begin();
@@ -85,8 +98,14 @@ MapProxy* MapRepository::find(string name) {
         }
     }
     return nullptr;
-
 }
+
+Map* MapRepository::loadMap(string name) {
+    Map* loadedMap;
+    // TODO load map from textfile
+    return loadedMap;
+}
+
 
 bool MapRepository::remove(string name) {
 
@@ -95,7 +114,7 @@ bool MapRepository::remove(string name) {
 
         this->_proxies->remove(proxy);
         delete proxy;
-        this->flush();
+        this->updateRepoReference();
         string fileName = PERSISTENCE_MAPS_LOCATION + name;
         if( std::remove(fileName.c_str()) != 0 ) {
             cout << "MapRepository::remove::error deleting file: " << PERSISTENCE_MAPS_LOCATION << name << endl;
