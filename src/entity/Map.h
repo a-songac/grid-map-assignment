@@ -41,6 +41,9 @@ class Map : public Subject {
         bool isEntryDoor(int row, int column);
         bool isExitDoor(int row, int column);
 
+        void movePlayer(int rowm, int column);
+        bool hasPlayer(int row, int colum);
+        void setPlayer(int row, int column, bool yes);
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
         bool isOccupied(int row, int column);
@@ -58,6 +61,7 @@ class Map : public Subject {
         int width;
         Coordinate entryDoor;
         Coordinate exitDoor;
+        Coordinate playerPosition;
         string name;
 
 };
@@ -131,5 +135,23 @@ inline void Map::setName(string name) {
 
 inline string Map::getName() {
     return this->name;
+}
+
+inline bool Map::hasPlayer(int row, int column) {
+    return grid[row][column].hasPlayer();
+}
+
+inline void Map::setPlayer(int row, int column, bool yes) {
+    grid[row][column].setPlayer(yes);
+}
+
+inline void Map::movePlayer(int row, int column) {
+    if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
+       grid[playerPosition.row][playerPosition.column].setPlayer(false);
+    }
+    playerPosition.row = row;
+    playerPosition.column = column;
+    grid[playerPosition.row][playerPosition.column].setPlayer(true);
+    notify();
 }
 

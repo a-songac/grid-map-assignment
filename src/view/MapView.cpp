@@ -117,6 +117,8 @@ void MapView::renderMap() {
                     for (int x=0;x<CELL_WIDTH - 2;x++) {
                         if (map->isWall(i,j))
                             cout << WALL;
+                        else if (map->hasPlayer(i, j))
+                            cout << PLAYER_PATTERN[h][x];
                         else if (map->isOccupied(i,j)) {
 
                             switch (map->getOccupant(i,j)) {

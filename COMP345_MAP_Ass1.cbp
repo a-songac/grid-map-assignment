@@ -41,8 +41,12 @@
 			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.a" />
 			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.so" />
 		</Linker>
+		<Unit filename="src/controller/GamePlayController.cpp" />
+		<Unit filename="src/controller/GamePlayController.h" />
 		<Unit filename="src/controller/MapEditorController.cpp" />
 		<Unit filename="src/controller/MapEditorController.h" />
+		<Unit filename="src/controller/MapInteractionHelper.cpp" />
+		<Unit filename="src/controller/MapInteractionHelper.h" />
 		<Unit filename="src/core/Observer.cpp" />
 		<Unit filename="src/core/Observer.h" />
 		<Unit filename="src/core/Subject.cpp" />

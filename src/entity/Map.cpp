@@ -17,6 +17,7 @@ Map::Map() {
 
     entryDoor = {0,0};
     exitDoor = {height-1, width-1};
+    playerPosition = {-1, -1};
 
     grid[entryDoor.row][entryDoor.column].setType(Cell::TYPE_DOOR_ENTRY);
     grid[exitDoor.row][exitDoor.column].setType(Cell::TYPE_DOOR_EXIT);
@@ -29,6 +30,8 @@ Map::Map(string name): Map() {
 
 
 Map::Map(string name, int height, int width) {
+    playerPosition = {-1, -1};
+
     this->name = name;
     this->height = height;
     this->width = width;
@@ -38,6 +41,8 @@ Map::Map(string name, int height, int width) {
 }
 
 Map::Map(string name, int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
+    playerPosition = {-1, -1};
+
     this->name = name;
     this->height = height;
     this->width = width;
@@ -106,7 +111,7 @@ bool Map::validate() {
 }
 
 void Map::render() {
-    notify();
+    notify(); // assumes you have a map view observer
 }
 
 

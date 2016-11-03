@@ -3,9 +3,9 @@
 #include <sstream>
 #include <string>
 
+#include "MapEditorController.h"
 #include "../entity/Map.h"
 #include "../entity/Cell.h"
-#include "MapEditorController.h"
 #include "../service/MapValidator.h"
 #include "../utils/IOUtils.h"
 #include "../view/MapView.h"
@@ -103,7 +103,7 @@ void MapEditorController::addWall() {
         bool error;
         do {
             error = false;
-            location = promptForMapLocation("On which cell do you want to add or remove the wall?[A1]:", "A1");
+            location = readMapLocation("On which cell do you want to add or remove the wall?[A1]:", "A1");
 
             if (map->isDoor(location.row, location.column)) {
                 cout << "This is a door, please retry" << endl;
@@ -143,7 +143,7 @@ void MapEditorController::addOccupant() {
         bool error;
         do {
             error = false;
-            location = promptForMapLocation("On which cell do you want to add or remove an item?[A1]:", "A1");
+            location = readMapLocation("On which cell do you want to add or remove an item?[A1]:", "A1");
 
             if (map->isWall(location.row, location.column)) {
                 cout << "This is a wall, please retry" << endl;
@@ -183,7 +183,7 @@ Coordinate MapEditorController::defineDoor(string message, Map* map, string defa
 
     do {
         error = false;
-        location = promptForMapLocation(message, defaultLocation);
+        location = readMapLocation(message, defaultLocation);
 
         if (!(location.row == 0 || location.row + 1 == map->getHeight() ||
                 location.column == 0 || location.column + 1 == map->getWidth() )) {
@@ -198,7 +198,7 @@ Coordinate MapEditorController::defineDoor(string message, Map* map, string defa
 
 
 
-Coordinate MapEditorController::promptForMapLocation(string message, string defaultLocation) {
+Coordinate MapEditorController::readMapLocation(string message, string defaultLocation) {
 
     bool error = false;
     string row, column;

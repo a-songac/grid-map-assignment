@@ -25,7 +25,7 @@ class MapEditorController {
         void addWall();
         void addOccupant();
         Coordinate defineDoor(string message, Map* map, string defaultLocation);
-        Coordinate promptForMapLocation(string message, string defaultLocation);
+        Coordinate readMapLocation(string message, string defaultLocation);
         char setOccupantOnMap();
         Map* map;
         int readMapDimension(string message, int defaultValue, int min, int max);

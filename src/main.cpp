@@ -12,6 +12,7 @@
 #include "view/MapView.h"
 #include "controller/MapEditorController.h"
 #include "persistence/MapRepository.h"
+#include "controller/GamePlayController.h"
 
 
 using namespace std;
@@ -36,15 +37,20 @@ int main()
     //
     Map* aMap;
     aMap = new Map("XMap");
-    mapRepo->save(aMap);
-    mapRepo->remove("XMap");
+    MapView* mapView = new MapView(aMap);
+//    mapRepo->save(aMap);
+//    mapRepo->remove("XMap");
 
 
-    cout << "************** Map Creator **************" << endl << endl;
+//    cout << "************** Map Creator **************" << endl << endl;
+//
+//    MapEditorController mapEditor;
+//    Map* map = mapEditor.createMap();
+//    mapEditor.buildMap();
 
-    MapEditorController mapEditor;
-    Map* map = mapEditor.createMap();
-    mapEditor.buildMap();
+    GamePlayController gameCon(aMap, 0);
+    gameCon.startGame();
+
 
 
     return 0;
