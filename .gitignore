@@ -13,3 +13,14 @@ InfoPlist.h
 # osx noise
 .DS_Store
 profile
+
+# artifacts
+obj/
+bin/
+
+#################  
+## Code::Blocks  
+#################  
+
+*.depend  
+*.layout
