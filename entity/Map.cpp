@@ -11,7 +11,8 @@ using namespace std;
 Map::Map() {
     height = 7;
     width = 7;
-    
+    playerPosition = {-1, -1};
+
 
     //grid = new Cell* [height];
     std::vector<std::vector<Cell> > g(height, std::vector<Cell>(width));
@@ -30,6 +31,7 @@ Map::Map() {
 Map::Map(int height, int width) {
     this->height = height;
     this->width = width;
+    playerPosition = {-1, -1};
 
     std::vector<std::vector<Cell> > g(height, std::vector<Cell>(width));
     this->grid = g;
@@ -40,6 +42,7 @@ Map::Map(int height, int width) {
 Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
     this->height = height;
     this->width = width;
+    playerPosition = {-1, -1};
 
     //grid = new Cell* [height];
     std::vector<std::vector<Cell> > g(height, std::vector<Cell>(width));

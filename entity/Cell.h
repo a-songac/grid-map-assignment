@@ -22,6 +22,7 @@ class Cell {
         static const char OCCUPANT_OPPONENT = 'o';
         static const char OCCUPANT_FRIEND = 'r';
         static const char OCCUPANT_EMPTY = ' ';
+        static const char OCCUPANT_PLAYER = 'p';
 
         Cell();
         Cell(char type);
@@ -30,18 +31,21 @@ class Cell {
         void setType(char type);
         char getOccupant();
         void setOccupant(char occupant);
+        bool hasPlayer();
+        void setPlayer(bool player);
 
     private:
         char type;
         char occupant;
-    
+        bool player;
+
         friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version)
         {
             ar & type;
             ar & occupant;
-        
+
         }
 };
 
@@ -63,6 +67,14 @@ inline char Cell::getOccupant() {
 
 inline void Cell::setOccupant(char occupant) {
     this->occupant = occupant;
+}
+
+inline void Cell::setPlayer(bool player) {
+    this->player = player;
+}
+
+inline bool Cell::hasPlayer() {
+    return this->player;
 }
 
 

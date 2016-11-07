@@ -3,6 +3,10 @@ build/*
 *.pbxuser
 *.mode1v3
 xcuserdata
+*libboost_filesystem-mt.dylib
+*libboost_serialization-mt.dylib
+*libboost_system-mt.a
+*libboost_system-mt.dylib
 
 # auto git version noise
 InfoPlist.h

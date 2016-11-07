@@ -15,8 +15,8 @@
 struct Coordinate {
     int row;
     int column;
- 
-    
+
+
     private:
         friend class boost::serialization::access;
         template<class Archive>
@@ -37,6 +37,9 @@ class Map {
         Map();
         //~Map();
 
+        void setName(string name);
+        string getName();
+
         int getHeight();
         int getWidth();
 
@@ -49,6 +52,9 @@ class Map {
         bool isEntryDoor(int row, int column);
         bool isExitDoor(int row, int column);
 
+        void movePlayer(int rowm, int column);
+        bool hasPlayer(int row, int colum);
+        void setPlayer(int row, int column, bool yes);
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
         bool isOccupied(int row, int column);
@@ -66,7 +72,9 @@ class Map {
         int width;
         Coordinate entryDoor;
         Coordinate exitDoor;
-    
+        Coordinate playerPosition;
+        string name;
+
         friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version)
@@ -76,7 +84,8 @@ class Map {
             ar & width;
             ar & entryDoor;
             ar & exitDoor;
-        
+            ar & name;
+
         }
 
 };
@@ -139,5 +148,32 @@ inline bool Map::isInbound(int row, int column) {
 
 inline void Map::setCellType(int row, int column, char type) {
     grid.at(row).at(column).setType(type);
+}
+
+
+inline void Map::setName(string name) {
+    this->name = name;
+}
+
+inline string Map::getName() {
+    return this->name;
+}
+
+inline bool Map::hasPlayer(int row, int column) {
+    return grid.at(row).at(column).hasPlayer();
+}
+
+inline void Map::setPlayer(int row, int column, bool yes) {
+    grid.at(row).at(column).setPlayer(yes);
+}
+
+inline void Map::movePlayer(int row, int column) {
+    if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
+       grid[playerPosition.row][playerPosition.column].setPlayer(false);
+    }
+    playerPosition.row = row;
+    playerPosition.column = column;
+    grid.at(row).at(column).setPlayer(true);
+    this->render(); // TODO change to notify
 }
 
