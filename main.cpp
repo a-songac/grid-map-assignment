@@ -14,8 +14,6 @@ using namespace std;
 
 int main()
 {
-
-
     EditorView::editorMenu();
 
     return 0;
