@@ -38,7 +38,17 @@ MapRepository::MapRepository() {
     string mapName;
     MapProxy* proxy;
 
-    ifstream in = loadInputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+    ifstream in(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+    if (!in) {
+        ofstream out;
+        out.open(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES, ios::trunc);
+        out.close();
+        in.open(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+#ifdef DEBUG
+        cout << "map references file does not exist, file created" << endl;
+#endif // DEBUG
+    }
+
     while (in >> mapName) {
 #ifdef DEBUG
         cout << "Load " << mapName <<  endl;

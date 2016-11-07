@@ -814,8 +814,12 @@
 		<Unit filename="controller/CampaignEditorController.cpp" />
 		<Unit filename="controller/CampaignEditorController.h" />
 		<Unit filename="controller/EditorController.h" />
+		<Unit filename="controller/GamePlayController.cpp" />
+		<Unit filename="controller/GamePlayController.h" />
 		<Unit filename="controller/MapEditorController.cpp" />
 		<Unit filename="controller/MapEditorController.h" />
+		<Unit filename="controller/MapInteractionHelper.cpp" />
+		<Unit filename="controller/MapInteractionHelper.h" />
 		<Unit filename="entity/Campaign.cpp" />
 		<Unit filename="entity/Campaign.h" />
 		<Unit filename="entity/Cell.cpp" />
@@ -838,6 +842,8 @@
 		<Unit filename="src/view/MapView.h" />
 		<Unit filename="utils/ArrayUtils.cpp" />
 		<Unit filename="utils/ArrayUtils.h" />
+		<Unit filename="utils/FileUtils.cpp" />
+		<Unit filename="utils/FileUtils.h" />
 		<Unit filename="utils/IOUtils.cpp" />
 		<Unit filename="utils/IOUtils.h" />
 		<Unit filename="view/EditorView.cpp" />
