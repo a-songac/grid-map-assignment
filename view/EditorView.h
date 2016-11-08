@@ -12,12 +12,13 @@
 #pragma once
 #include "../controller/MapEditorController.h"
 #include "../controller/CampaignEditorController.h"
+#include "../entity/repo/MapRepository.h"
 
 
 /// User-interactive C++ component that enables the user to create/edit a map and connect them in a campaign.
 class EditorView {
 public:
-    static void editorMenu();
+    static void editorMenu(MapRepository* mapRepo);
 private:
 
 };

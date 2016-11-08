@@ -20,7 +20,7 @@ int main()
 
 
 
-    EditorView::editorMenu();
+    EditorView::editorMenu(mapRepo);
 
     return 0;
 }

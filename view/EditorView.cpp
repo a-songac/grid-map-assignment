@@ -3,8 +3,9 @@
 #include "../utils/IOUtils.h"
 #include <boost/filesystem.hpp>
 #include "MapView.h"
+#include "../entity/repo/MapRepository.h"
 
-void EditorView::editorMenu() {
+void EditorView::editorMenu(MapRepository* mapRepo) {
     
     top:
     cout << "*********** Choose an Editor ************" << endl << endl;
@@ -63,7 +64,29 @@ void EditorView::editorMenu() {
             //Load map for editing
             cout << "************** Map Editor **************" << endl << endl;
             
-            string filename = readStringInput("Please enter the name of the .map file you want to edit:", "userMap.map");
+            
+            ///TODO show repo files
+            string filename;
+            list<MapProxy*> mp = *(mapRepo->listAll());
+            if(mp.empty()){
+                cout << "No maps currently saved. Redirecting to editor menu." << endl;
+                goto top;
+            }
+            else{
+                int count = 0;
+                for (std::list<MapProxy*>::const_iterator iterator = mp.begin(), end = mp.end(); iterator != end; ++iterator) {
+                    count++;
+                    cout << count << ":" <<(*iterator)->getMap()->getName();
+                }
+                
+                int index = readIntegerInput("Please enter the index of your chosen map.", 0);
+                std::list<MapProxy*>::iterator it = mp.begin();
+                std::advance(it, index);
+                filename = (*it)->getMap()->getName();
+            }
+            
+            
+           // string filename = readStringInput("Please enter the name of the .map file you want to edit:", "userMap.map");
             
             boost::filesystem::path myfile(filename);
             
@@ -73,6 +96,9 @@ void EditorView::editorMenu() {
                 goto top;
             }
             
+
+            
+
             Map map = MapEditorController::loadMap(filename);
             
             //Edit Options
