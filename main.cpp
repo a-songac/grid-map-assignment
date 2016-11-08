@@ -18,9 +18,7 @@ int main()
 
     MapRepository* mapRepo = MapRepository::instance();
 
-
-
-    EditorView::editorMenu(mapRepo);
+    EditorView::editorMenu();
 
     return 0;
 }

@@ -35,6 +35,7 @@ class Map {
         Map(int h, int w, Coordinate entry, Coordinate exit);
         Map(int h, int w);
         Map();
+        Map(Map* mapToCopy);
         //~Map();
 
         void setName(string name);
@@ -64,6 +65,7 @@ class Map {
         void render();
         bool validate();
         void setCellType(int row, int column, char type);
+        char getCellType(int row, int column);
         bool isInbound(int row, int column);
 
     private:
@@ -148,6 +150,10 @@ inline bool Map::isInbound(int row, int column) {
 
 inline void Map::setCellType(int row, int column, char type) {
     grid.at(row).at(column).setType(type);
+}
+
+inline char Map::getCellType(int row, int column) {
+    grid.at(row).at(column).getType();
 }
 
 

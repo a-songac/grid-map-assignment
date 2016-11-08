@@ -277,23 +277,4 @@ int readMapDimension(string message, int defaultValue, int min, int max) {
 }
 
 
-void MapEditorController::saveMap(string filename){
-    string file = filename;
-    std::ofstream ofs(file);
-    boost::archive::text_oarchive oa(ofs);
-    oa << this->map;
-    ofs.close();
-}
-
-
-Map MapEditorController::loadMap(string filename){
-    Map* lMap;
-    std::ifstream ifs(filename, std::ios::binary);
-    boost::archive::text_iarchive ia(ifs);
-    ia >> lMap;
-    ifs.close();
-    return *lMap;
-}
-
-
 

@@ -61,6 +61,36 @@ Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
 
 }
 
+Map::Map(Map* map) {
+
+    this->height = map->getHeight();
+    this->width = map->getWidth();
+    playerPosition = {-1, -1};
+
+    std::vector<std::vector<Cell> > g(this->height, std::vector<Cell>(this->width));
+    this->grid = g;
+
+    Coordinate entryDoor = map->getEntryDoorCoordinate();
+    Coordinate exitDoor = map->getExitDoorCoordinate();
+
+    this->entryDoor.column = entryDoor.column;
+    this->entryDoor.row = entryDoor.row;
+
+    this->exitDoor.column = exitDoor.column;
+    this->exitDoor.row = exitDoor.row;
+
+    this->grid.at(entryDoor.row).at(entryDoor.column).setType(Cell::TYPE_DOOR_ENTRY);
+    this->grid.at(exitDoor.row).at(exitDoor.column).setType(Cell::TYPE_DOOR_EXIT);
+
+    for (int i = 0; i < this->height; i++) {
+        for (int j = 0; j < this->width; j++){
+            this->grid.at(i).at(j).setType(map->getCellType(i, j));
+            this->grid.at(i).at(j).setOccupant(map->getOccupant(i, j));
+        }
+    }
+
+}
+
 /**
 Map::~Map() {
 

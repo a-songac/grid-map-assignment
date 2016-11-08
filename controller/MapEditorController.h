@@ -23,25 +23,23 @@ class MapEditorController {
 
         void buildMap();
         Map* createMap();
-        void saveMap(string filename);
-        static Map loadMap(string filename);
         void addWall();
         void addOccupant();
-   
+
     private:
-        
+
         Coordinate defineDoor(string message, Map* map, string defaultLocation);
         Coordinate promptForMapLocation(string message, string defaultLocation);
         char setOccupantOnMap();
         Map* map;
-    
+
         friend class boost::serialization::access;
-    
+
         template<typename Archive>
         void serialize(Archive & ar, const unsigned int version)
         {
             ar & map;
-            
+
         }
 };
 

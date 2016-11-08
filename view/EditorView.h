@@ -18,7 +18,7 @@
 /// User-interactive C++ component that enables the user to create/edit a map and connect them in a campaign.
 class EditorView {
 public:
-    static void editorMenu(MapRepository* mapRepo);
+    static void editorMenu();
 private:
 
 };

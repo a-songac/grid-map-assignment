@@ -4,10 +4,10 @@
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
+#include <boost/filesystem.hpp>
 
 using namespace std;
 
-const string PERSISTENCE_MAPS_LOCATION = "persistence/map/";
 const string PERSISTENCE_MAPS_REFERENCES = "_map_references";
 const string PERSISTENCE_CHARACTER_LOCATION = "persistence/character/";
 const string PERSISTENCE_CHARACTER_REFERENCES = "_character_references";
@@ -38,14 +38,16 @@ MapRepository::MapRepository() {
     string mapName;
     MapProxy* proxy;
 
-    ifstream in(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+    ifstream in(PERSISTENCE_MAPS_REFERENCES);
     if (!in) {
         ofstream out;
-        out.open(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES, ios::trunc);
+        out.open(PERSISTENCE_MAPS_REFERENCES, ios::trunc);
         out.close();
-        in.open(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+        in.open(PERSISTENCE_MAPS_REFERENCES);
 #ifdef DEBUG
         cout << "map references file does not exist, file created" << endl;
+        if (!in)
+            cout << "Could not create reference file." << endl;
 #endif // DEBUG
     }
 
@@ -70,7 +72,7 @@ list<MapProxy*>* MapRepository::listAll() {
 /// Save changes in the _map_references file
 /// Essential when deleting or adding
 void MapRepository::updateRepoReference() {
-    ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_LOCATION + PERSISTENCE_MAPS_REFERENCES);
+    ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_REFERENCES);
 
     list<MapProxy*>::iterator i = this->_proxies->begin();
     for (; i!= this->_proxies->end(); i++) {
@@ -92,10 +94,10 @@ void MapRepository::save(Map* map) {
         this->updateRepoReference();
     }
 
-
-    ofstream in = loadOutputFileStream(PERSISTENCE_MAPS_LOCATION + mapName);
-    // TODO Persist map in the file
-    in.close();
+    std::ofstream ofs(mapName);
+    boost::archive::text_oarchive oa(ofs);
+    oa << map;
+    ofs.close();
 }
 
 /// Work with proxy since finding a map does not mean we will need it.  To be discussed
@@ -110,9 +112,22 @@ MapProxy* MapRepository::find(string name) {
     return nullptr;
 }
 
-Map* MapRepository::loadMap(string name) {
-    Map* loadedMap;
-    // TODO load map from textfile
+
+Map* MapRepository::loadMap(string fileName) {
+
+    boost::filesystem::path myfile(fileName);
+
+    if( !boost::filesystem::exists(myfile))
+    {
+        return nullptr;
+    }
+
+    Map* lMap;
+    std::ifstream ifs(fileName, std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    ia >> lMap;
+    ifs.close();
+    Map* loadedMap = new Map(lMap); // TODO need copy constructor
     return loadedMap;
 }
 
@@ -125,9 +140,9 @@ bool MapRepository::remove(string name) {
         this->_proxies->remove(proxy);
         delete proxy;
         this->updateRepoReference();
-        string fileName = PERSISTENCE_MAPS_LOCATION + name;
+        string fileName = name;
         if( std::remove(fileName.c_str()) != 0 ) {
-            cout << "MapRepository::remove::error deleting file: " << PERSISTENCE_MAPS_LOCATION << name << endl;
+            cout << "MapRepository::remove::error deleting file: " << name << endl;
             return false;
         }
 
