@@ -7,7 +7,7 @@
 #include "view/MapView.h"
 #include "controller/MapEditorController.h"
 #include "utils/IOUtils.h"
-#include "view/EditorView.h"
+#include "controller/EditorFacadeController.h"
 #include "entity/repo/MapRepository.h"
 
 
@@ -18,7 +18,7 @@ int main()
 
     MapRepository* mapRepo = MapRepository::instance();
 
-    EditorView::editorMenu();
+    EditorFacadeController::editorMenu();
 
     return 0;
 }

@@ -10,13 +10,13 @@
 /// 3. Libraries: The boost filesystem library was used to verify that a file indeed exists when the user tries to load it.
 
 #pragma once
-#include "../controller/MapEditorController.h"
-#include "../controller/CampaignEditorController.h"
+#include "MapEditorController.h"
+#include "CampaignEditorController.h"
 #include "../entity/repo/MapRepository.h"
 
 
 /// User-interactive C++ component that enables the user to create/edit a map and connect them in a campaign.
-class EditorView {
+class EditorFacadeController {
 public:
     static void editorMenu();
 private:

@@ -1,17 +1,22 @@
 
-#include "EditorView.h"
+#include "EditorFacadeController.h"
 #include "../utils/IOUtils.h"
 #include <boost/filesystem.hpp>
-#include "MapView.h"
+#include "../view/MapView.h"
 #include "../entity/repo/MapRepository.h"
 
-void EditorView::editorMenu() {
+void EditorFacadeController::editorMenu() {
 
     top:
-    cout << "*********** Choose an Editor ************" << endl << endl;
-    cout << "Map Editor: 1"<< endl << "Campaign Editor: 2" << endl << "Exit Editor Menu: 3" << endl;
-    int eChoice = readIntegerInput("",1);
-    while (eChoice != 1 && eChoice != 2 && eChoice != 3) {
+    cout << endl << "*********** Choose an Editor ************" << endl << endl;
+    cout << "Map Editor: 1"<< endl
+            << "Campaign Editor: 2" << endl
+            << "Item Editor: 3" << endl
+            << "Charcater Editor: 4" << endl
+            << "Exit Editor Menu: 5" << endl;
+
+    int eChoice = readIntegerInput("Please select an option[1]: ", 1);
+    while (eChoice < 1 || eChoice > 5) {
         cout << "This is not a choice, please retry" << endl;
         eChoice = readIntegerInput("Your choice[1]:", 1);
     }
@@ -87,7 +92,6 @@ void EditorView::editorMenu() {
                 std::advance(it, index-1);
                 map = (*it)->getMap();
             }
-
 
             if (map == nullptr) {
                 cout << "Could not load map! Redirecting to editor menu." << endl;
@@ -288,6 +292,11 @@ void EditorView::editorMenu() {
             }
         }
 
+    } else if(eChoice == 3){
+        cout << "Item editor not yet implemented" << endl;
+    }
+    else if(eChoice == 4){
+        cout << "Character editor not yet implemented" << endl;
     }
     else{
         cout << "Program terminated.";
