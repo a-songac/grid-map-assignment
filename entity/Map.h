@@ -153,7 +153,7 @@ inline void Map::setCellType(int row, int column, char type) {
 }
 
 inline char Map::getCellType(int row, int column) {
-    grid.at(row).at(column).getType();
+    return grid.at(row).at(column).getType();
 }
 
 
