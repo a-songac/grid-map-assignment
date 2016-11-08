@@ -12,6 +12,7 @@
 #include <boost/archive/text_iarchive.hpp>
 #include <iostream>
 #include <fstream>
+#include "../entity/repo/MapRepository.h"
 
 using namespace std;
 using namespace boost::archive;
@@ -36,7 +37,7 @@ void MapEditorController::buildMap() {
     addOccupant();
 }
 
-Map* MapEditorController::createMap() {
+void MapEditorController::createMap() {
 
     bool error = false;
     int height, width, exitDefaultRow;
@@ -80,8 +81,23 @@ Map* MapEditorController::createMap() {
 
     cout << "Here is the map created:" << endl << endl;
     map->render();
-
-    return map;
+ 
+//new
+    this->buildMap();
+    
+    bool save = readYesNoInput("Would you like to save this map? (Y/n)", true);
+    
+    if(save){
+        if(map->validate()){
+            string filename = readStringInput("Enter a Name for the File: ", "userMap");
+            map->setName(filename);
+            MapRepository::instance()->save(map);
+            cout << "Map successfully saved." << endl;
+        }
+        else{
+            cout << "Invalid Map, Please Try Again. (Map not Saved)" << endl;
+        }
+    }
 
 }
 
@@ -276,5 +292,85 @@ int readMapDimension(string message, int defaultValue, int min, int max) {
     return result;
 }
 
+
+Map* MapEditorController::loadMap(){
+    //Load map for editing
+    cout << "************** Map Editor **************" << endl << endl;
+    
+    Map* map;
+    string filename;
+    list<MapProxy*> mp = *(MapRepository::instance()->listAll());
+    if(mp.empty()){
+        cout << "No maps currently saved. Redirecting to editor menu." << endl;
+    }
+    else{
+        int count = 0;
+        for (std::list<MapProxy*>::const_iterator iterator = mp.begin(), end = mp.end(); iterator != end; ++iterator) {
+            count++;
+            cout << count << ":" <<(*iterator)->getFileName() << endl;
+        }
+        
+        int index = readIntegerInput("Please enter the index of your chosen map[1]: ", 1);
+        while (index < 1 || index > mp.size()) {
+            index = readIntegerInput("Invalid input, please retry:[1]", 1);
+        }
+        std::list<MapProxy*>::iterator it = mp.begin();
+        std::advance(it, index-1);
+        map = (*it)->getMap();
+    }
+    
+    if (map == nullptr) {
+        cout << "Could not load map! Redirecting to editor menu." << endl;
+    }
+    
+    return map;
+}
+
+void MapEditorController::editMap(Map *map){
+    if(map->validate()){
+        this->setMap(map);
+        
+        bool done = false;
+        
+        do{
+            map->render();
+            
+            cout << "What changes do you want to make to this map?:" << endl;
+            cout << "Add/Remove Wall: 1" << endl;
+            cout << "Add Occupant: 2" << endl;
+            
+            int choice = readIntegerInput("Your choice[1]:", 1);
+            while (choice != 1 && choice != 2) {
+                cout << "This is not a choice, please retry" << endl;
+                choice = readIntegerInput("Your choice[1]:", 1);
+            }
+            
+            switch (choice) {
+                case 1:
+                    this->addWall();
+                    break;
+                case 2:
+                    this->addOccupant();
+                    break;
+            }
+            
+            done = !(readYesNoInput("Do you wish to further edit this map?(Y/n)", true));
+        }while(done!=true);
+        
+        
+        bool saveEdit = readYesNoInput("Do you wish to save your changes?(Y/n)", true);
+        if(saveEdit){
+            if(map->validate()){
+                MapRepository::instance()->save(map);
+                cout << "Map successfully saved." << endl;
+            }
+            else{
+                cout << "Invalid Map. (Map not Saved)" << endl;
+            }
+            
+        }
+        
+    }
+}
 
 

@@ -23,7 +23,8 @@ Campaign* CampaignEditorController::createCampaign(){
     
     do{
         MapEditorController mapEditor;
-        Map* map = mapEditor.createMap();
+        mapEditor.createMap();
+        Map* map = mapEditor.getMap();
         mapEditor.buildMap();
         
         if(map->validate()){

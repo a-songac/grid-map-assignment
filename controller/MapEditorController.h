@@ -22,9 +22,13 @@ class MapEditorController {
         MapEditorController(Map* map);
 
         void buildMap();
-        Map* createMap();
+        void createMap();
         void addWall();
         void addOccupant();
+        Map* loadMap();
+        void editMap(Map* map);
+        void setMap(Map* map);
+        Map* getMap();
 
     private:
 
@@ -45,3 +49,10 @@ class MapEditorController {
 
 int readMapDimension(string message, int defaultValue, int min, int max);
 
+inline void MapEditorController::setMap(Map* map){
+    this->map = map;
+}
+
+inline Map* MapEditorController::getMap(){
+    return map;
+}
