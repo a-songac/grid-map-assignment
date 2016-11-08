@@ -1,5 +1,5 @@
-//! @file 
-//! @brief Implementation file for the ItemContainer class  
+//! @file
+//! @brief Implementation file for the ItemContainer class
 //!
 
 #include "ItemContainer.h"
@@ -26,21 +26,21 @@ vector<Item> ItemContainer::getItems()
 	return Items;
 }
 
-//! method to add an item to the item containerm 
+//! method to add an item to the item containerm
 //! @param anitem : new item to put in the ItemContainer
 void ItemContainer::addItemToBackpack(Item anitem)
 {
-	
+
 	Items.push_back(anitem);
 
 }
 void ItemContainer::removeItemFromBackpack(Item anitem) {
-	
+
 	for (size_t i = 0; i < Items.size(); i++){
 		if (Items[i].getName() == anitem.getName()) {
 			Items.erase(Items.begin() + i);
 		}
-	
+
 	}
 
 }
@@ -49,25 +49,26 @@ void ItemContainer::removeItemFromBackpack(Item anitem) {
 //! assumption: the container can only contain one element of each type
 //! @param itemType : type of item to extract from the container
 //! @return : item of the specified kind provided in input
-Item ItemContainer::getItemFromBackpack(string itemType)
+Item* ItemContainer::getItemFromBackpack(string itemType)
 {
 	for (size_t i = 0; i < Items.size(); i++)
 		if (Items[i].getType() == itemType)
-			return Items[i];
-	
-	
+			return &(Items[i]);
+    return nullptr;
+
+
 }
 
 void ItemContainer::equipItem(ItemContainer* backpack, Item anitem) {
 	vector<Item> iVec = backpack->getItems();
-	
+
 	for (size_t i = 0; i < iVec.size(); ++i) {
 		string name = iVec[i].getName();
 		if (checkIfItemExists(anitem, name))
 		{
 			if (validateContainer()) {
 				Items.push_back(anitem);
-				
+
 				cout << "you are now equipped with: " << anitem.getName() << endl;
 				backpack->removeItemFromBackpack(anitem);
 
@@ -76,18 +77,18 @@ void ItemContainer::equipItem(ItemContainer* backpack, Item anitem) {
 		else {
 			cout << "You cannot equip Item: " << anitem.getName()  << endl;
 		}
-		
+
 	}
 }
 
 void ItemContainer::unequipItem(ItemContainer* backpack, Item anitem) {
-	
+
 	for (size_t i = 0; i < Items.size(); i++)
 	{
 		if (checkIfItemExists(Items[i],anitem.getName()))
 		{
 			Items.erase(Items.begin() + i);
-		
+
 			cout << "Item: " << anitem.getName() << "has been successfully unequipped" << endl;
 			backpack->addItemToBackpack(anitem);
 
@@ -108,25 +109,25 @@ void ItemContainer::unequipItem(ItemContainer* backpack, Item anitem) {
 		type = eVec[i].getType();
 		bonus = eVec[i].getBonus();
 		if (anitem.getType() == "Helmet") {
-		
+
 		}
 		else if (anitem.getType() == "Armor") {
-		
+
 		}
 		else if (anitem.getType() == "Shield") {
-			
+
 		}
 		else if (anitem.getType() == "Ring") {
-			
+
 		}
 		else if (anitem.getType() == "Belt") {
-			
+
 		}
 		else if (anitem.getType() == "Boots") {
-			
+
 		}
 		else if (anitem.getType() == "Weapon") {
-			
+
 		}
 	}
 
@@ -155,11 +156,11 @@ bool ItemContainer::checkIfItemExists(Item anitem, string name) {
 		else if (anitem.getType() == "Weapon" && anitem.getName() == name) {
 			return true;
 		}
-	
+
 	return false;
-	
+
 }
-//! method to validate a container, e.g. verify that an ItemContainer only contains a maximum of 1 item of each type (will be used for worn items container)  
+//! method to validate a container, e.g. verify that an ItemContainer only contains a maximum of 1 item of each type (will be used for worn items container)
 //! @return : true if the Items list is valid according to the rules, false if not
 bool ItemContainer::validateContainer()
 {
@@ -182,13 +183,13 @@ bool ItemContainer::validateContainer()
 			shieldCtr++;
 		}
 		else if(Items[i].getType() == "Ring"){
-			ringCtr++;	
+			ringCtr++;
 		}
 		else if(Items[i].getType() == "Belt"){
 			beltCtr++;
 		}
 		else if(Items[i].getType() == "Boots"){
-			bootsCtr++;	
+			bootsCtr++;
 		}
 		else if (Items[i].getType() == "Weapon"){
 			weaponCtr++;
