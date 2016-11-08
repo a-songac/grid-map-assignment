@@ -65,6 +65,7 @@ Map::Map(Map* map) {
 
     this->height = map->getHeight();
     this->width = map->getWidth();
+    this->name = map->getName();
     playerPosition = {-1, -1};
 
     std::vector<std::vector<Cell> > g(this->height, std::vector<Cell>(this->width));
