@@ -11,6 +11,7 @@
 #include <string>
 #include "../utils/IOUtils.h"
 #include "../entity/repo/CharacterRepository.h"
+#include "../entity/CharacterProxy.h"
 
 using namespace std;
 
@@ -51,14 +52,29 @@ void CharacterEditorController::createCharacter() {
 	else if (abilityScore == 3)
 	{
         viewLoaded = true;
-		name1 = readFileName("please enter the name of the file that you want to load: ");
-		character = CharacterRepository::instance()->loadCharacter(name1);
-		if (nullptr == character) {
-            cout << "Error, could not load character " << name1 << endl;
-		} else {
-    //		character->loadCharacter(name1 + ".txt");
-            character->printAbilityScores();
-		}
+
+        vector<CharacterProxy*>* characterProxies = CharacterRepository::instance()->listAll();
+        if (characterProxies->empty()) {
+            cout << "No characters currently saved. Redirecting to editor menu." << endl;
+        } else {
+            cout << "Please select the character you want to load and view: "<< endl;
+            for (int i = 0; i < characterProxies->size(); i++) {
+                cout << (i+1) << ":" << characterProxies->at(i)->getFileName() << endl;
+            }
+
+            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
+            character = characterProxies->at(index-1)->getCharacter();
+
+//            character = CharacterRepository::instance()->loadCharacter(name1);
+            if (nullptr == character) {
+                cout << "Error, could not load character " << name1 << endl;
+            } else {
+        //		character->loadCharacter(name1 + ".txt");
+                character->printAbilityScores();
+            }
+        }
+
+
 	}
         character->setLevel(level);
         character->setHitPoints();
