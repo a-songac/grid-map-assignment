@@ -61,9 +61,9 @@ void CharacterEditorController::createCharacter() {
             for (int i = 0; i < characterProxies->size(); i++) {
                 cout << (i+1) << ":" << characterProxies->at(i)->getFileName() << endl;
             }
-
+			
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
-            character = characterProxies->at(index-1)->getCharacter();
+			character->loadCharacter(characterProxies->at(index - 1)->getFileName());
 
 //            character = CharacterRepository::instance()->loadCharacter(name1);
             if (nullptr == character) {
@@ -76,14 +76,14 @@ void CharacterEditorController::createCharacter() {
 
 
 	}
-        character->setLevel(level);
+       if (!viewLoaded) {
         character->setHitPoints();
         character->armor();
         character->attackBonus();
         character->attackDamage();
         c->display();
 
-    if (!viewLoaded) {
+
         answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
 
         if (answer)

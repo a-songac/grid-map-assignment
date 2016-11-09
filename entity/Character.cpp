@@ -298,14 +298,13 @@ bool Character::saveCharacter(string name)
 	{
 
 
-		f << lvl << endl
+			f << lvl << endl
 			<< abilityScores[0] << endl
 			<< abilityScores[1] << endl
 			<< abilityScores[2] << endl
 			<< abilityScores[3] << endl
 			<< abilityScores[4] << endl
 			<< abilityScores[5] << endl
-
 			<< modifiers[0] << endl
 			<< modifiers[1] << endl
 			<< modifiers[2] << endl
