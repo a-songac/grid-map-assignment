@@ -8,23 +8,23 @@
 
 void EditorFacadeController::editorMenu() {
 
-    bool flag = true;
+    bool editorLoop = true;
     do{
         cout << endl << "*********** Choose an Editor ************" << endl << endl;
-        cout << "Map Editor: 1"<< endl
-                << "Campaign Editor: 2" << endl
-                << "Item Editor: 3" << endl
-                << "Charcater Editor: 4" << endl
-                << "Exit Editor Menu: 5" << endl;
+        cout << "1. Map Editor: 1"<< endl
+                << "2. Campaign Editor" << endl
+                << "3. Item Editor" << endl
+                << "4. Charcater Editor" << endl
+                << "5. Exit Editor Menu" << endl;
 
-        int eChoice = readIntegerInputWithRange("Please select an option[1]: ", 1, 1, 5);
+        int eChoice = readIntegerInputWithRange("Please select an option[5]: ", 5, 1, 5);
 
         //Return chosen editor
         if(eChoice == 1){
             cout << "************** Map Creator **************" << endl << endl;
 
-            cout << "Please select one of the following options:" << endl << "Create New Map: 1"
-            << endl << "Edit an Existing Map: 2" << endl;
+            cout << "Please select one of the following options:" << endl << "1. Create New Map"
+            << endl << "2. Edit an Existing Map" << endl;
 
             int cChoice = readIntegerInputWithRange("Your choice[1]:", 1, 1, 2);
 
@@ -185,20 +185,18 @@ void EditorFacadeController::editorMenu() {
             }
 
         } // END Campaign editor
-         else if(eChoice == 3){
-            cout << "Item editor not yet implemented" << endl;
+        else if(eChoice == 3){
+
+            CharacterEditorController::createCharacter();
         }
+
         else if(eChoice == 4){
             cout << "Character editor not yet implemented" << endl;
         }
         else{
-            cout << "Editor exited.";
-            flag = false;
+            editorLoop = false;
         }
 
-
-
-
-    }while(flag);
+    }while(editorLoop);
 
 }

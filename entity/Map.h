@@ -53,7 +53,7 @@ class Map {
         bool isEntryDoor(int row, int column);
         bool isExitDoor(int row, int column);
 
-        void movePlayer(int rowm, int column);
+        bool movePlayer(int rowm, int column);
         bool hasPlayer(int row, int colum);
         void setPlayer(int row, int column, bool yes);
         bool isWall(int row, int column);
@@ -61,6 +61,7 @@ class Map {
         bool isOccupied(int row, int column);
         bool fillCell(int row, int column, char occupant);
         char getOccupant(int row, int column);
+        bool isPlayerAdjacent(int row, int column);
 
         void render();
         bool validate();
@@ -173,7 +174,26 @@ inline void Map::setPlayer(int row, int column, bool yes) {
     grid.at(row).at(column).setPlayer(yes);
 }
 
-inline void Map::movePlayer(int row, int column) {
+inline bool Map::movePlayer(int row, int column) {
+
+    if (isWall(row, column)) {
+        cout << "OUCH! You hit a wall! Please retry" << endl;
+        return false;
+    }
+    if (Cell::OCCUPANT_FRIEND == getOccupant(row, column)) {
+        cout << "Stepping on your friend's toes! Please retry" << endl;
+        return false;
+    }
+    if (Cell::OCCUPANT_OPPONENT == getOccupant(row, column)) {
+        cout << "You wish you could crush him hein?! Please retry" << endl;
+        return false;
+    }
+    if (!isPlayerAdjacent(row, column)
+        && (-1 != this->playerPosition.column && -1 != this->playerPosition.row)) {
+        cout << "Trying to teleport my friend?! Please retry" << endl;
+        return false;
+    }
+
     if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
        grid[playerPosition.row][playerPosition.column].setPlayer(false);
     }
@@ -181,5 +201,17 @@ inline void Map::movePlayer(int row, int column) {
     playerPosition.column = column;
     grid.at(row).at(column).setPlayer(true);
     this->render(); // TODO change to notify
+
+    return true;
+}
+
+inline bool Map::isPlayerAdjacent(int row, int column) {
+    int currentRow = playerPosition.row;
+    int currentColumn = playerPosition.column;
+
+    return (row == currentRow + 1 && column == currentColumn)
+            || (row == currentRow - 1 && column == currentColumn)
+            || (row == currentRow && column == currentColumn + 1)
+            || (row == currentRow - 1 && column == currentColumn - 1);
 }
 

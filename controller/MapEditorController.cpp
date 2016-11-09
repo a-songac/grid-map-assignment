@@ -81,12 +81,12 @@ void MapEditorController::createMap() {
 
     cout << "Here is the map created:" << endl << endl;
     map->render();
- 
+
 //new
     this->buildMap();
-    
+
     bool save = readYesNoInput("Would you like to save this map? (Y/n)", true);
-    
+
     if(save){
         if(map->validate()){
             string filename = readStringInput("Enter a Name for the File: ", "userMap");
@@ -296,55 +296,48 @@ int readMapDimension(string message, int defaultValue, int min, int max) {
 Map* MapEditorController::loadMap(){
     //Load map for editing
     cout << "************** Map Editor **************" << endl << endl;
-    
+
     Map* map;
     string filename;
-    list<MapProxy*> mp = *(MapRepository::instance()->listAll());
-    if(mp.empty()){
+    vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
+    if(mapProxies.empty()){
         cout << "No maps currently saved. Redirecting to editor menu." << endl;
     }
     else{
-        int count = 0;
-        for (std::list<MapProxy*>::const_iterator iterator = mp.begin(), end = mp.end(); iterator != end; ++iterator) {
-            count++;
-            cout << count << ":" <<(*iterator)->getFileName() << endl;
+        for (int i = 0; i < mapProxies.size(); i++) {
+            cout << i<< ":" << mapProxies.at(i)->getFileName() << endl;
         }
-        
-        int index = readIntegerInput("Please enter the index of your chosen map[1]: ", 1);
-        while (index < 1 || index > mp.size()) {
-            index = readIntegerInput("Invalid input, please retry:[1]", 1);
-        }
-        std::list<MapProxy*>::iterator it = mp.begin();
-        std::advance(it, index-1);
-        map = (*it)->getMap();
+
+        int index = readIntegerInputWithRange("Your selection:[1]", 1, 1, mapProxies.size());
+        map = mapProxies.at(index)->getMap();
     }
-    
+
     if (map == nullptr) {
         cout << "Could not load map! Redirecting to editor menu." << endl;
     }
-    
+
     return map;
 }
 
 void MapEditorController::editMap(Map *map){
     if(map->validate()){
         this->setMap(map);
-        
+
         bool done = false;
-        
+
         do{
             map->render();
-            
+
             cout << "What changes do you want to make to this map?:" << endl;
             cout << "Add/Remove Wall: 1" << endl;
             cout << "Add Occupant: 2" << endl;
-            
+
             int choice = readIntegerInput("Your choice[1]:", 1);
             while (choice != 1 && choice != 2) {
                 cout << "This is not a choice, please retry" << endl;
                 choice = readIntegerInput("Your choice[1]:", 1);
             }
-            
+
             switch (choice) {
                 case 1:
                     this->addWall();
@@ -353,11 +346,11 @@ void MapEditorController::editMap(Map *map){
                     this->addOccupant();
                     break;
             }
-            
+
             done = !(readYesNoInput("Do you wish to further edit this map?(Y/n)", true));
         }while(done!=true);
-        
-        
+
+
         bool saveEdit = readYesNoInput("Do you wish to save your changes?(Y/n)", true);
         if(saveEdit){
             if(map->validate()){
@@ -367,9 +360,9 @@ void MapEditorController::editMap(Map *map){
             else{
                 cout << "Invalid Map. (Map not Saved)" << endl;
             }
-            
+
         }
-        
+
     }
 }
 

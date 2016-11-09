@@ -1,10 +1,13 @@
 #include "MapRepository.h"
 #include "../../utils/FileUtils.h"
+#include"../../utils/LogUtils.h"
+#include "../../entity_generator/MapGenerator.h"
 
 #include <fstream>
 #include <iostream>
 #include <stdio.h>
 #include <boost/filesystem.hpp>
+#include <sstream>
 
 using namespace std;
 
@@ -30,11 +33,15 @@ MapRepository::~MapRepository() {
 /// _map_references holds a list of all names of persisted map
 MapRepository::MapRepository() {
 
-#ifdef DEBUG
-    cout << "Initialization of MapRepository; loading persisted map references..." << endl;
-#endif // DEBUG
+    stringstream sStream;
 
-    this->_proxies = new list<MapProxy*>;
+    #ifdef DEBUG
+        logInfo("MapRepository",
+                "Constructor",
+                "Initialization of MapRepository; loading persisted map references...");
+    #endif // DEBUG
+
+    this->_proxies = new vector<MapProxy*>;
     string mapName;
     MapProxy* proxy;
 
@@ -44,28 +51,57 @@ MapRepository::MapRepository() {
         out.open(PERSISTENCE_MAPS_REFERENCES, ios::trunc);
         out.close();
         in.open(PERSISTENCE_MAPS_REFERENCES);
-#ifdef DEBUG
-        cout << "map references file does not exist, file created" << endl;
-        if (!in)
-            cout << "Could not create reference file." << endl;
-#endif // DEBUG
+
+        #ifdef DEBUG
+            logInfo("MapRepository",
+                    "Constructor",
+                    "map references file does not exist, file created");
+                if (!in)
+                    logInfo("MapRepository",
+                    "Constructor",
+                    "Could not create reference file.");
+        #endif // DEBUG
     }
 
     while (in >> mapName) {
-#ifdef DEBUG
-        cout << "Load " << mapName <<  endl;
-#endif // DEBUG
+        #ifdef DEBUG
+            logInfo("MapRepository",
+                "Constructor",
+                "Load " + mapName);
+        #endif // DEBUG
         proxy = new MapProxy(mapName);
         this->_proxies->push_back(proxy);
     }
     in.close();
-#ifdef DEBUG
-    cout << "Total of " << this->_proxies->size() << " map references loaded." <<  endl;
-#endif // DEBUG
+    #ifdef DEBUG
+        sStream << "Total of " << this->_proxies->size() << " map references loaded.";
+        logInfo("MapRepository",
+                "Constructor",
+                sStream.str());
+    #endif // DEBUG
+
+    if (0 == this->_proxies->size()) {
+        loadGeneratedMaps();
+
+        #ifdef DEBUG
+            logInfo("MapRepository",
+                    "Constructor",
+                    "No existing maps, load and save the pregenerated maps");
+        #endif // DEBUG
+    }
 }
 
+
+void MapRepository::loadGeneratedMaps() {
+
+    this->save(MapGenerator::map1());
+
+}
+
+
+
 /// Return the list of proxies
-list<MapProxy*>* MapRepository::listAll() {
+vector<MapProxy*>* MapRepository::listAll() {
     return this->_proxies;
 }
 
@@ -74,9 +110,8 @@ list<MapProxy*>* MapRepository::listAll() {
 void MapRepository::updateRepoReference() {
     ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_REFERENCES);
 
-    list<MapProxy*>::iterator i = this->_proxies->begin();
-    for (; i!= this->_proxies->end(); i++) {
-        out << (*i)->getFileName() << endl;
+    for (int i = 0; i < this->_proxies->size(); i++) {
+        out << _proxies->at(i)->getFileName() << endl;
     }
     out.close();
 }
@@ -103,10 +138,9 @@ void MapRepository::save(Map* map) {
 /// Work with proxy since finding a map does not mean we will need it.  To be discussed
 MapProxy* MapRepository::find(string name) {
 
-    list<MapProxy*>::iterator i = this->_proxies->begin();
-    for (; i != this->_proxies->end(); i++) {
-        if (name == (*i)->getFileName()) {
-            return (*i);
+    for (int i = 0; i < this->_proxies->size(); i++) {
+        if (name == _proxies->at(i)->getFileName()) {
+            return _proxies->at(i);
         }
     }
     return nullptr;
@@ -134,11 +168,18 @@ Map* MapRepository::loadMap(string fileName) {
 
 bool MapRepository::remove(string name) {
 
-    MapProxy* proxy = this->find(name);
-    if (nullptr != proxy) {
+    int index = -1;
+    for (int i = 0; i < this->_proxies->size(); i++) {
+        if (name == _proxies->at(i)->getFileName()) {
+            index = i;
+            break;
+        }
+    }
 
-        this->_proxies->remove(proxy);
-        delete proxy;
+
+    if (-1 != index) {
+
+        this->_proxies->erase(_proxies->begin()+index);
         this->updateRepoReference();
         string fileName = name;
         if( std::remove(fileName.c_str()) != 0 ) {
