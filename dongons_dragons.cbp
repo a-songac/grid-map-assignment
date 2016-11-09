@@ -45,7 +45,11 @@
 		</Linker>
 		<Unit filename="controller/CampaignEditorController.cpp" />
 		<Unit filename="controller/CampaignEditorController.h" />
+		<Unit filename="controller/CharacterEditorController.cpp" />
+		<Unit filename="controller/CharacterEditorController.h" />
 		<Unit filename="controller/EditorController.h" />
+		<Unit filename="controller/EditorFacadeController.cpp" />
+		<Unit filename="controller/EditorFacadeController.h" />
 		<Unit filename="controller/GamePlayController.cpp" />
 		<Unit filename="controller/GamePlayController.h" />
 		<Unit filename="controller/ItemEditor.cpp" />
@@ -56,6 +60,10 @@
 		<Unit filename="controller/MapInteractionHelper.h" />
 		<Unit filename="core/Observer.cpp" />
 		<Unit filename="core/Observer.h" />
+		<Unit filename="core/ProxyEntity.cpp" />
+		<Unit filename="core/ProxyEntity.h" />
+		<Unit filename="core/Repository.cpp" />
+		<Unit filename="core/Repository.h" />
 		<Unit filename="core/Subject.cpp" />
 		<Unit filename="core/Subject.h" />
 		<Unit filename="entity/Campaign.cpp" />
@@ -78,6 +86,8 @@
 		<Unit filename="entity/MapProxy.h" />
 		<Unit filename="entity/repo/MapRepository.cpp" />
 		<Unit filename="entity/repo/MapRepository.h" />
+		<Unit filename="entity_generator/MapGenerator.cpp" />
+		<Unit filename="entity_generator/MapGenerator.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="service/MapValidator.cpp" />
 		<Unit filename="service/MapValidator.h" />
@@ -87,10 +97,10 @@
 		<Unit filename="utils/FileUtils.h" />
 		<Unit filename="utils/IOUtils.cpp" />
 		<Unit filename="utils/IOUtils.h" />
+		<Unit filename="utils/LogUtils.cpp" />
+		<Unit filename="utils/LogUtils.h" />
 		<Unit filename="view/CharacterView.cpp" />
 		<Unit filename="view/CharacterView.h" />
-		<Unit filename="view/EditorView.cpp" />
-		<Unit filename="view/EditorView.h" />
 		<Unit filename="view/MapView.cpp" />
 		<Unit filename="view/MapView.h" />
 		<Extensions>
