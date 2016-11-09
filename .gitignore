@@ -48,6 +48,13 @@ DDD.sln
 DDD.vcxproj
 DDD.vcxproj.filters
 
+Build1Comp345.VC.VC.opendb
+Build1Comp345.VC.db
+Build1Comp345.sln
+Build1Comp345.vcxproj
+Build1Comp345.vcxproj.filters
+
+
 # Doxygen
 html/
 latex/

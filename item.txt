@@ -1,0 +1,10 @@
+Armor
+Frozen
+Armor
+2
+Helmet
+helmet1
+Wisdom
+2
+Armor
+3

@@ -297,7 +297,7 @@ void Character::printAbilityScores() {
 }
 bool Character::saveCharacter(string name)
 {
-	std::ofstream f(name, std::ios::out);
+	std::ofstream f(name+".txt", std::ios::out);
 
 	if (f.is_open())
 	{

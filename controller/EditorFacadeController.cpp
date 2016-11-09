@@ -187,9 +187,8 @@ void EditorFacadeController::editorMenu() {
         } // END Campaign editor
         else if(eChoice == 3){
 
-            CharacterEditorController::createCharacter();
+			CharacterEditorController::createCharacter();
         }
-
         else if(eChoice == 4){
 			ItemEditor* item = new ItemEditor();
 			item->createItem();
