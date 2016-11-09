@@ -1,7 +1,7 @@
 
 #include "ItemEditor.h"
-#include "../entity/Enhancement.h"
-#include "../entity/ItemContainer.h"
+#include "Enhancement.h"
+#include "ItemContainer.h"
 #include <vector>
 #include <string>
 #include <fstream>
@@ -14,7 +14,11 @@ string save;
 string load;
 static string typeEnhancements[5];
 static int bonus[5];
-
+string itemType, enhancementType;
+string name;
+string itemName;
+string answer, quit;
+ItemContainer* backpack = new ItemContainer();
 ItemEditor::ItemEditor()
 {
 
@@ -23,12 +27,9 @@ ItemEditor::ItemEditor()
 ItemContainer* ItemEditor::createItem() {
 
 	ItemContainer* backpack = new ItemContainer();
-	string itemType, enhancementType;
-	string name;
-	string itemName;
-	string answer, quit;
-	do {
 
+	do {
+	
 
 		cout << "Please chose a number from the list below :" << endl;
 		cout << "1-Create an Armor" << endl;
@@ -43,16 +44,16 @@ ItemContainer* ItemEditor::createItem() {
 		cout << "9-Save item(s)" << endl;
 
 		cin >> choice;
-
+		
 		bool intelligence =false, wisdom = false, armor = false, strength = false, constitution = false, charisma = false, dexterity = false, atkBonus = false, atkDamage = false;
-
+	
 
 		if (choice == 1)
 		{
 			itemType = "Armor";
 				cout << "What is the name of your Armor" << endl;
 				cin >> itemName;
-
+				
 					do {
 						cout << "Please enter the type of ability you want to enhance for the Armor (Armor)" << endl;
 						cin >> enhancementType;
@@ -64,12 +65,12 @@ ItemContainer* ItemEditor::createItem() {
 						cout << "Please enter the Armor enhancement level you want ranging from 1 to 5 " << endl;
 						cin >> armorBonus;
 					} while (armorBonus < 1 || armorBonus > 5);
-
+					
 				bonus[0] = armorBonus;
-
-
-
-
+				
+				
+				
+			
 
 		}
 		else if (choice == 2)
@@ -84,25 +85,25 @@ ItemContainer* ItemEditor::createItem() {
 					if (armor == false)
 					{
 						cout << "Armor-";
-
+				
 					}
 					if (strength == false)
 					{
 						cout << "Strength-";
-
+	
 					}
 					if (constitution == false)
 					{
 						cout << "Constitution-";
-
+						
 					}
 					if (wisdom == false) {
 						cout << "Wisdom-";
-
+					
 					}
 					if (charisma == false) {
 						cout << "Charisma";
-
+					
 					}
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -126,19 +127,19 @@ ItemContainer* ItemEditor::createItem() {
 				bonus[i] = ringBonus;
 				i++;
 				if (armor == true && strength == true && constitution == true && wisdom == true && charisma == true) {
-					answer = "n";
+					answer = 'n';
 				}
 				else {
 					cout << "Would like to add another enhancement?(y/n)" << endl;
 					cin >> answer;
 				}
-			} while (answer == "y");
+			} while (answer == 'y');
 			strength = false;
 			wisdom = false;
 			armor = false;
 			constitution = false;
 			charisma = false;
-
+			
 		}
 		else if (choice == 3)
 		{
@@ -152,16 +153,16 @@ ItemContainer* ItemEditor::createItem() {
 					if (intelligence == false)
 					{
 						cout << "Intelligence-";
-
+						
 					}
 					if (wisdom == false)
 					{
 						cout << "Wisdom-";
-
+						
 					}
 					if (armor == false) {
 						cout << "Armor";
-
+						
 					}
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -182,14 +183,14 @@ ItemContainer* ItemEditor::createItem() {
 
 				if (intelligence == true && wisdom == true && armor == true)
 				{
-					answer = "n";
+					answer = 'n';
 				}
 				else {
 					cout << "Would like to add another enhancement?(y/n)" << endl;
 					cin >> answer;
 				}
-
-			} while (answer == "y");
+				
+			} while (answer == 'y');
 			intelligence = false;
 			wisdom = false;
 			armor = false;
@@ -206,11 +207,11 @@ ItemContainer* ItemEditor::createItem() {
 					if (armor == false)
 					{
 						cout << "Armor-";
-
+						
 					}
 					if (dexterity == false) {
 						cout << "Dexterity";
-
+						
 					}
 						cout << ")" << endl;
 						cin >> enhancementType;
@@ -228,17 +229,17 @@ ItemContainer* ItemEditor::createItem() {
 					bonus[i] = bootsBonus;
 					i++;
 					if (armor == true && dexterity == true) {
-						answer = "n";
+						answer = 'n';
 					}
 					else {
 						cout << "Would like to add another enhancement?(y/n)" << endl;
 						cin >> answer;
 					}
- 			} while (answer == "y");
+ 			} while (answer == 'y');
 			armor = false;
 			dexterity = false;
-
-
+		
+			
 		}
 		else if (choice == 5)
 		{
@@ -251,11 +252,11 @@ ItemContainer* ItemEditor::createItem() {
 					cout << "please enter the type of ability you want to enhance for Belt (";
 					if (constitution == false) {
 						cout << "Consitution-";
-
+						
 					}
 					if (strength == false) {
 						cout << "Strength";
-
+						
 					}
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -268,19 +269,19 @@ ItemContainer* ItemEditor::createItem() {
 				do {
 					cout << "Please enter the Belt enhancement level you want ranging from 1 to 5 " << endl;
 					cin >> beltBonus;
-
+					
 				} while (beltBonus < 1 || beltBonus > 5);
 				bonus[i] = beltBonus;
 				i++;
 				if (constitution == true && strength == true) {
-					answer = "n";
+					answer = 'n';
 				}
 				else {
 					cout << "Would like to add another enhancement?(y/n)" << endl;
 					cin >> answer;
 				}
-			} while (answer == "y");
-
+			} while (answer == 'y');
+			
 		}
 		else if (choice == 6)
 
@@ -294,15 +295,15 @@ ItemContainer* ItemEditor::createItem() {
 					cout << "please enter the type of ability you want to enhance for the Weapon(";
 					if (atkBonus == false) {
 						cout << "AtkBonus-";
-
+						
 					}
 				    if (atkDamage == false) {
 						cout << "AtkDamage";
-
+						
 					}
 					cout << ")" << endl;
 					cin >> enhancementType;
-
+					
 
 				} while (enhancementType != "AtkBonus" && enhancementType != "AtkDamage");
 				if (enhancementType == "AtkBonus")
@@ -317,14 +318,14 @@ ItemContainer* ItemEditor::createItem() {
 				bonus[i] = swordBonus;
 				i++;
 				if (atkBonus == true && atkDamage == true)
-					answer = "n";
+					answer = 'n';
 				else
 				{
 					cout << "Would like to add another enhancement?(y/n)" << endl;
 					cin >> answer;
 				}
-			} while (answer == "y");
-
+			} while (answer == 'y');
+			
 		}
 		else if (choice == 7)
 		{
@@ -343,15 +344,15 @@ ItemContainer* ItemEditor::createItem() {
 					cin >> shieldBonus;
 				} while (shieldBonus < 1 || shieldBonus > 5);
 				bonus[0] = shieldBonus;
-			} while (answer == "y");
-
+			} while (answer == 'y');
+	
 		}
 		else if (choice == 8)
 		{
 
 			cout << "Please enter the name of the file you want to load " << endl;
 			cin >> load;
-			loadFile(load);
+			backpack = loadFile(load);
 			break;
 
 		}
@@ -379,13 +380,13 @@ ItemContainer* ItemEditor::createItem() {
 			}
 			bonus[i] = 0;
 		}
-
+		
 
 		Item item(itemType, Enhancements, itemName);
 		backpack->addItemToBackpack(item);
-
+		
 		vector<Item> iVec = backpack->getItems();
-
+		
 		for (size_t i = 0; i < iVec.size(); ++i) {
 		vector<Enhancement> eVec = iVec[i].getInfluences();
 			cout << "Item Type: " << iVec[i].getType() << endl;
@@ -424,8 +425,9 @@ void ItemEditor::saveFile(string name)
 
 		for (size_t i = 0; i < eVec.size(); i++)
 		{
-			saveFile << eVec[i].getType() << " " << eVec[i].getBonus() << endl;
-
+			saveFile << eVec[i].getType() << endl;
+			saveFile << eVec[i].getBonus() << endl;
+			
 		}
 
 	}
@@ -434,15 +436,50 @@ void ItemEditor::saveFile(string name)
 }
 
 //loading
-void ItemEditor::loadFile(string load)
+ItemContainer* ItemEditor::loadFile(string load)
 {
-	ifstream loadFile;
-	loadFile.open(load, ifstream::in);
-	while (loadFile.good())
+	std::ifstream f(load, std::ios::in);
+
+	if (f.is_open())
 	{
-		cout << (char)loadFile.get();
+		int bonus;
+		string getBonus;
+		int i = 0;
+		
+		getline(f, itemType);
+		itemType = itemType;
+		do {
+			
+			getline(f, itemName);
+			getline(f, enhancementType);
+
+			while (enhancementType != "Ring"  && enhancementType != "Helmet" && enhancementType != "Boots" && enhancementType!="Belt" && enhancementType!="Weapon" && enhancementType!="Shield" && enhancementType !="") 
+			{
+				getline(f, getBonus);
+				bonus = std::stoi(getBonus);
+				Enhancements.push_back(Enhancement(enhancementType, bonus));
+				getline(f, enhancementType);
+				i++;
+			}
+			i = 0;
+			
+			Item item(itemType, Enhancements, itemName);
+			while (!Enhancements.empty())
+			{
+				Enhancements.pop_back();
+			}
+
+			backpack->addItemToBackpack(item);
+			cout << item.getType() << " added to Backpack" << endl;
+			itemType = enhancementType;
+		} while (!f.eof());
+		cout << "Items from " << load << " have been loaded successfully" << endl;
+		return backpack;
+
+
 	}
-	loadFile.close();
+	f.close();
+	return nullptr;
 }
 //destructor
 ItemEditor::~ItemEditor()

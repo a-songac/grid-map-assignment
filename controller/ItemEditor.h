@@ -2,9 +2,9 @@
 #pragma once
 #include <iostream>
 
-#include "../entity/Item.h"
-#include "../entity/Enhancement.h"
-#include "../entity/ItemContainer.h"
+#include "Item.h"
+#include "Enhancement.h"
+#include "ItemContainer.h"
 #include <string>
 #include <vector>
 #include <fstream>
@@ -17,12 +17,13 @@ public:
 	ItemEditor();
 	ItemContainer* createItem();
 	void saveFile(string name);
-	void loadFile(string load);
+	ItemContainer* loadFile(string load);
 	~ItemEditor();
+	
 
 private:
 	Item item;
-
+	
 	Enhancement enhance;
 	vector<Item> All_items;
 	vector <Enhancement> Enhancements;
