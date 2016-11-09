@@ -62,6 +62,11 @@ void GamePlayController::selectMap() {
 
 void GamePlayController::startGame() {
 
+    bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
+    if (!startGame) {
+        return;
+    }
+
     if (nullptr != this->map) {
 
         bool gameOver = false;

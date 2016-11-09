@@ -9,6 +9,7 @@
 #include "utils/IOUtils.h"
 #include "controller/EditorFacadeController.h"
 #include "entity/repo/MapRepository.h"
+#include "entity/repo/CharacterRepository.h"
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 
@@ -18,6 +19,7 @@ int main()
 {
 
     MapRepository* mapRepo = MapRepository::instance();
+    CharacterRepository* characterRepo = CharacterRepository::instance();
     int choice;
     bool gameLoop = true;
 

@@ -305,11 +305,11 @@ Map* MapEditorController::loadMap(){
     }
     else{
         for (int i = 0; i < mapProxies.size(); i++) {
-            cout << i<< ":" << mapProxies.at(i)->getFileName() << endl;
+            cout << (i+1) << ":" << mapProxies.at(i)->getFileName() << endl;
         }
 
-        int index = readIntegerInputWithRange("Your selection:[1]", 1, 1, mapProxies.size());
-        map = mapProxies.at(index)->getMap();
+        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
+        map = mapProxies.at(index-1)->getMap();
     }
 
     if (map == nullptr) {
@@ -332,10 +332,10 @@ void MapEditorController::editMap(Map *map){
             cout << "Add/Remove Wall: 1" << endl;
             cout << "Add Occupant: 2" << endl;
 
-            int choice = readIntegerInput("Your choice[1]:", 1);
+            int choice = readIntegerInput("Your choice[1]: ", 1);
             while (choice != 1 && choice != 2) {
                 cout << "This is not a choice, please retry" << endl;
-                choice = readIntegerInput("Your choice[1]:", 1);
+                choice = readIntegerInput("Your choice[1]: ", 1);
             }
 
             switch (choice) {
@@ -347,11 +347,11 @@ void MapEditorController::editMap(Map *map){
                     break;
             }
 
-            done = !(readYesNoInput("Do you wish to further edit this map?(Y/n)", true));
+            done = !(readYesNoInput("Do you wish to further edit this map?[Y/n]: ", true));
         }while(done!=true);
 
 
-        bool saveEdit = readYesNoInput("Do you wish to save your changes?(Y/n)", true);
+        bool saveEdit = readYesNoInput("Do you wish to save your changes?[Y/n]: ", true);
         if(saveEdit){
             if(map->validate()){
                 MapRepository::instance()->save(map);

@@ -11,10 +11,10 @@ void EditorFacadeController::editorMenu() {
     bool editorLoop = true;
     do{
         cout << endl << "*********** Choose an Editor ************" << endl << endl;
-        cout << "1. Map Editor: 1"<< endl
+        cout << "1. Map Editor"<< endl
                 << "2. Campaign Editor" << endl
-                << "3. Item Editor" << endl
-                << "4. Charcater Editor" << endl
+                << "3. Character Editor" << endl
+                << "4. Item Editor" << endl
                 << "5. Exit Editor Menu" << endl;
 
         int eChoice = readIntegerInputWithRange("Please select an option[5]: ", 5, 1, 5);
@@ -26,7 +26,7 @@ void EditorFacadeController::editorMenu() {
             cout << "Please select one of the following options:" << endl << "1. Create New Map"
             << endl << "2. Edit an Existing Map" << endl;
 
-            int cChoice = readIntegerInputWithRange("Your choice[1]:", 1, 1, 2);
+            int cChoice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
 
             //Create Map
             if (cChoice == 1){
@@ -191,7 +191,7 @@ void EditorFacadeController::editorMenu() {
         }
 
         else if(eChoice == 4){
-            cout << "Character editor not yet implemented" << endl;
+            cout << "Item editor not yet implemented" << endl;
         }
         else{
             editorLoop = false;
