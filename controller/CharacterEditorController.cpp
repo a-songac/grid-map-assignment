@@ -97,9 +97,11 @@ void CharacterEditorController::createCharacter() {
         }
 	}
 }
-void CharacterEditorController::loadCharacter() {
+
+Character* CharacterEditorController::selectCharacter() {
 	string name1;
 	bool confirm1 = false;
+
 	srand(static_cast<unsigned int>(time(0)));
 	vector<CharacterProxy*>* characterProxies = CharacterRepository::instance()->listAll();
 	do {
@@ -115,12 +117,14 @@ void CharacterEditorController::loadCharacter() {
 			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
 			character = characterProxies->at(index - 1)->getCharacter();
 			c->display();
+
 			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
+			if (confirm1) {
+				return character;
+			}
 			if (nullptr == character) {
 				cout << "Error, could not load character " << name1 << endl;
-			}
-			else {
-				character->printAbilityScores();
+				
 			}
 		}
 	} while (!confirm1);

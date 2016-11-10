@@ -14,18 +14,21 @@
 #include "../entity/repo/MapRepository.h"
 #include "../utils/LogUtils.h"
 #include "../controller/CharacterEditorController.h"
+#include "../entity/Character.h"
+#include "../entity/CharacterProxy.h"
+#include "../entity/repo/CharacterRepository.h"
+#include "../view/CharacterView.h"
+#include "../controller/CharacterEditorController.h"
 GamePlayController::GamePlayController(): level(1), map(nullptr) {}
-
 
 void GamePlayController::newGame() {
 
     bool gameLoop = false;
-
     cout << "\n************* New Game *************" << endl << endl;
 
     do {
 
-        this->selectMap();
+		this->selectMap();
         this->startGame();
 
 
@@ -38,8 +41,7 @@ void GamePlayController::selectMap() {
     bool confirm = false;
     string filename, name1;
     vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
-	CharacterEditorController* loadC = new CharacterEditorController();
-	loadC->loadCharacter();
+
     if(mapProxies.size() > 0){
 
         do {
@@ -62,6 +64,10 @@ void GamePlayController::selectMap() {
 
 
 void GamePlayController::startGame() {
+	Character* c = new Character();
+	CharacterView* ch = new CharacterView(c);
+	CharacterEditorController* selectC = new CharacterEditorController();
+	c = selectC->selectCharacter();
 
     bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
     if (!startGame) {
@@ -75,12 +81,13 @@ void GamePlayController::startGame() {
         cout << "\n************* Start Game *************" << endl << endl;
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
         Coordinate nextPosition;
-
+		
         this->map->movePlayer(entryDoor.row, entryDoor.column);
-
+		
         do {
-
+			
             nextPosition = MapInteractionHelper::readMapLocation(this->map, "Go to: ", "");
+			ch->display();
             this->map->movePlayer(nextPosition.row, nextPosition.column);
 
 
@@ -90,3 +97,4 @@ void GamePlayController::startGame() {
     }
 
 }
+
