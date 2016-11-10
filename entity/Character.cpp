@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "Character.h"
+#include "../core/Subject.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
@@ -16,9 +17,12 @@
 
 using namespace std;
 
-int Character::modifiers[6];
-int Character::abilityScores[6];
-
+int modifiers[6];
+int abilityScores[6];
+int attackD;
+int attackB;
+int armorPoints;
+int currentHitPoints = 0;
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -71,7 +75,7 @@ void Character::updateStatsAtEquip(Item equipment) {
 		}
 
 		setHitPoints();
-		notify();
+		this->notify();
 }
 void Character::updateStatsAtUnequip(Item equipment) {
 
@@ -99,7 +103,7 @@ void Character::updateStatsAtUnequip(Item equipment) {
 			attackD -= eVec[i].getBonus();
 
 	}
-	notify();
+	this->notify();
 
 
 }
@@ -288,7 +292,7 @@ Character::Character()
 }
 void Character::printAbilityScores() {
 
-	notify();
+	this->notify();
 }
 bool Character::saveCharacter(string name)
 {

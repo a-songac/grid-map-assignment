@@ -13,15 +13,14 @@
 #include "../entity/repo/CharacterRepository.h"
 #include "../entity/CharacterProxy.h"
 
-using namespace std;
-
+Character* character = new Character();
+CharacterView* c = new CharacterView(character);
 void CharacterEditorController::createCharacter() {
 
     int abilityScore, level;
     bool viewLoaded = false;
 
-    Character *character = new Character();
-	CharacterView *c = new CharacterView(character);
+
 	srand(static_cast<unsigned int>(time(0)));
 	bool answer;
 	string name, name1;
@@ -40,6 +39,7 @@ void CharacterEditorController::createCharacter() {
 		cout << "generating your ability scores....." << endl;
 		Character(character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores(),
         character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores());
+
 	}
 	else if (abilityScore == 2)
 	{
@@ -48,6 +48,7 @@ void CharacterEditorController::createCharacter() {
 		cout << "Your ability scores are: " << endl;
 		character->preGenAbilityScores();
 		cout << "*********************************" << endl;
+		
 	}
 	else if (abilityScore == 3)
 	{
@@ -64,7 +65,7 @@ void CharacterEditorController::createCharacter() {
 
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
 			character = characterProxies->at(index - 1)->getCharacter();
-
+			c->display();
             if (nullptr == character) {
                 cout << "Error, could not load character " << name1 << endl;
             } else {
@@ -73,14 +74,14 @@ void CharacterEditorController::createCharacter() {
         }
 
 
-	}
+	} 
+	;
+	if (!viewLoaded) {
         character->setHitPoints();
         character->armor();
         character->attackBonus();
         character->attackDamage();
-        c->display();
-
-        if (!viewLoaded) {
+		character->printAbilityScores();
             answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
 
         if (answer)
@@ -95,4 +96,33 @@ void CharacterEditorController::createCharacter() {
             }
         }
 	}
+}
+void CharacterEditorController::loadCharacter() {
+	string name1;
+	bool confirm1 = false;
+	srand(static_cast<unsigned int>(time(0)));
+	vector<CharacterProxy*>* characterProxies = CharacterRepository::instance()->listAll();
+	do {
+		if (characterProxies->empty()) {
+			cout << "No characters currently saved. Redirecting to editor menu." << endl;
+		}
+		else {
+			cout << "Please select the character you want to load and view: " << endl;
+			for (int i = 0; i < characterProxies->size(); i++) {
+				cout << (i + 1) << ":" << characterProxies->at(i)->getFileName() << endl;
+			}
+
+			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
+			character = characterProxies->at(index - 1)->getCharacter();
+			c->display();
+			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
+			if (nullptr == character) {
+				cout << "Error, could not load character " << name1 << endl;
+			}
+			else {
+				character->printAbilityScores();
+			}
+		}
+	} while (!confirm1);
+
 }

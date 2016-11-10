@@ -9,11 +9,11 @@ CharacterView::CharacterView() {
 
 };
 
-CharacterView::CharacterView(Character* character) {
+CharacterView::CharacterView(Character* c) {
 	//Upon instantiation, attaches itself
 	//to a ClockTimer
 
-	_subject = character;
+	_subject = c;
 	_subject->attach(this);
 };
 

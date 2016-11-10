@@ -4,5 +4,5 @@
 class CharacterEditorController {
     public:
         static void createCharacter();
-
+		void loadCharacter();
 };

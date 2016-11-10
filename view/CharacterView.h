@@ -7,7 +7,7 @@ class CharacterView : public Observer {
 
 public:
 	CharacterView();
-	CharacterView(Character* Character);
+	CharacterView(Character*);
 	~CharacterView();
 	void update();
 	void display();

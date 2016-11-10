@@ -13,8 +13,7 @@
 #include "../entity/MapProxy.h"
 #include "../entity/repo/MapRepository.h"
 #include "../utils/LogUtils.h"
-
-
+#include "../controller/CharacterEditorController.h"
 GamePlayController::GamePlayController(): level(1), map(nullptr) {}
 
 
@@ -37,9 +36,10 @@ void GamePlayController::newGame() {
 void GamePlayController::selectMap() {
 
     bool confirm = false;
-    string filename;
+    string filename, name1;
     vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
-
+	CharacterEditorController* loadC = new CharacterEditorController();
+	loadC->loadCharacter();
     if(mapProxies.size() > 0){
 
         do {
@@ -48,6 +48,7 @@ void GamePlayController::selectMap() {
                 cout << i+1 << ":" << mapProxies.at(i)->getFileName() << endl;
             }
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
+
             this->map = mapProxies.at(index-1)->getMap();
             this->map->render();
             confirm = readYesNoInput("You confirm the selection of this map displayed above?[Y/n]: ", true);
@@ -68,7 +69,7 @@ void GamePlayController::startGame() {
     }
 
     if (nullptr != this->map) {
-
+		
         bool gameOver = false;
 
         cout << "\n************* Start Game *************" << endl << endl;

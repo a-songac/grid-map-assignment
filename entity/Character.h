@@ -108,14 +108,9 @@ public:
 	std::string getName();
 
 private:
-	static int abilityScores[6];
-	static int modifiers[6];
-	int currentHitPoints = 0;
+
 	int equip[6];
 	int lvl = 1;
-    int armorPoints;
-	int attackB;
-	int attackD;
 	Character *_subject;
 	std::string name;
 
