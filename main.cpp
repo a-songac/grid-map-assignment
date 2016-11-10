@@ -13,15 +13,20 @@
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 
+
 using namespace std;
+
 
 int main()
 {
-
+	
     MapRepository* mapRepo = MapRepository::instance();
+	
     CharacterRepository* characterRepo = CharacterRepository::instance();
+	GamePlayController *Controller;
     int choice;
     bool gameLoop = true;
+	
 
     do {
 
@@ -37,9 +42,11 @@ int main()
 
         switch (choice) {
             case 1:
-            {
-                GamePlayController gameController;
-                gameController.newGame();
+			{
+				
+				 GamePlayController gameController;
+                 gameController.newGame();
+
                 break;
             }
             case 2:

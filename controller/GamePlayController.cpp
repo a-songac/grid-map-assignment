@@ -21,6 +21,7 @@
 #include "../controller/CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
 
+
 GamePlayController::GamePlayController(): level(1), map(nullptr) {}
 
 void GamePlayController::newGame() {
@@ -43,6 +44,7 @@ void GamePlayController::selectMap() {
     bool confirm = false;
     string filename, name1;
     vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
+	
 
     if(mapProxies.size() > 0){
 
@@ -98,6 +100,7 @@ void GamePlayController::startGame() {
         cout << "\n************* Start Game *************" << endl << endl;
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
         Coordinate nextPosition;
+		Coordinate exitDoor = this->map->getExitDoorCoordinate();
 
 		Coordinate exitDoor = this->map->getExitDoorCoordinate();
 
@@ -163,6 +166,7 @@ void GamePlayController::startGame() {
     } else {
         logError("GamePlayController", "startGame", "No map was loaded for this game");
     }
-
+	
+	
 }
 

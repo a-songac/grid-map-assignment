@@ -1,0 +1,4 @@
+Ring
+Ring1
+Armor
+2

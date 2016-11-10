@@ -15,7 +15,7 @@ class ItemEditor
 
 public:
 	ItemEditor();
-	ItemContainer* createItem();
+ ItemContainer * createItem();
 	void saveFile(string name);
 	ItemContainer* loadFile(string load);
 	~ItemEditor();

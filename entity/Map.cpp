@@ -110,6 +110,7 @@ void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
 
     grid.at(entryDoor.row).at(entryDoor.column).setType(Cell::TYPE_DOOR_ENTRY);
     grid.at(exitDoor.row).at(exitDoor.column).setType(Cell::TYPE_DOOR_EXIT);
+	
 }
 
 
