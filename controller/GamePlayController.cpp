@@ -77,24 +77,28 @@ void GamePlayController::startGame() {
 
 	cha = selectC->selectCharacter();
 
-	cout << "Please enter the name of the file which contains your item " << endl;
-	cin >> load;
+//	cin >> load;
+	load = readStringInput("Please enter the name of the file which contains your item: ", "");
 	backpack = itemToLoad->loadFile(load);
-	
+
+	cout << "The game is ready to be played, here are some advice before you start: " << endl;
+	cout << "    - To move on the map, enter a location eg: a2" << endl;
+	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
+
 
     bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
     if (!startGame) {
         return;
     }
-	
+
     if (nullptr != this->map) {
-		
+
         bool gameOver = false;
 
         cout << "\n************* Start Game *************" << endl << endl;
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
         Coordinate nextPosition;
-		
+
 		Coordinate exitDoor = this->map->getExitDoorCoordinate();
 
 		int col = exitDoor.column;
@@ -103,13 +107,14 @@ void GamePlayController::startGame() {
 			do {
 				cout << "Go to [bp] >>";
 				cin >> goTo;
-				
+
 				if (goTo == "bp") {
 					do {
 						cout << "1 - View backpack" << endl;
-						cout << "2 = Equip item" << endl;
+						cout << "2 - Equip item" << endl;
 						cout << "3 - Unequip item" << endl;
-						cout << "4 - Exit" << endl;
+						cout << "4 - View your worn items" << endl;
+						cout << "5 - Exit" << endl;
 						cout << "Your selection[1]: ";
 						cin >> input;
 
@@ -129,7 +134,10 @@ void GamePlayController::startGame() {
 							wornItem->unequipItem(backpack, itemNameUnequip);
 							ch->display();
 						}
-					} while (input != 4);
+						else if(input == 4){
+                            wornItem->displayItem();
+						}
+					} while (input != 5);
 					ch->display();
 					this->map->render();
 				}
@@ -146,7 +154,7 @@ void GamePlayController::startGame() {
 						cha->levelUp();
 						cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
 						ch->display();
-						break;
+						gameOver = true;
 					}
 				}
 			} while (!gameOver);

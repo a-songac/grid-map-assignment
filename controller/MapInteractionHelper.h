@@ -6,6 +6,7 @@
 class MapInteractionHelper {
     public:
         static Coordinate readMapLocation(Map* map, string message, string defaultLocation);
+        static std::string readMapLocationWhileInGame(Map* map, string message, string defaultLocation);
 
     private:
         MapInteractionHelper();
