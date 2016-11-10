@@ -61,30 +61,27 @@ void CharacterEditorController::createCharacter() {
             for (int i = 0; i < characterProxies->size(); i++) {
                 cout << (i+1) << ":" << characterProxies->at(i)->getFileName() << endl;
             }
-			
-            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
-			character->loadCharacter(characterProxies->at(index - 1)->getFileName());
 
-//            character = CharacterRepository::instance()->loadCharacter(name1);
+            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
+			character = characterProxies->at(index - 1)->getCharacter();
+
             if (nullptr == character) {
                 cout << "Error, could not load character " << name1 << endl;
             } else {
-        //		character->loadCharacter(name1 + ".txt");
                 character->printAbilityScores();
             }
         }
 
 
 	}
-       if (!viewLoaded) {
         character->setHitPoints();
         character->armor();
         character->attackBonus();
         character->attackDamage();
         c->display();
 
-
-        answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
+        if (!viewLoaded) {
+            answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
 
         if (answer)
         {
