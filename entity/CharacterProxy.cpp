@@ -25,8 +25,9 @@ CharacterProxy::CharacterProxy(string fileName) {
 
 Character* CharacterProxy::getCharacter() {
     if (nullptr == this->character) {
-//        this->character = CharacterRepository::instance()->loadCharacter(this->fileName);
+        this->character = new Character();
         this->character->loadCharacter(this->fileName);
+        this->character->setName(fileName);
         #ifdef DEBUG
             logInfo("CharacterProxy", "getcharacter", "character not yet loaded, load into memory");
         #endif // DEBUG

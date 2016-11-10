@@ -122,22 +122,22 @@ CharacterProxy* CharacterRepository::find(string name) {
     return nullptr;
 }
 
-
-Character* CharacterRepository::loadCharacter(string fileName) {
-
-    boost::filesystem::path myfile(fileName);
-
-    if( !boost::filesystem::exists(myfile))
-    {
-        return nullptr;
-    }
-    Character* loadedCharacter = new Character;
-
-    loadedCharacter->loadCharacter(fileName);
-    loadedCharacter->setName(fileName);
-
-    return loadedCharacter;
-}
+// USE LOAD IN THE CHARACTER CLASS INSTEAD
+//Character* CharacterRepository::loadCharacter(string fileName) {
+//
+//    boost::filesystem::path myfile(fileName);
+//
+//    if( !boost::filesystem::exists(myfile))
+//    {
+//        return nullptr;
+//    }
+//    Character* loadedCharacter = new Character();
+//
+//    loadedCharacter->loadCharacter(fileName);
+//    loadedCharacter->setName(fileName);
+//
+//    return loadedCharacter;
+//}
 
 
 bool CharacterRepository::remove(string name) {
