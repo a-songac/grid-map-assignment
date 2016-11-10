@@ -48,4 +48,6 @@ DDD.sln
 DDD.vcxproj
 DDD.vcxproj.filters
 
-
+# Doxygen
+html/
+latex/

@@ -1,0 +1,6 @@
+Ring
+Ring1
+Wisdom
+3
+Charisma
+2
