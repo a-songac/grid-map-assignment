@@ -19,6 +19,7 @@
 #include <vector>
 #include "Enhancement.h"
 #include "Item.h"
+#include "../entity/Character.h"
 using namespace std;
 
 //! Class that implements an item container

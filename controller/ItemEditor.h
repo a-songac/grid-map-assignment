@@ -19,7 +19,7 @@ public:
 	void saveFile(string name);
 	ItemContainer* loadFile(string load);
 	~ItemEditor();
-
+	static void readItem(ItemContainer*, string name, ItemContainer*);
 
 private:
 	Item item;

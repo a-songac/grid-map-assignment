@@ -14,10 +14,10 @@ Coordinate MapInteractionHelper::readMapLocation(Map* map, string message, strin
     bool error = false;
     string row, column;
     int rowIndex, columnIndex;
-
+	string input;
     do {
         error = false;
-        string cellLocation = readStringInput(message, defaultLocation);
+		string cellLocation = message;
         regex regex (CELL_LOCATION_REGEX);
         smatch match;
 
@@ -32,11 +32,17 @@ Coordinate MapInteractionHelper::readMapLocation(Map* map, string message, strin
             if (!map->isInbound(rowIndex, columnIndex)) {
                 cout << "Out of range, please retry" << endl;
                 error = true;
+				cout << "Go to >>";
+				cin >> input;
+				message = input;
             }
 
         } else {
             error = true;
             cout << "Invalid input, please retry" << endl;
+			cout << "Go to >>";
+			cin >> input;
+			message = input;
         }
 
     } while (error);

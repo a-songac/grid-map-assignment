@@ -106,11 +106,10 @@ public:
 
 	void setName(std::string name);
 	std::string getName();
-
+	int static lvl;
 private:
 
 	int equip[6];
-	int lvl = 1;
 	Character *_subject;
 	std::string name;
 

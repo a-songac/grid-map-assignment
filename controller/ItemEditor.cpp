@@ -5,6 +5,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
+#include "../utils/IOUtils.h"
 
 using namespace std;
 
@@ -485,4 +486,30 @@ ItemContainer* ItemEditor::loadFile(string load)
 ItemEditor::~ItemEditor()
 {
 
+}
+
+void ItemEditor::readItem(ItemContainer* backpack, string name, ItemContainer* wornItems) {
+	
+	string equipOrGoBack, itemToEquip;
+	if (name == "bp") {
+		backpack->displayItem();
+		cout << "1 - Equip an item" << endl;
+		cout << "2 - Go back to game" << endl;
+		cin >> equipOrGoBack;
+		readIntegerInputWithRange(equipOrGoBack, 2, 1, 2);
+		if (equipOrGoBack == "1")
+		{
+			cout << "Please enter the name of the Item you wish to equip >> ";
+			cin >> itemToEquip;
+			wornItems->equipItem(backpack, itemToEquip);
+		}
+		else if (equipOrGoBack == "2"){
+			
+		}
+
+	}
+	if (name == "e") {
+		cout << "please enter the name of the Item you wish to equip >> ";
+		wornItems->displayItem();
+	}
 }

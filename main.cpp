@@ -31,8 +31,9 @@ int main()
         cout << "1. Play Game" << endl;
         cout << "2. Edit Game Elements" << endl;
         cout << "3. Exit :(" << endl;
-
-        choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
+		cout << "Your choice[1]: ";
+		choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
+       
 
         switch (choice) {
             case 1:

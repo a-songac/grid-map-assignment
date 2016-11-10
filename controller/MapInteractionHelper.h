@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../entity/Map.h"
-
+#include "../controller/ItemEditor.h"
 
 class MapInteractionHelper {
     public:

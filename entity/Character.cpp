@@ -23,6 +23,7 @@ int attackD;
 int attackB;
 int armorPoints;
 int currentHitPoints = 0;
+int Character::lvl;
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -75,7 +76,7 @@ void Character::updateStatsAtEquip(Item equipment) {
 		}
 
 		setHitPoints();
-		this->notify();
+
 }
 void Character::updateStatsAtUnequip(Item equipment) {
 
@@ -103,7 +104,7 @@ void Character::updateStatsAtUnequip(Item equipment) {
 			attackD -= eVec[i].getBonus();
 
 	}
-	this->notify();
+	
 
 
 }
@@ -129,14 +130,14 @@ int Character::modifier(int abilityScore)
 //! Implementation of a levelUp method, at the same time updates everything else depending on the level
 void Character::levelUp()
 {
-	this->lvl++;
+	++lvl;
 
 	for (int i = 0; i < 6; i++)
 	{
 		modifiers[i] = modifier(abilityScores[i] * lvl);
 		abilityScores[i] = abilityScores[i] * lvl + modifiers[i];
 	}
-
+	setLevel(lvl);
 	setHitPoints();
 	attackDamage();
 	attackBonus();
@@ -196,12 +197,12 @@ void Character::preGenAbilityScores()
 }
 //implementation of a setter method for hit points
 void Character::resetHitPoints() {
-	currentHitPoints = currentHitPoints - modifiers[5] + lvl;
+	currentHitPoints = currentHitPoints - modifiers[5];
 }
 void Character::setHitPoints()
 {
 	//roll a d10 dice
-	currentHitPoints = currentHitPoints + modifiers[5] + lvl;
+	currentHitPoints = currentHitPoints + modifiers[5];
 	if (currentHitPoints < 10)
 	{
 		currentHitPoints = 10;

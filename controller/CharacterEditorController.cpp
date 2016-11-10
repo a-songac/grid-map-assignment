@@ -77,6 +77,7 @@ void CharacterEditorController::createCharacter() {
 
 	};
 	if (!viewLoaded) {
+		character->setLevel(level);
         character->setHitPoints();
         character->armor();
         character->attackBonus();

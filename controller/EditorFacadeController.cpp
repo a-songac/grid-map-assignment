@@ -5,7 +5,7 @@
 #include "../view/MapView.h"
 #include "../entity/repo/MapRepository.h"
 #include "CharacterEditorController.h"
-
+#include "../controller/ItemEditor.h"
 void EditorFacadeController::editorMenu() {
 
     bool editorLoop = true;
@@ -191,7 +191,8 @@ void EditorFacadeController::editorMenu() {
         }
 
         else if(eChoice == 4){
-            cout << "Item editor not yet implemented" << endl;
+			ItemEditor* item = new ItemEditor();
+			item->createItem();
         }
         else{
             editorLoop = false;
