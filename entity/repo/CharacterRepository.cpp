@@ -89,7 +89,7 @@ vector<CharacterProxy*>* CharacterRepository::listAll() {
 void CharacterRepository::updateRepoReference() {
     ofstream out = loadOutputFileStream(PERSISTENCE_CHARACTER_REFERENCES);
 
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         out << _proxies->at(i)->getFileName() << endl;
     }
     out.close();
@@ -114,7 +114,7 @@ bool CharacterRepository::save(Character* character) {
 /// Work with proxy since finding a character does not mean we will need it.  To be discussed
 CharacterProxy* CharacterRepository::find(string name) {
 
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         if (name == _proxies->at(i)->getFileName()) {
             return _proxies->at(i);
         }
@@ -143,7 +143,7 @@ CharacterProxy* CharacterRepository::find(string name) {
 bool CharacterRepository::remove(string name) {
 
     int index = -1;
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         if (name == _proxies->at(i)->getFileName()) {
             index = i;
             break;

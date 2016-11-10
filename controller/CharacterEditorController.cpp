@@ -1,5 +1,4 @@
 #include "CharacterEditorController.h"
-
 #include "../entity/Character.h"
 #include "../view/CharacterView.h"
 #include "../entity/ItemContainer.h"
@@ -14,9 +13,11 @@
 #include "../entity/CharacterProxy.h"
 
 Character* character = new Character();
-CharacterView* c = new CharacterView(character);
+CharacterView* cv = new CharacterView(character);
+
 void CharacterEditorController::createCharacter() {
 
+	cv = new CharacterView(character);
     int abilityScore, level;
     bool viewLoaded = false;
 
@@ -59,13 +60,13 @@ void CharacterEditorController::createCharacter() {
             cout << "No characters currently saved. Redirecting to editor menu." << endl;
         } else {
             cout << "Please select the character you want to load and view: "<< endl;
-            for (int i = 0; i < characterProxies->size(); i++) {
+            for (size_t i = 0; i < characterProxies->size(); i++) {
                 cout << (i+1) << ":" << characterProxies->at(i)->getFileName() << endl;
             }
 
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
 			character = characterProxies->at(index - 1)->getCharacter();
-			c->display();
+			cv->display();
             if (nullptr == character) {
                 cout << "Error, could not load character " << name1 << endl;
             } else {
@@ -74,8 +75,7 @@ void CharacterEditorController::createCharacter() {
         }
 
 
-	} 
-	;
+	};
 	if (!viewLoaded) {
         character->setHitPoints();
         character->armor();
@@ -110,13 +110,13 @@ Character* CharacterEditorController::selectCharacter() {
 		}
 		else {
 			cout << "Please select the character you want to load and view: " << endl;
-			for (int i = 0; i < characterProxies->size(); i++) {
+			for (size_t i = 0; i < characterProxies->size(); i++) {
 				cout << (i + 1) << ":" << characterProxies->at(i)->getFileName() << endl;
 			}
 
 			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
 			character = characterProxies->at(index - 1)->getCharacter();
-			c->display();
+			cv->display();
 
 			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
 			if (confirm1) {
@@ -124,9 +124,9 @@ Character* CharacterEditorController::selectCharacter() {
 			}
 			if (nullptr == character) {
 				cout << "Error, could not load character " << name1 << endl;
-				
+				return nullptr;
 			}
 		}
 	} while (!confirm1);
-
+	return character;
 }

@@ -304,7 +304,7 @@ Map* MapEditorController::loadMap(){
         cout << "No maps currently saved. Redirecting to editor menu." << endl;
     }
     else{
-        for (int i = 0; i < mapProxies.size(); i++) {
+        for (size_t i = 0; i < mapProxies.size(); i++) {
             cout << (i+1) << ":" << mapProxies.at(i)->getFileName() << endl;
         }
 

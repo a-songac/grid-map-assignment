@@ -46,7 +46,7 @@ void GamePlayController::selectMap() {
 
         do {
             cout << "Please select a map: " << endl;
-            for (int i = 0; i < mapProxies.size(); i++) {
+            for (size_t i = 0; i < mapProxies.size(); i++) {
                 cout << i+1 << ":" << mapProxies.at(i)->getFileName() << endl;
             }
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
@@ -64,10 +64,12 @@ void GamePlayController::selectMap() {
 
 
 void GamePlayController::startGame() {
-	Character* c = new Character();
-	CharacterView* ch = new CharacterView(c);
+	Character* cha = new Character();
+	CharacterView* ch = new CharacterView(cha);
 	CharacterEditorController* selectC = new CharacterEditorController();
-	c = selectC->selectCharacter();
+	ItemContainer* bacpack = new ItemContainer();
+	
+	cha = selectC->selectCharacter();
 
     bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
     if (!startGame) {

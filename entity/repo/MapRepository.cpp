@@ -110,7 +110,7 @@ vector<MapProxy*>* MapRepository::listAll() {
 void MapRepository::updateRepoReference() {
     ofstream out = loadOutputFileStream(PERSISTENCE_MAPS_REFERENCES);
 
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         out << _proxies->at(i)->getFileName() << endl;
     }
     out.close();
@@ -138,7 +138,7 @@ void MapRepository::save(Map* map) {
 /// Work with proxy since finding a map does not mean we will need it.  To be discussed
 MapProxy* MapRepository::find(string name) {
 
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         if (name == _proxies->at(i)->getFileName()) {
             return _proxies->at(i);
         }
@@ -169,7 +169,7 @@ Map* MapRepository::loadMap(string fileName) {
 bool MapRepository::remove(string name) {
 
     int index = -1;
-    for (int i = 0; i < this->_proxies->size(); i++) {
+    for (size_t i = 0; i < this->_proxies->size(); i++) {
         if (name == _proxies->at(i)->getFileName()) {
             index = i;
             break;
