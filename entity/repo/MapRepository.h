@@ -1,6 +1,5 @@
 /// @file
 /// @brief Header file for implementation of MapRepository
-///        and struct declaration for Coordinate.struct
 /// @details  1. Game Rules: NONE \n\n
 /// 2. inherits from Repository template, see Repopsitory.h file for more info
 /// 3. Libraries: NONE

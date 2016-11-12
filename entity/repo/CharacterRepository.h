@@ -8,7 +8,6 @@
 
 #pragma once
 
-#include "../CharacterProxy.h"
 #include "../../core/Repository.h"
 #include <vector>
 

@@ -58,6 +58,8 @@ template <class T> class Repository {
         bool persistMap(Map* entity, std::string name);
         Character* loadCharacter(std::string name);
         bool persistCharacter(Character* entity, std::string name);
+        Item* loadItem(std::string name);
+        bool persistItem(Item* entity, std::string name);
 
     protected:
         std::string referenceFile;
@@ -308,5 +310,19 @@ Character* Repository<T>::loadCharacter(string fileName) {
 template <class T>
 bool Repository<T>::persistCharacter(Character* character, std::string name) {
     character->saveCharacter(name);
+    return true;
+}
+
+
+template <class T>
+Item* Repository<T>::loadItem(string fileName) {
+    // TODO
+    Item* item= new Item();
+    return item;
+}
+
+template <class T>
+bool Repository<T>::persistItem(Item* item, std::string name) {
+    // TODO
     return true;
 }

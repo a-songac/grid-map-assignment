@@ -10,7 +10,6 @@
 #include <string>
 #include "../utils/IOUtils.h"
 #include "../entity/repo/CharacterRepository.h"
-#include "../entity/CharacterProxy.h"
 
 Character* character = new Character();
 CharacterView* cv = new CharacterView(character);

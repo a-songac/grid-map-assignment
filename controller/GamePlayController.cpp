@@ -15,7 +15,6 @@
 #include "../utils/LogUtils.h"
 #include "../controller/CharacterEditorController.h"
 #include "../entity/Character.h"
-#include "../entity/CharacterProxy.h"
 #include "../entity/repo/CharacterRepository.h"
 #include "../view/CharacterView.h"
 #include "../controller/CharacterEditorController.h"
