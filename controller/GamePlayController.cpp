@@ -10,8 +10,8 @@
 #include "../entity/Cell.h"
 #include "../utils/IOUtils.h"
 #include "MapInteractionHelper.h"
-#include "../entity/MapProxy.h"
 #include "../entity/repo/MapRepository.h"
+#include "../core/Repository.h"
 #include "../utils/LogUtils.h"
 #include "../controller/CharacterEditorController.h"
 #include "../entity/Character.h"
@@ -42,18 +42,18 @@ void GamePlayController::selectMap() {
 
     bool confirm = false;
     string filename, name1;
-    vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
+    vector<string>* mapReferences = MapRepository::instance()->listAll();
 
-    if(mapProxies.size() > 0){
+    if(mapReferences->size() > 0){
 
         do {
             cout << "Please select a map: " << endl;
-            for (size_t i = 0; i < mapProxies.size(); i++) {
-                cout << i+1 << ":" << mapProxies.at(i)->getFileName() << endl;
+            for (size_t i = 0; i < mapReferences->size(); i++) {
+                cout << i+1 << ":" << mapReferences->at(i) << endl;
             }
-            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
+            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
 
-            this->map = mapProxies.at(index-1)->getMap();
+            this->map = MapRepository::instance()->getEntity(index-1);
             this->map->render();
             confirm = readYesNoInput("You confirm the selection of this map displayed above?[Y/n]: ", true);
 

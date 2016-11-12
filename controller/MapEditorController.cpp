@@ -91,7 +91,7 @@ void MapEditorController::createMap() {
         if(map->validate()){
             string filename = readStringInput("Enter a Name for the File: ", "userMap");
             map->setName(filename);
-            MapRepository::instance()->save(map);
+            MapRepository::instance()->save(filename, map);
             cout << "Map successfully saved." << endl;
         }
         else{
@@ -299,17 +299,18 @@ Map* MapEditorController::loadMap(){
 
     Map* map;
     string filename;
-    vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
-    if(mapProxies.empty()){
+    vector<string>* mapReferences = MapRepository::instance()->listAll();
+    if(mapReferences->empty()){
         cout << "No maps currently saved. Redirecting to editor menu." << endl;
     }
     else{
-        for (size_t i = 0; i < mapProxies.size(); i++) {
-            cout << (i+1) << ":" << mapProxies.at(i)->getFileName() << endl;
+        for (size_t i = 0; i < mapReferences->size(); i++) {
+            cout << (i+1) << ":" << mapReferences->at(i) << endl;
         }
 
-        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
-        map = mapProxies.at(index-1)->getMap();
+        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
+        map = MapRepository::instance()->getEntity(index-1);
+
     }
 
     if (map == nullptr) {
@@ -354,7 +355,7 @@ void MapEditorController::editMap(Map *map){
         bool saveEdit = readYesNoInput("Do you wish to save your changes?[Y/n]: ", true);
         if(saveEdit){
             if(map->validate()){
-                MapRepository::instance()->save(map);
+                MapRepository::instance()->save(map->getName(), map);
                 cout << "Map successfully saved." << endl;
             }
             else{

@@ -1,30 +1,26 @@
+/// @file
+/// @brief Header file for implementation of MapRepository
+///        and struct declaration for Coordinate.struct
+/// @details  1. Game Rules: NONE \n\n
+/// 2. inherits from Repository template, see Repopsitory.h file for more info
+/// 3. Libraries: NONE
+
+
 #pragma once
 
-#include "../MapProxy.h"
+#include "../Map.h"
+#include "../../core/Repository.h"
 #include <vector>
 
-using namespace std;
 
-class MapRepository {
+
+class MapRepository : public Repository<Map> {
     public:
         static MapRepository* instance();
-        ~MapRepository();
-
-        vector<MapProxy*>* listAll();
-        void save(Map* map);
-        void save(string mapName);
-        bool exists(string mapName);
-        Map* getMap(string mapName);
-        bool remove(string name);
-        MapProxy* find(string name);
-        Map* loadMap(string name);
-
+        MapRepository();
 
     private:
-        vector<MapProxy*>* _proxies;
+        void loadGeneratedEntities();
         static MapRepository* _instance;
-        MapRepository();
-        void updateRepoReference();
-        void loadGeneratedMaps();
 
 };
