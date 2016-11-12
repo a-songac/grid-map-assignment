@@ -364,6 +364,9 @@ void MapEditorController::editMap(Map *map){
         }
 
     }
+    else{
+        cout << "Invalid Map." << endl;
+    }
 }
 
 

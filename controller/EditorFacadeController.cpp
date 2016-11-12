@@ -42,15 +42,10 @@ void EditorFacadeController::editorMenu() {
                 Map* map = mapEditor.loadMap();
 
                 //Edit Options
-                if(map->validate()){
 
-                    MapEditorController mapEditor(map);
-                    mapEditor.editMap(map);
-                    cout << "Redirecting to editor menu." << endl;
-                }
-                else{
-                    cout << "Invalid map. Redirecting to editor menu." << endl;
-                }
+                mapEditor.editMap(map);
+                cout << "Redirecting to editor menu." << endl;
+
             }
         }
         else if(eChoice == 2){ // Campaign Editor
