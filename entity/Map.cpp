@@ -116,7 +116,7 @@ void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
 
 char Map::getOccupant(int row, int column) {
     if (isWall(row, column)) {
-        return '0';
+        return ' ';
     }
     return grid.at(row).at(column).getOccupant();
 }
