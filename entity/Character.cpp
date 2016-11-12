@@ -9,6 +9,8 @@
 #include <iostream>
 #include "Character.h"
 #include "../core/Subject.h"
+#include "../entity/Dice.h"
+#include "../view/CharacterView.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
@@ -16,14 +18,8 @@
 #include <fstream>
 
 using namespace std;
+using namespace d20Logic;
 
-int modifiers[6];
-int abilityScores[6];
-int attackD;
-int attackB;
-int armorPoints;
-int currentHitPoints = 0;
-int Character::lvl;
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -45,7 +41,7 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	abilityScores[4] = wisdom;
 	abilityScores[5] = constitution;
 
-	setHitPoints();
+	currentHitPoints = 10;
 
 
 }
@@ -55,68 +51,53 @@ void Character::updateStatsAtEquip(Item equipment) {
 		for (size_t i = 0; i < eVec.size(); i++) {
 
 			if (eVec[i].getType() == "Strength")
-				abilityScores[0] += eVec[i].getBonus();
+				this->setModStrength(this->abilityScores[0] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Dexterity")
-				abilityScores[1] += eVec[i].getBonus();
+				this->setModDexterity(this->abilityScores[1] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Intelligence")
-				abilityScores[2] += eVec[i].getBonus();
+				this->setModIntelligence(this->abilityScores[2] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Charisma")
-				abilityScores[3] += eVec[i].getBonus();
+				this->setModCharisma(this->abilityScores[3] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Wisdom")
-				abilityScores[4] += eVec[i].getBonus();
+				this->setModWisdom(this->abilityScores[4] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Constitution")
-				abilityScores[5] += eVec[i].getBonus();
+				this->setModConstitution(this->abilityScores[5] += eVec[i].getBonus());
 			if (eVec[i].getType() == "Armor")
-				armorPoints += eVec[i].getBonus();
+				this->armorPoints += eVec[i].getBonus();
 			if (eVec[i].getType() == "AtkBonus")
-				attackB += eVec[i].getBonus();
+				this->attackB += eVec[i].getBonus();
 			if (eVec[i].getType() == "AtkDamage")
-				attackD += eVec[i].getBonus();
-
+				this->damageB += eVec[i].getBonus();
 		}
-
-		setHitPoints();
+		this->hitPoints();
 
 }
 void Character::updateStatsAtUnequip(Item equipment) {
 
 	vector<Enhancement> eVec = equipment.getInfluences();
 	for (size_t i = 0; i < eVec.size(); i++) {
-
-		resetHitPoints();
 		if (eVec[i].getType() == "Strength")
-			abilityScores[0] -= eVec[i].getBonus();
+			this->setModStrength(this->abilityScores[0] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Dexterity")
-			abilityScores[1] -= eVec[i].getBonus();
+			this->setModDexterity(this->abilityScores[1] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Intelligence")
-			abilityScores[2] -= eVec[i].getBonus();
+			this->setModIntelligence(this->abilityScores[2] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Charisma")
-			abilityScores[3] -= eVec[i].getBonus();
+			this->setModCharisma(this->abilityScores[3] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Wisdom")
-			abilityScores[4] -= eVec[i].getBonus();
+			this->setModWisdom(this->abilityScores[4] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Constitution")
-			abilityScores[5] -= eVec[i].getBonus();
+			this->setModConstitution(this->abilityScores[5] -= eVec[i].getBonus());
 		if (eVec[i].getType() == "Armor")
-			armorPoints -= eVec[i].getBonus();
+			this->armorPoints -= eVec[i].getBonus();
 		if (eVec[i].getType() == "AtkBonus")
-			attackB -= eVec[i].getBonus();
+			this->attackB -= eVec[i].getBonus();
 		if (eVec[i].getType() == "AtkDamage")
-			attackD -= eVec[i].getBonus();
-
+			this->damageB -= eVec[i].getBonus();
 	}
-
-
-
-}
-//! Implementation of Fighter Class. Inherites from the super class Character
-Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
+	this->resetHitPoints();
 
 }
-Fighter::Fighter()
-{
-
-}
-
 //! Implementation of a modifier method, that calculates the modifier of each ability
 //! @return int:: value of modifier
 int Character::modifier(int abilityScore)
@@ -130,19 +111,11 @@ int Character::modifier(int abilityScore)
 //! Implementation of a levelUp method, at the same time updates everything else depending on the level
 void Character::levelUp()
 {
-	++lvl;
+	this->lvl++;
+	this->attackB++;
+	Notify();
 
-	for (int i = 0; i < 6; i++)
-	{
-		modifiers[i] = modifier(abilityScores[i] * lvl);
-		abilityScores[i] = abilityScores[i] * lvl + modifiers[i];
-	}
-	setLevel(lvl);
-	setHitPoints();
-	attackDamage();
-	attackBonus();
-	armor();
-	notify();
+
 }
 //! implementation of setLevel that initializes the level at the beginning of the game depending on what the user provides.
 void Character::setLevel(int level)
@@ -154,7 +127,7 @@ void Character::setLevel(int level)
 //! @return int: value of lvl
 int Character::getLevel()
 {
-	return lvl;
+	return this->lvl;
 }
 //! Implementation of generate randomly the ability scores
 //! @return int:: value of the ability Score
@@ -193,62 +166,96 @@ int Character::genAbilityScores()
 void Character::preGenAbilityScores()
 {
 	//pre generated numbers
-	Character(15, 14, 13, 12, 10, 8);
+	abilityScores[0] = 15;
+	abilityScores[1] = 14;
+	abilityScores[2] = 13;
+	abilityScores[3] = 12;
+	abilityScores[4] = 10;
+	abilityScores[5] = 8;
+	//modifiers
+	modifiers[0] = modifier(abilityScores[0]);
+	modifiers[1] = modifier(abilityScores[1]);
+	modifiers[2] = modifier(abilityScores[2]);
+	modifiers[3] = modifier(abilityScores[3]);
+	modifiers[4] = modifier(abilityScores[4]);
+	modifiers[5] = modifier(abilityScores[5]);
+
+	currentHitPoints = 10;
+
+}
+
+void Character::randomlyGenAbilityScores() {
+
+	//ability scores
+	abilityScores[0] = genAbilityScores();
+	abilityScores[1] = genAbilityScores();
+	abilityScores[2] = genAbilityScores();
+	abilityScores[3] = genAbilityScores();
+	abilityScores[4] = genAbilityScores();
+	abilityScores[5] = genAbilityScores();
+	//modifiers
+	modifiers[0] = modifier(abilityScores[0]);
+	modifiers[1] = modifier(abilityScores[1]);
+	modifiers[2] = modifier(abilityScores[2]);
+	modifiers[3] = modifier(abilityScores[3]);
+	modifiers[4] = modifier(abilityScores[4]);
+	modifiers[5] = modifier(abilityScores[5]);
+
+	currentHitPoints = 10;
+
 }
 //implementation of a setter method for hit points
 void Character::resetHitPoints() {
-	currentHitPoints = currentHitPoints - modifiers[5];
+	this->currentHitPoints = this->currentHitPoints - this->getModConstitution();
 }
-void Character::setHitPoints()
+void Character::hitPoints()
 {
+	Dice d;
+	int d10 = d.roll_d10();
 	//roll a d10 dice
-	currentHitPoints = currentHitPoints + modifiers[5];
-	if (currentHitPoints < 10)
-	{
-		currentHitPoints = 10;
-	}
-
+	this->currentHitPoints = this->currentHitPoints + this->getModConstitution() + d10;
 }
 //! Implementation of a getter method for currentHitPoints
 //! @return int: value of currentHitPoints
 int Character::getHitPoints()
 {
-	return currentHitPoints;
+	return this->currentHitPoints;
 }
 //implementation of a setter method for armor
 void Character::armor()
 {
-	armorPoints = modifiers[1];
+	this->armorPoints = this->getModDexterity();
 }
 //! Implementation of a getter method for armor
 //! @return int: value of armorPoints
 int Character::getArmor()
 {
-	return armorPoints;
+	return this->armorPoints;
 }
 //implementation of a setter method for attack bonus
 void Character::attackBonus()
 {
-	attackB = lvl + modifiers[0] + modifiers[1];
+	//depends on the weapon of choice
+	this->attackB = this->lvl + modifiers[0] + modifiers[1];
 
 }
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB
 int Character::getAttackBonus()
 {
-	return attackB;
+	return this->attackB;
 }
 //implementation of a setter method for attack damage
-void Character::attackDamage()
+void Character::damageBonus()
 {
-	attackD = modifiers[0];
+	this->damageB = this->modifiers[0];
 
 }
 //! Implementation of a getter method for attack damage
 //! @return int: value of attackD
-int Character::getAttackDamage()
+int Character::getDamageBonus()
 {
-	return attackD;
+	return this->damageB;
 }
 //! Implementation of an equipment method, that enables the user to add equipment per category
 
@@ -293,7 +300,7 @@ Character::Character()
 }
 void Character::printAbilityScores() {
 
-	this->notify();
+	Notify();
 }
 bool Character::saveCharacter(string name)
 {
@@ -317,7 +324,7 @@ bool Character::saveCharacter(string name)
 			<< modifiers[4] << endl
 			<< modifiers[5] << endl
 			<< armorPoints << endl
-			<< attackD << endl
+			<< damageB << endl
 			<< attackB << endl
 			<< currentHitPoints << endl;
 
@@ -352,7 +359,7 @@ bool Character::loadCharacter(string name1)
 		f >> modifiers[4];
 		f >> modifiers[5];
 		f >> armorPoints;
-		f >> attackD;
+		f >> damageB;
 		f >> attackB;
 		f >> currentHitPoints;
 
@@ -368,58 +375,93 @@ void Character::update() {
 
 }
 //definition of getter for ability scores
-int Character::getStrenght() {
-	return abilityScores[0];
+void Character::setStrength(int stre) {
+	this->abilityScores[0] = stre;
 }
+
+int Character::getStrength() {
+	return this->abilityScores[0];
+}
+
+void Character::setDexterity(int dex){
+	this->abilityScores[1] = dex;
+}
+
 int Character::getDexterity() {
-	return abilityScores[1];
+	return this->abilityScores[1];
+}
+
+void Character::setIntelligence(int intel) {
+	this->abilityScores[2] = intel;
 }
 int Character::getIntelligence() {
-	return abilityScores[2];
+	return this->abilityScores[2];
 }
-int Character::getCharisma() {
-	return abilityScores[3];
+void Character::setWisdom(int wis) {
+	this->abilityScores[3] = wis;
 }
 int Character::getWisdom() {
-	return abilityScores[4];
+	return this->abilityScores[3];
+}
+void Character::setCharisma(int cha) {
+	this->abilityScores[4] = cha;
+}
+int Character::getCharisma() {
+	return this->abilityScores[4];
+}
+
+void Character::setConstitution(int cons) {
+	this->abilityScores[5] = cons;
 }
 int Character::getConstitution() {
-	return abilityScores[5];
+	return this->abilityScores[5];
 }
-void  Character::setStrenght(int strenght) {
-	abilityScores[0] = abilityScores[0] + strenght;
+void Character::setModStrength(int modStr) {
+	this->modifiers[0] = modStr;
 }
-void  Character::setDexterity(int dexterity) {
-	abilityScores[1] = abilityScores[1] + dexterity;
+int Character::getModStrength() {
+	return this->modifiers[0];
 }
-void  Character::setIntelligence(int intelligence) {
-	abilityScores[0] = abilityScores[2] + intelligence;
-}
-void  Character::setCharisma(int charisma) {
-	abilityScores[0] = abilityScores[3] + charisma;
-}
-void  Character::setWisdom(int wisdom) {
-	abilityScores[0] = abilityScores[0] + wisdom;
-}
-void  Character::setConstitution(int constitution) {
-	abilityScores[0] = abilityScores[0] + constitution;
-}
-//defintion of getter for modifiers
-int Character::getModStrenght() {
-	return  modifiers[0];
+void Character::setModDexterity(int modDex) {
+	this->modifiers[1] = modDex;
 }
 int Character::getModDexterity() {
-	return  modifiers[1];
+	return this->modifiers[1];
+}
+void Character::setModIntelligence(int modIntel) {
+	this->modifiers[2] = modIntel;
 }
 int Character::getModIntelligence() {
-	return modifiers[2];
+	return this->modifiers[2];
+}
+void Character::setModCharisma(int modCha) {
+	this->modifiers[3] = modCha;
 }
 int Character::getModCharisma() {
-	return  modifiers[3];
+	return this->modifiers[3];
+}
+void Character::setModWisdom(int modWis) {
+	this->abilityScores[4] = modWis;
 }
 int Character::getModWisdom() {
-	return  modifiers[4];
+	return this->abilityScores[4];
+}
+void Character::setModConstitution(int modCons) {
+	this->abilityScores[5] = modCons;
 }
 int Character::getModConstitution() {
-	return  modifiers[5];
+	return this->abilityScores[5];
+}
+
+//! Implementation of Fighter Class. Inherites from the super class Character
+Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
+
+}
+Fighter::Fighter()
+{
+
+}
+
+Character::~Character() {
+
 }

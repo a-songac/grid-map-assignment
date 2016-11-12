@@ -68,7 +68,7 @@ void GamePlayController::startGame() {
 	string load,goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
 	Character* cha = new Character();
-	CharacterView* ch = new CharacterView(cha);
+	CharacterView* ch = new CharacterView();
 	CharacterEditorController* selectC = new CharacterEditorController();
 	ItemEditor* itemToLoad = new ItemEditor();
 	ItemContainer* backpack = new ItemContainer();

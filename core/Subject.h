@@ -6,9 +6,9 @@ using namespace std;
 class Subject {
 public:
 	~Subject();
-	virtual void attach(Observer* addObserver);
-	virtual void detach(Observer* removeObserver);
-	virtual void notify();
+	virtual void Attach(Observer* addObserver);
+	virtual void Detach(Observer* removeObserver);
+	virtual void Notify();
 	Subject();
 private:
 	list<Observer*> *_observers;

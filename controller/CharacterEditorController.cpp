@@ -11,22 +11,21 @@
 #include "../utils/IOUtils.h"
 #include "../entity/repo/CharacterRepository.h"
 
-Character* character = new Character();
-CharacterView* cv = new CharacterView(character);
+
 
 void CharacterEditorController::createCharacter() {
 
-	cv = new CharacterView(character);
+	Character* character = new Character();
+	CharacterView* cView = new CharacterView(character);
     int abilityScore, level;
     bool viewLoaded = false;
-
 
 	srand(static_cast<unsigned int>(time(0)));
 	bool answer;
 	string name, name1;
+
 	//driver
 	cout << "\n\n******* Character Editor ********" << endl;
-
 	cout << "1. Create character with randomly generated ability scores" << endl;
 	cout << "2. Create character with standard d20 game ability scores" << endl;
 	cout << "3. View existing characters" << endl;
@@ -37,9 +36,7 @@ void CharacterEditorController::createCharacter() {
         level = readIntegerInput("What level do you consider yourself?[1]: ", 1);
 		cout << "*********************************" << endl;
 		cout << "generating your ability scores....." << endl;
-		Character(character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores(),
-        character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores());
-
+		character->randomlyGenAbilityScores();
 	}
 	else if (abilityScore == 2)
 	{
@@ -65,24 +62,22 @@ void CharacterEditorController::createCharacter() {
 
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
 			character = CharacterRepository::instance()->getEntity(index-1);
-			cv->display();
+//			cv->display();
+
             if (nullptr == character) {
                 cout << "Error, could not load character " << name1 << endl;
             } else {
-                character->printAbilityScores();
+				character->levelUp();
             }
         }
-
-
 	};
 	if (!viewLoaded) {
 		character->setLevel(level);
-        character->setHitPoints();
         character->armor();
         character->attackBonus();
-        character->attackDamage();
-		character->printAbilityScores();
-            answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
+        character->damageBonus();
+		character->levelUp();
+        answer = readYesNoInput("Would you like to save your character?[Y/n]", 1);
 
         if (answer)
         {
@@ -90,7 +85,9 @@ void CharacterEditorController::createCharacter() {
             character->setName(name);
             if (CharacterRepository::instance()->save(name, character)) {
                 cout << "Character successfully saved!" << endl;
-            } else {
+            }
+			else
+			{
                 cout << "ERROR, character could not be saved" << endl;
             }
         }
@@ -100,9 +97,11 @@ void CharacterEditorController::createCharacter() {
 Character* CharacterEditorController::selectCharacter() {
 	string name1;
 	bool confirm1 = false;
-
+	Character* character = new Character();;
+	CharacterView* cv = new CharacterView();
 	srand(static_cast<unsigned int>(time(0)));
 	vector<string>* characterReferences = CharacterRepository::instance()->listAll();
+
 	do {
 		if (characterReferences->empty()) {
 			cout << "No characters currently saved. Redirecting to editor menu." << endl;
@@ -115,7 +114,8 @@ Character* CharacterEditorController::selectCharacter() {
 
 			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
 			character = CharacterRepository::instance()->getEntity(index-1);
-			cv->display();
+//			cv->display();
+			character->levelUp();
 
 			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
 			if (confirm1) {

@@ -30,6 +30,7 @@
 #include "../core/Subject.h"
 #include "ItemContainer.h"
 #include "Item.h"
+
 //! Class that implements a character
 class Character: public Subject
 {
@@ -38,13 +39,14 @@ public:
 	Character(int, int, int, int, int, int);
 	//hit points
 	void hit(int);
-	void setHitPoints();
+	void hitPoints();
 	int getHitPoints();
 	void resetHitPoints();
 	//set modifier based on ability scores
 	int modifier(int);
 	//generate ability scores
 	int genAbilityScores();
+	void randomlyGenAbilityScores();
 	void preGenAbilityScores();
 	//leveling up
 	void levelUp();
@@ -56,11 +58,9 @@ public:
 	//attack bonus
 	void attackBonus();
 	int getAttackBonus();
-	void setAttackBonus(int);
 	//attack damage
-	void attackDamage();
-	int getAttackDamage();
-	void setAttackDamage(int);
+	void damageBonus();
+	int getDamageBonus();
 	//load
 	bool saveCharacter(std::string name);
 	bool loadCharacter(std::string name);
@@ -75,42 +75,48 @@ public:
 	bool validateNewCharacter();
 	bool validateHitPoints();
 	bool validateAttackBonus();
+	//setter for ability scores
+	void setStrength(int);
+	void setDexterity(int);
+	void setIntelligence(int);
+	void setCharisma(int);
+	void setWisdom(int);
+	void setConstitution(int);
 	//getter for ability score
-	int getStrenght();
+	int getStrength();
 	int getDexterity();
 	int getIntelligence();
 	int getCharisma();
 	int getWisdom();
 	int getConstitution();
-	//setter for ability scores
-	void static setStrenght(int);
-	void static setDexterity(int);
-	void static setIntelligence(int);
-	void static setCharisma(int);
-	void static setWisdom(int);
-	void static setConstitution(int);
 	//getter for modifiers
-	int getModStrenght();
+	int getModStrength();
 	int getModDexterity();
 	int getModIntelligence();
 	int getModCharisma();
 	int getModWisdom();
 	int getModConstitution();
 	//setter for modifiers
-	//void setModStrength(int);
-	//void setModDexterity(int);
-	//void setModIntelligence(int);
-	//void setModCharisma(int);
-	//void setModWisdom(int);
-	//void setModConstitution(int);
-
+	void setModStrength(int);
+	void setModDexterity(int);
+	void setModIntelligence(int);
+	void setModCharisma(int);
+	void setModWisdom(int);
+	void setModConstitution(int);
+	//name
 	void setName(std::string name);
 	std::string getName();
-	int static lvl;
+	//destructor
+	~Character();
+	
 private:
-
-	int equip[6];
-	Character *_subject;
+	int lvl;
+	int modifiers[6];
+	int abilityScores[6];
+	int damageB;
+	int attackB;
+	int armorPoints;
+	int currentHitPoints = 0;
 	std::string name;
 
 

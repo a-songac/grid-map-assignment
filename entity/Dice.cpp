@@ -1,4 +1,4 @@
-/*
+
 #include "Dice.h"
 
 
@@ -63,4 +63,3 @@ int Dice::roll_d20() {
 	return ((rand() % 20) + 1);
 
 }
-*/

@@ -1,7 +1,6 @@
 
 #include "CharacterView.h"
 #include "../entity/Character.h"
-
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -15,11 +14,11 @@ CharacterView::CharacterView(Character* c) {
 	//to a ClockTimer
 
 	_subject = c;
-	_subject->attach(this);
+	_subject->Attach(this);
 };
 
 CharacterView::~CharacterView() {
-	_subject->detach(this);
+	_subject->Detach(this);
 };
 
 void CharacterView::update() {
@@ -32,14 +31,14 @@ void CharacterView::display() {
 
 		cout << "================================================================================" << endl;
 		cout << "Level: " << _subject->getLevel() << endl;
-		cout << "Strength: " << _subject->getStrenght() << " (+" << _subject->getModStrenght() << ")"<< endl;
+		cout << "Strength: " << _subject->getStrength() << " (+" << _subject->getModStrength() << ")"<< endl;
 		cout << "Dexterity: " << _subject->getDexterity() << " (+" << _subject->getModDexterity() << ")"  << endl;
 		cout << "Intelligence: " << _subject->getIntelligence() << " (+" << _subject->getModIntelligence() << ")" << endl;
 		cout << "Charisma: " << _subject->getCharisma() << " (+" << _subject->getModCharisma() << ")" << endl;
 		cout << "Wisdom: " << _subject->getWisdom() << " (+" << _subject->getModWisdom() << ")"<< endl;
 		cout << "Constitution: " << _subject->getConstitution() << " (+" << _subject->getModConstitution() << ")" << endl;
 		cout << "Armor: " << _subject->getArmor() << endl;
-		cout << "Attack Damage: " << _subject->getAttackDamage() << endl;
+		cout << "Attack Damage: " << _subject->getDamageBonus() << endl;
 		cout << "Attack Bonus: " << _subject->getAttackBonus() << endl;
 		cout << "Current HP: " << _subject->getHitPoints() << endl;
 		cout << "================================================================================" << endl;
