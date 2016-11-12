@@ -3,11 +3,6 @@
 #include"../../utils/LogUtils.h"
 #include "../../entity_generator/MapGenerator.h"
 
-#include <fstream>
-#include <iostream>
-#include <stdio.h>
-#include <boost/filesystem.hpp>
-#include <sstream>
 
 using namespace std;
 

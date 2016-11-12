@@ -49,23 +49,23 @@ void CharacterEditorController::createCharacter() {
 		cout << "Your ability scores are: " << endl;
 		character->preGenAbilityScores();
 		cout << "*********************************" << endl;
-		
+
 	}
 	else if (abilityScore == 3)
 	{
         viewLoaded = true;
 
-        vector<CharacterProxy*>* characterProxies = CharacterRepository::instance()->listAll();
-        if (characterProxies->empty()) {
+        vector<string>* characterReferences = CharacterRepository::instance()->listAll();
+        if (characterReferences->empty()) {
             cout << "No characters currently saved. Redirecting to editor menu." << endl;
         } else {
             cout << "Please select the character you want to load and view: "<< endl;
-            for (size_t i = 0; i < characterProxies->size(); i++) {
-                cout << (i+1) << ":" << characterProxies->at(i)->getFileName() << endl;
+            for (size_t i = 0; i < characterReferences->size(); i++) {
+                cout << (i+1) << ":" << characterReferences->at(i) << endl;
             }
 
-            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
-			character = characterProxies->at(index - 1)->getCharacter();
+            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
+			character = CharacterRepository::instance()->getEntity(index-1);
 			cv->display();
             if (nullptr == character) {
                 cout << "Error, could not load character " << name1 << endl;
@@ -89,8 +89,7 @@ void CharacterEditorController::createCharacter() {
         {
             name = readFileName("please enter the name of the file you want to save: ");
             character->setName(name);
-            CharacterRepository::instance()->save(character);
-            if (CharacterRepository::instance()->save(character)) {
+            if (CharacterRepository::instance()->save(name, character)) {
                 cout << "Character successfully saved!" << endl;
             } else {
                 cout << "ERROR, character could not be saved" << endl;
@@ -104,19 +103,19 @@ Character* CharacterEditorController::selectCharacter() {
 	bool confirm1 = false;
 
 	srand(static_cast<unsigned int>(time(0)));
-	vector<CharacterProxy*>* characterProxies = CharacterRepository::instance()->listAll();
+	vector<string>* characterReferences = CharacterRepository::instance()->listAll();
 	do {
-		if (characterProxies->empty()) {
+		if (characterReferences->empty()) {
 			cout << "No characters currently saved. Redirecting to editor menu." << endl;
 		}
 		else {
 			cout << "Please select the character you want to load and view: " << endl;
-			for (size_t i = 0; i < characterProxies->size(); i++) {
-				cout << (i + 1) << ":" << characterProxies->at(i)->getFileName() << endl;
+			for (size_t i = 0; i < characterReferences->size(); i++) {
+				cout << (i + 1) << ":" << characterReferences->at(i) << endl;
 			}
 
-			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterProxies->size());
-			character = characterProxies->at(index - 1)->getCharacter();
+			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
+			character = CharacterRepository::instance()->getEntity(index-1);
 			cv->display();
 
 			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);

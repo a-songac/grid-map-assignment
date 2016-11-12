@@ -17,9 +17,9 @@
 class MapRepository : public Repository<Map> {
     public:
         static MapRepository* instance();
-        MapRepository();
 
     private:
+        MapRepository();
         void loadGeneratedEntities();
         static MapRepository* _instance;
 

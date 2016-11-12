@@ -24,6 +24,7 @@
 
 #include "Repository.h"
 #include "../entity/Map.h"
+#include "../entity/Character.h"
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
 #include "../entity_generator/MapGenerator.h"
@@ -55,7 +56,8 @@ template <class T> class Repository {
         // See function pointers for more information
         Map* loadMap(std::string name);
         bool persistMap(Map* entity, std::string name);
-
+        Character* loadCharacter(std::string name);
+        bool persistCharacter(Character* entity, std::string name);
 
     protected:
         std::string referenceFile;
@@ -100,8 +102,8 @@ Repository<T>::~Repository() {
 }
 
 
-///  Load proxies of persisted map in the memory from _map_references
-/// _map_references holds a list of all names of persisted map
+///  Load references of persisted entitiesin the memory from the reference file
+/// reference files hold a list of all names of persisted entities for each type
 template <class T>
 void Repository<T>::construct() {
 
@@ -134,9 +136,6 @@ void Repository<T>::construct() {
                     "Constructor",
                     "FOR " + referenceFile + ": Could not create reference file.");
         #endif // DEBUG
-
-
-
     }
     int i = 0;
     while (in >> entityName) {
@@ -156,7 +155,6 @@ void Repository<T>::construct() {
                 "Constructor",
                 sStream.str());
     #endif // DEBUG
-
     if (0 == this->_references->size()) {
 
         #ifdef DEBUG
@@ -166,6 +164,8 @@ void Repository<T>::construct() {
         #endif // DEBUG
     }
 }
+
+
 
 template <class T>
 int Repository<T>::getIndex(string name) {
@@ -177,11 +177,15 @@ int Repository<T>::getIndex(string name) {
     return -1;
 }
 
+
+
 template <class T>
 bool Repository<T>::exists(string name) {
 
     return this->getIndex(name) >= 0;
 }
+
+
 
 template <class T>
 void Repository<T>::updateRepoReference() {
@@ -192,6 +196,7 @@ void Repository<T>::updateRepoReference() {
     }
     out.close();
 }
+
 
 
 template <class T>
@@ -221,6 +226,9 @@ bool Repository<T>::save(string name, T* entity) {
     }
     return (this->*persistEntity)(entity, name);
 }
+
+
+
 
 template <class T>
 T* Repository<T>::getEntity(std::string name) {
@@ -254,6 +262,12 @@ T* Repository<T>::getEntity(int index) {
     return entity;
 }
 
+
+
+// //////////////////////////////////////////
+// LOAD AND PERSIST METHODS FOR THE ENTITIES
+// //////////////////////////////////////////
+
 template <class T>
 Map* Repository<T>::loadMap(string fileName) {
     boost::filesystem::path myfile(fileName);
@@ -282,4 +296,17 @@ bool Repository<T>::persistMap(Map* map, std::string name) {
     return true;
 }
 
+template <class T>
+Character* Repository<T>::loadCharacter(string fileName) {
+    Character* character = new Character();
+    character->loadCharacter(fileName);
+    character->setName(fileName);
+    return character;
+}
 
+
+template <class T>
+bool Repository<T>::persistCharacter(Character* character, std::string name) {
+    character->saveCharacter(name);
+    return true;
+}
