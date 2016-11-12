@@ -24,6 +24,7 @@
 
 #include "Repository.h"
 #include "../entity/Map.h"
+#include "../view/MapView.h"
 #include "../entity/Character.h"
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
@@ -285,6 +286,10 @@ Map* Repository<T>::loadMap(string fileName) {
     ia >> lMap;
     ifs.close();
     Map* loadedMap = new Map(lMap);
+    #ifdef DEBUG
+        logInfo("Repository", "loadMap", "Attaching view to loaded map");
+    #endif // DEBUG
+    MapView* mapView = new MapView(loadedMap);
     return loadedMap;
 }
 

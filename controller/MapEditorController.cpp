@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../entity/Map.h"
+#include "../view/MapView.h"
 #include "../entity/Cell.h"
 #include "MapEditorController.h"
 #include "../service/MapValidator.h"
@@ -52,6 +53,11 @@ void MapEditorController::createMap() {
     width = readMapDimension("Please provide the width of your map (between 2 and 15)[7]:", 7, 2, 15);
 
     Map* map = new Map(height, width);
+    MapView* mapView = new MapView(map);
+     #ifdef DEBUG
+        logInfo("Repository", "loadMap", "Attaching view to created map");
+    #endif // DEBUG
+
     this->map = map;
     cout << "Your map will look like this: " << endl;
     map->render();
@@ -136,7 +142,7 @@ void MapEditorController::addWall() {
                         map->setCellType(location.row, location.column, Cell::TYPE_FLOOR);
                     }
                 }
-                map->render();
+//                map->render();
             }
         } while(error);
 
@@ -179,7 +185,7 @@ void MapEditorController::addOccupant() {
                     map->fillCell(location.row, location.column, setOccupantOnMap());
 
                 }
-                map->render();
+//                map->render();
             }
         } while(error);
 

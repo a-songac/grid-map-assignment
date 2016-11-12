@@ -7,6 +7,7 @@
 
 #pragma once
 #include "Cell.h"
+#include "../core/Subject.h"
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
@@ -29,7 +30,7 @@ struct Coordinate {
 };
 
 /// Class to implement the game map
-class Map {
+class Map : public Subject{
     public:
 
         Map(int h, int w, Coordinate entry, Coordinate exit);
@@ -112,6 +113,7 @@ inline Coordinate Map::getEntryDoorCoordinate() {
 
 inline void Map::setEntryDoor(Coordinate entryDoor) {
     this->entryDoor = entryDoor;
+    notify();
 }
 
 inline Coordinate Map::getExitDoorCoordinate() {
@@ -120,6 +122,7 @@ inline Coordinate Map::getExitDoorCoordinate() {
 
 inline void Map::setExitDoor(Coordinate exitDoor) {
     this->exitDoor = exitDoor;
+    notify();
 }
 
 inline bool Map::isFloor(int row, int column) {
@@ -151,6 +154,7 @@ inline bool Map::isInbound(int row, int column) {
 
 inline void Map::setCellType(int row, int column, char type) {
     grid.at(row).at(column).setType(type);
+    notify();
 }
 
 inline char Map::getCellType(int row, int column) {
