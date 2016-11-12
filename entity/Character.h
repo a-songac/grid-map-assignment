@@ -104,16 +104,14 @@ public:
 	//void setModWisdom(int);
 	//void setModConstitution(int);
 
+	void setName(std::string name);
+	std::string getName();
+	int static lvl;
 private:
-	static int abilityScores[6];
-	static int modifiers[6];
-	int currentHitPoints = 0;
+
 	int equip[6];
-	int lvl = 1;
-    int armorPoints;
-	int attackB;
-	int attackD;
 	Character *_subject;
+	std::string name;
 
 
 };
@@ -125,5 +123,13 @@ public:
 	Fighter(int, int, int, int, int, int);
 
 };
+
+inline void Character::setName(std::string name) {
+    this->name = name;
+}
+
+inline std::string Character::getName() {
+    return this->name;
+}
 
 #endif

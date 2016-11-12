@@ -17,8 +17,9 @@ public:
 	ItemEditor();
 	ItemContainer* createItem();
 	void saveFile(string name);
-	void loadFile(string load);
+	ItemContainer* loadFile(string load);
 	~ItemEditor();
+	static void readItem(ItemContainer*, string name, ItemContainer*);
 
 private:
 	Item item;

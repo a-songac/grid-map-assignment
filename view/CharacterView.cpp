@@ -1,6 +1,7 @@
 
 #include "CharacterView.h"
 #include "../entity/Character.h"
+
 #include <iostream>
 #include <iomanip>
 using namespace std;
@@ -9,11 +10,11 @@ CharacterView::CharacterView() {
 
 };
 
-CharacterView::CharacterView(Character* character) {
+CharacterView::CharacterView(Character* c) {
 	//Upon instantiation, attaches itself
 	//to a ClockTimer
 
-	_subject = character;
+	_subject = c;
 	_subject->attach(this);
 };
 

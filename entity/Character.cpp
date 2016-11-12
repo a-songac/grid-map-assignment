@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "Character.h"
+#include "../core/Subject.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
@@ -16,9 +17,13 @@
 
 using namespace std;
 
-int Character::modifiers[6];
-int Character::abilityScores[6];
-
+int modifiers[6];
+int abilityScores[6];
+int attackD;
+int attackB;
+int armorPoints;
+int currentHitPoints = 0;
+int Character::lvl;
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -71,7 +76,7 @@ void Character::updateStatsAtEquip(Item equipment) {
 		}
 
 		setHitPoints();
-		notify();
+
 }
 void Character::updateStatsAtUnequip(Item equipment) {
 
@@ -99,7 +104,7 @@ void Character::updateStatsAtUnequip(Item equipment) {
 			attackD -= eVec[i].getBonus();
 
 	}
-	notify();
+
 
 
 }
@@ -125,14 +130,14 @@ int Character::modifier(int abilityScore)
 //! Implementation of a levelUp method, at the same time updates everything else depending on the level
 void Character::levelUp()
 {
-	this->lvl++;
+	++lvl;
 
 	for (int i = 0; i < 6; i++)
 	{
 		modifiers[i] = modifier(abilityScores[i] * lvl);
 		abilityScores[i] = abilityScores[i] * lvl + modifiers[i];
 	}
-
+	setLevel(lvl);
 	setHitPoints();
 	attackDamage();
 	attackBonus();
@@ -159,7 +164,7 @@ int Character::genAbilityScores()
 	int i = 0, j = 0, indexFound = 0, max = 0;
 	int results[4] = { 0, 0, 0, 0 }, sortedResults[4] = { 0, 0, 0, 0 };
 
-	//Roll each die
+	//Roll each die+1
 	for (i = 0; i<4; ++i) {
 		results[i] = (rand() % 6) + 1;
 	}
@@ -192,12 +197,12 @@ void Character::preGenAbilityScores()
 }
 //implementation of a setter method for hit points
 void Character::resetHitPoints() {
-	currentHitPoints = currentHitPoints - modifiers[5] + lvl;
+	currentHitPoints = currentHitPoints - modifiers[5];
 }
 void Character::setHitPoints()
 {
 	//roll a d10 dice
-	currentHitPoints = currentHitPoints + modifiers[5] + lvl;
+	currentHitPoints = currentHitPoints + modifiers[5];
 	if (currentHitPoints < 10)
 	{
 		currentHitPoints = 10;
@@ -288,7 +293,7 @@ Character::Character()
 }
 void Character::printAbilityScores() {
 
-	notify();
+	this->notify();
 }
 bool Character::saveCharacter(string name)
 {
@@ -298,14 +303,13 @@ bool Character::saveCharacter(string name)
 	{
 
 
-		f << lvl << endl
+			f << lvl << endl
 			<< abilityScores[0] << endl
 			<< abilityScores[1] << endl
 			<< abilityScores[2] << endl
 			<< abilityScores[3] << endl
 			<< abilityScores[4] << endl
 			<< abilityScores[5] << endl
-
 			<< modifiers[0] << endl
 			<< modifiers[1] << endl
 			<< modifiers[2] << endl

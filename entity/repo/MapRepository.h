@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../MapProxy.h"
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -10,7 +10,7 @@ class MapRepository {
         static MapRepository* instance();
         ~MapRepository();
 
-        list<MapProxy*>* listAll();
+        vector<MapProxy*>* listAll();
         void save(Map* map);
         void save(string mapName);
         bool exists(string mapName);
@@ -21,9 +21,10 @@ class MapRepository {
 
 
     private:
-        list<MapProxy*>* _proxies;
+        vector<MapProxy*>* _proxies;
         static MapRepository* _instance;
         MapRepository();
         void updateRepoReference();
+        void loadGeneratedMaps();
 
 };

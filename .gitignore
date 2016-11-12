@@ -28,3 +28,26 @@ bin/
 
 *.depend  
 *.layout
+
+# VS
+.vs/
+DD1.VC.VC.opendb
+DD1.VC.db
+DD1.sln
+DD1.vcxproj
+DD1.vcxproj.filters
+Debug/
+DungeonDragonFirstBuild.VC.db
+DungeonDragonFirstBuild.sln
+DungeonDragonFirstBuild.vcxproj
+DungeonDragonFirstBuild.vcxproj.filters
+
+DDD.VC.VC.opendb
+DDD.VC.db
+DDD.sln
+DDD.vcxproj
+DDD.vcxproj.filters
+
+# Doxygen
+html/
+latex/

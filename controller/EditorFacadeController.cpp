@@ -4,57 +4,63 @@
 #include <boost/filesystem.hpp>
 #include "../view/MapView.h"
 #include "../entity/repo/MapRepository.h"
-
+#include "CharacterEditorController.h"
+#include "../controller/ItemEditor.h"
 void EditorFacadeController::editorMenu() {
 
-    bool flag = true;
+    bool editorLoop = true;
     do{
         cout << endl << "*********** Choose an Editor ************" << endl << endl;
-        cout << "Map Editor: 1"<< endl
-                << "Campaign Editor: 2" << endl
-                << "Item Editor: 3" << endl
-                << "Charcater Editor: 4" << endl
-                << "Exit Editor Menu: 5" << endl;
-        
-        int eChoice = readIntegerInput("Please select an option[1]: ", 1);
-        while (eChoice < 1 || eChoice > 5) {
-            cout << "This is not a choice, please retry" << endl;
-            eChoice = readIntegerInput("Your choice[1]:", 1);
-        }
+        cout << "1. Map Editor"<< endl
+                << "2. Campaign Editor" << endl
+                << "3. Character Editor" << endl
+                << "4. Item Editor" << endl
+                << "5. Exit Editor Menu" << endl;
+
+        int eChoice = readIntegerInputWithRange("Please select an option[5]: ", 5, 1, 5);
 
         //Return chosen editor
         if(eChoice == 1){
             cout << "************** Map Creator **************" << endl << endl;
 
-            cout << "Please select one of the following options:" << endl << "Create New Map: 1"
-            << endl << "Edit an Existing Map: 2" << endl;
+            cout << "Please select one of the following options:" << endl << "1. Create New Map"
+            << endl << "2. Edit an Existing Map" << endl;
 
-            int cChoice = readIntegerInput("", 1);
-            while (cChoice != 1 && cChoice != 2) {
-                cout << "This is not a choice, please retry" << endl;
-                eChoice = readIntegerInput("Your choice[1]:", 1);
-            }
+            int cChoice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
 
             //Create Map
             if (cChoice == 1){
 
                 MapEditorController mapEditor;
                 mapEditor.createMap();
-                
+
             }
             else{
-                
+
                 //Load map for editing
                 MapEditorController mapEditor;
                 Map* map = mapEditor.loadMap();
-                
+
                 //Edit Options
+
                 mapEditor.editMap(map);
                 cout << "Redirecting to editor menu." << endl;
 
+
+                if(map->validate()){
+
+                    MapEditorController mapEditor(map);
+                    mapEditor.editMap(map);
+                    cout << "Redirecting to editor menu." << endl;
+                }
+                else{
+                    cout << "Invalid map. Redirecting to editor menu." << endl;
+                }
+
             }
         }
-        else if(eChoice == 2){
+        else if(eChoice == 2){ // Campaign Editor
+            // Disable feature
             cout << "To be implemented." << endl;
             continue;
             cout << "*********** Campaign Creator ************" << endl << endl;
@@ -177,23 +183,27 @@ void EditorFacadeController::editorMenu() {
 
                     // delete c;
                     c = nullptr;
-                    
+
                 }
                 else{
                     cout << "Invalid campaign. Redirecting to editor menu." << endl;
                 }
             }
 
-        } else if(eChoice == 3){
-            cout << "Item editor not yet implemented" << endl;
+        } // END Campaign editor
+        else if(eChoice == 3){
+
+            CharacterEditorController::createCharacter();
         }
+
         else if(eChoice == 4){
-            cout << "Character editor not yet implemented" << endl;
+			ItemEditor* item = new ItemEditor();
+			item->createItem();
         }
         else{
-            cout << "Editor exited.";
-            flag = false;
+            editorLoop = false;
         }
-    }while(flag);
+
+    }while(editorLoop);
 
 }
