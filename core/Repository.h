@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <boost/filesystem.hpp>
 #include <sstream>
+#include <stdexcept>
 
 #include "Repository.h"
 #include "../entity/Map.h"
@@ -115,7 +116,7 @@ void Repository<T>::construct() {
     #ifdef DEBUG
         logInfo("Repository",
                 "Constructor",
-                "FOR " + referenceFile + ": Initialization of Repository; loading persisted map references...");
+                "FOR " + referenceFile + ": Initialization of Repository; loading persisted entity references...");
     #endif // DEBUG
 
     this->_references = new vector<string>;
@@ -331,13 +332,65 @@ bool Repository<T>::persistCharacter(Character* character, std::string name) {
 
 template <class T>
 Item* Repository<T>::loadItem(string fileName) {
-    // TODO
-    Item* item= new Item();
-    return item;
+
+    string itemType, itemName, enhancementType;
+
+    vector <Enhancement> Enhancements;
+	std::ifstream f(fileName, std::ios::in);
+
+	if (f.is_open())
+	{
+		int bonus;
+		string getBonus;
+		int i = 0;
+
+		getline(f, itemType);
+
+        getline(f, itemName);
+
+//			while (enhancementType != "Armor" && enhancementType != "Ring"  && enhancementType != "Helmet" && enhancementType != "Boots" && enhancementType!="Belt" && enhancementType!="Weapon" && enhancementType!="Shield" && enhancementType !="")
+        while (!f.eof())
+        {
+            getline(f, enhancementType);
+            getline(f, getBonus);
+            bonus = std::stoi(getBonus);
+            Enhancements.push_back(Enhancement(enhancementType, bonus));
+        }
+        f.close();
+        Item* item = new Item(itemType, Enhancements, itemName);
+
+		return item;
+
+
+	} else {
+
+       throw std::invalid_argument( "Could not load item from given file name" );
+	}
+    return nullptr;
 }
 
 template <class T>
 bool Repository<T>::persistItem(Item* item, std::string name) {
-    // TODO
+
+    ofstream saveFile(name, std::ios::trunc);
+	vector<Enhancement> eVec;
+
+    if (saveFile.is_open()) {
+
+        saveFile << item->getType() << endl;
+        saveFile << item->getName() << endl;
+        eVec = item->getInfluences();
+
+        for (size_t i = 0; i < eVec.size(); i++)
+        {
+            saveFile << eVec[i].getType() << endl;
+            saveFile << eVec[i].getBonus() << endl;
+
+        }
+        saveFile.close();
+	} else {
+        throw std::invalid_argument( "Could not save item to file" );
+        return false;
+	}
     return true;
 }
