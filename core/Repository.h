@@ -271,6 +271,8 @@ T* Repository<T>::getEntity(int index) {
 // LOAD AND PERSIST METHODS FOR THE ENTITIES
 // //////////////////////////////////////////
 
+ //////////// MAP //////////////
+
 template <class T>
 Map* Repository<T>::loadMap(string fileName) {
     boost::filesystem::path myfile(fileName);
@@ -303,6 +305,10 @@ bool Repository<T>::persistMap(Map* map, std::string name) {
     return true;
 }
 
+
+
+//////////// CHARACTER //////////////
+
 template <class T>
 Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
@@ -318,6 +324,10 @@ bool Repository<T>::persistCharacter(Character* character, std::string name) {
     return true;
 }
 
+
+
+
+//////////// ITEM//////////////
 
 template <class T>
 Item* Repository<T>::loadItem(string fileName) {

@@ -113,7 +113,7 @@ inline Coordinate Map::getEntryDoorCoordinate() {
 
 inline void Map::setEntryDoor(Coordinate entryDoor) {
     this->entryDoor = entryDoor;
-    notify();
+    Notify();
 }
 
 inline Coordinate Map::getExitDoorCoordinate() {
@@ -122,7 +122,7 @@ inline Coordinate Map::getExitDoorCoordinate() {
 
 inline void Map::setExitDoor(Coordinate exitDoor) {
     this->exitDoor = exitDoor;
-    notify();
+    Notify();
 }
 
 inline bool Map::isFloor(int row, int column) {
@@ -154,7 +154,7 @@ inline bool Map::isInbound(int row, int column) {
 
 inline void Map::setCellType(int row, int column, char type) {
     grid.at(row).at(column).setType(type);
-    notify();
+    Notify();
 }
 
 inline char Map::getCellType(int row, int column) {
