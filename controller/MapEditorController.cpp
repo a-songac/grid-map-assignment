@@ -4,6 +4,7 @@
 #include <string>
 
 #include "../entity/Map.h"
+#include "../view/MapView.h"
 #include "../entity/Cell.h"
 #include "MapEditorController.h"
 #include "../service/MapValidator.h"
@@ -52,6 +53,11 @@ void MapEditorController::createMap() {
     width = readMapDimension("Please provide the width of your map (between 2 and 15)[7]:", 7, 2, 15);
 
     Map* map = new Map(height, width);
+    MapView* mapView = new MapView(map);
+     #ifdef DEBUG
+        logInfo("Repository", "loadMap", "Attaching view to created map");
+    #endif // DEBUG
+
     this->map = map;
     cout << "Your map will look like this: " << endl;
     map->render();
@@ -91,7 +97,7 @@ void MapEditorController::createMap() {
         if(map->validate()){
             string filename = readStringInput("Enter a Name for the File: ", "userMap");
             map->setName(filename);
-            MapRepository::instance()->save(map);
+            MapRepository::instance()->save(filename, map);
             cout << "Map successfully saved." << endl;
         }
         else{
@@ -136,7 +142,7 @@ void MapEditorController::addWall() {
                         map->setCellType(location.row, location.column, Cell::TYPE_FLOOR);
                     }
                 }
-                map->render();
+//                map->render();
             }
         } while(error);
 
@@ -179,7 +185,7 @@ void MapEditorController::addOccupant() {
                     map->fillCell(location.row, location.column, setOccupantOnMap());
 
                 }
-                map->render();
+//                map->render();
             }
         } while(error);
 
@@ -299,17 +305,18 @@ Map* MapEditorController::loadMap(){
 
     Map* map;
     string filename;
-    vector<MapProxy*> mapProxies = *(MapRepository::instance()->listAll());
-    if(mapProxies.empty()){
+    vector<string>* mapReferences = MapRepository::instance()->listAll();
+    if(mapReferences->empty()){
         cout << "No maps currently saved. Redirecting to editor menu." << endl;
     }
     else{
-        for (size_t i = 0; i < mapProxies.size(); i++) {
-            cout << (i+1) << ":" << mapProxies.at(i)->getFileName() << endl;
+        for (size_t i = 0; i < mapReferences->size(); i++) {
+            cout << (i+1) << ":" << mapReferences->at(i) << endl;
         }
 
-        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapProxies.size());
-        map = mapProxies.at(index-1)->getMap();
+        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
+        map = MapRepository::instance()->getEntity(index-1);
+
     }
 
     if (map == nullptr) {
@@ -354,7 +361,7 @@ void MapEditorController::editMap(Map *map){
         bool saveEdit = readYesNoInput("Do you wish to save your changes?[Y/n]: ", true);
         if(saveEdit){
             if(map->validate()){
-                MapRepository::instance()->save(map);
+                MapRepository::instance()->save(map->getName(), map);
                 cout << "Map successfully saved." << endl;
             }
             else{

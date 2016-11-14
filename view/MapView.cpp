@@ -69,7 +69,18 @@ const char PLAYER_PATTERN[CELL_HEIGHT][CELL_WIDTH-2] =
     };
 
 
-void MapView::renderMap(Map* map) {
+MapView::MapView(){}
+MapView::MapView(Map* map){
+    this->map = map;
+    map->attach(this);
+}
+
+void MapView::update() {
+    renderMap();
+}
+
+
+void MapView::renderMap() {
 
     int height = map->getHeight();
     int width = map->getWidth();

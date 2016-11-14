@@ -60,7 +60,6 @@
 		<Unit filename="controller/MapInteractionHelper.h" />
 		<Unit filename="core/Observer.cpp" />
 		<Unit filename="core/Observer.h" />
-		<Unit filename="core/Repository.cpp" />
 		<Unit filename="core/Repository.h" />
 		<Unit filename="core/Subject.cpp" />
 		<Unit filename="core/Subject.h" />
@@ -70,8 +69,6 @@
 		<Unit filename="entity/Cell.h" />
 		<Unit filename="entity/Character.cpp" />
 		<Unit filename="entity/Character.h" />
-		<Unit filename="entity/CharacterProxy.cpp" />
-		<Unit filename="entity/CharacterProxy.h" />
 		<Unit filename="entity/Dice.cpp" />
 		<Unit filename="entity/Dice.h" />
 		<Unit filename="entity/Enhancement.cpp" />
@@ -83,7 +80,6 @@
 		<Unit filename="entity/Map.cpp" />
 		<Unit filename="entity/Map.h" />
 		<Unit filename="entity/MapProxy.cpp" />
-		<Unit filename="entity/MapProxy.h" />
 		<Unit filename="entity/repo/CharacterRepository.cpp" />
 		<Unit filename="entity/repo/CharacterRepository.h" />
 		<Unit filename="entity/repo/MapRepository.cpp" />

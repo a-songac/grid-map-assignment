@@ -116,7 +116,7 @@ void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
 
 char Map::getOccupant(int row, int column) {
     if (isWall(row, column)) {
-        return '0';
+        return ' ';
     }
     return grid.at(row).at(column).getOccupant();
 }
@@ -127,6 +127,7 @@ bool Map::fillCell(int row, int column, char occupant) {
         return false;
     }
     grid.at(row).at(column).setOccupant(occupant);
+    notify();
     return true;
 }
 
@@ -140,7 +141,7 @@ bool Map::validate() {
 }
 
 void Map::render() {
-    MapView::renderMap(this);
+    notify();
 }
 
 

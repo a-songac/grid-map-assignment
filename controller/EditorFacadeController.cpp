@@ -137,7 +137,7 @@ void EditorFacadeController::editorMenu() {
                                     cout << "Map file not found!" << endl;
                                 }
 
-                                Map* map = MapRepository::instance()->loadMap(filename);
+                                Map* map = MapRepository::instance()->getEntity(filename);
 
                                 if(map->validate()){
                                     campaignEditor.addMap(map);
