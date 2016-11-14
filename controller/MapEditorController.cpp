@@ -2,6 +2,10 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <iostream>
+#include <fstream>
 
 #include "../entity/Map.h"
 #include "../view/MapView.h"
@@ -9,11 +13,9 @@
 #include "MapEditorController.h"
 #include "../service/MapValidator.h"
 #include "../utils/IOUtils.h"
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <iostream>
-#include <fstream>
 #include "../entity/repo/MapRepository.h"
+#include "MapInteractionHelper.h"
+
 
 using namespace std;
 using namespace boost::archive;
@@ -33,9 +35,11 @@ MapEditorController::MapEditorController() {
 
 void MapEditorController::buildMap() {
     cout << "It is now time to build the walls of your map..." << endl << endl;
-    addWall();
+    if (readYesNoInput(ADD_WALL_PROMPT, true))
+        addWall();
     cout << "It is now time to add occupants on your map..." << endl << endl;
-    addOccupant();
+    if (readYesNoInput(ADD_OCCUPANT_PROMPT, true))
+        addOccupant();
 }
 
 void MapEditorController::createMap() {
@@ -110,20 +114,17 @@ void MapEditorController::createMap() {
 
 void MapEditorController::addWall() {
 
-    bool addWall = false;
+    bool addWall = true;
     string column, row;
     MapValidator validator(map);
     Coordinate location;
-
-
-    addWall = readYesNoInput(ADD_WALL_PROMPT, true);
 
     while (addWall) {
 
         bool error;
         do {
             error = false;
-            location = promptForMapLocation("On which cell do you want to add or remove the wall?[A1]:", "A1");
+            location = MapInteractionHelper::readMapLocation(map, "On which cell do you want to add or remove the wall?[A1]:", "A1");
 
             if (map->isDoor(location.row, location.column)) {
                 cout << "This is a door, please retry" << endl;
@@ -151,19 +152,16 @@ void MapEditorController::addWall() {
 }
 
 void MapEditorController::addOccupant() {
-    bool addOccupant = false;
+    bool addOccupant = true;
     string column, row;
     Coordinate location;
-
-
-    addOccupant = readYesNoInput(ADD_OCCUPANT_PROMPT, true);
 
     while (addOccupant) {
 
         bool error;
         do {
             error = false;
-            location = promptForMapLocation("On which cell do you want to add or remove an item?[A1]:", "A1");
+            location = MapInteractionHelper::readMapLocation(map, "On which cell do you want to add or remove an item?[A1]:", "A1");
 
             if (map->isWall(location.row, location.column)) {
                 cout << "This is a wall, please retry" << endl;
@@ -203,7 +201,7 @@ Coordinate MapEditorController::defineDoor(string message, Map* map, string defa
 
     do {
         error = false;
-        location = promptForMapLocation(message, defaultLocation);
+        location = MapInteractionHelper::readMapLocation(map, message, defaultLocation);
 
         if (!(location.row == 0 || location.row + 1 == map->getHeight() ||
                 location.column == 0 || location.column + 1 == map->getWidth() )) {
@@ -214,45 +212,6 @@ Coordinate MapEditorController::defineDoor(string message, Map* map, string defa
     } while (error);
 
     return location;
-}
-
-
-
-Coordinate MapEditorController::promptForMapLocation(string message, string defaultLocation) {
-
-    bool error = false;
-    string row, column;
-    int rowIndex, columnIndex;
-
-    do {
-        error = false;
-        string cellLocation = readStringInput(message, defaultLocation);
-        regex regex (CELL_LOCATION_REGEX);
-        smatch match;
-
-        if (regex_search(cellLocation, match, regex)) {
-            row = match.str(2);
-            column = match.str(1);
-            rowIndex = stoi(row, nullptr) - 1;
-            columnIndex = column.at(0) - 'A'; //TODO Handle over 26 case
-            if (columnIndex + 'A' >= 97 && columnIndex + 'A' <= 122) // if lowercase was given
-                columnIndex -= 32;
-
-            if (!map->isInbound(rowIndex, columnIndex)) {
-                cout << "Out of range, please retry" << endl;
-                error = true;
-            }
-
-        } else {
-            error = true;
-            cout << "Invalid input, please retry" << endl;
-        }
-
-    } while (error);
-
-    Coordinate location = {rowIndex, columnIndex};
-    return location;
-
 }
 
 
@@ -336,14 +295,12 @@ void MapEditorController::editMap(Map *map){
             map->render();
 
             cout << "What changes do you want to make to this map?:" << endl;
-            cout << "Add/Remove Wall: 1" << endl;
-            cout << "Add Occupant: 2" << endl;
+            cout << "1. Add/Remove Wall" << endl;
+            cout << "2. Add Occupant" << endl;
+            cout << "3. Save and Exit" << endl;
+            cout << "4. Exit without saving" << endl;
 
-            int choice = readIntegerInput("Your choice[1]: ", 1);
-            while (choice != 1 && choice != 2) {
-                cout << "This is not a choice, please retry" << endl;
-                choice = readIntegerInput("Your choice[1]: ", 1);
-            }
+            int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 4);
 
             switch (choice) {
                 case 1:
@@ -352,23 +309,23 @@ void MapEditorController::editMap(Map *map){
                 case 2:
                     this->addOccupant();
                     break;
+                case 3:
+                    done = true;
+                    if(map->validate()){
+                        MapRepository::instance()->save(map->getName(), map);
+                        cout << "Map successfully saved." << endl;
+                    }
+                    else{
+                        cout << "Invalid Map. (Map not Saved)" << endl;
+                    }
+
+                    break;
+                case 4:
+                    done = readYesNoInput("Do you really want to leave without saving your changes?[Y/n]: ", true);
+                    break;
             }
 
-            done = !(readYesNoInput("Do you wish to further edit this map?[Y/n]: ", true));
-        }while(done!=true);
-
-
-        bool saveEdit = readYesNoInput("Do you wish to save your changes?[Y/n]: ", true);
-        if(saveEdit){
-            if(map->validate()){
-                MapRepository::instance()->save(map->getName(), map);
-                cout << "Map successfully saved." << endl;
-            }
-            else{
-                cout << "Invalid Map. (Map not Saved)" << endl;
-            }
-
-        }
+        }while(!done);
 
     }
     else{

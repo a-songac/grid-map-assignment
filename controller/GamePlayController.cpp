@@ -83,6 +83,7 @@ void GamePlayController::startGame() {
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
 	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
+	cout << "    - To quit the game, type: 'q'" << endl;
 
 
     bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
@@ -104,8 +105,7 @@ void GamePlayController::startGame() {
 		int row = exitDoor.row;
         this->map->movePlayer(entryDoor.row, entryDoor.column);
 			do {
-				cout << "Go to [bp] >>";
-				cin >> goTo;
+				goTo = MapInteractionHelper::readMapLocationWhileInGame(this->map, "Go to [bp]: ", "bp");
 
 				if (goTo == "bp") {
 					do {
@@ -114,8 +114,7 @@ void GamePlayController::startGame() {
 						cout << "3 - Unequip item" << endl;
 						cout << "4 - View your worn items" << endl;
 						cout << "5 - Exit" << endl;
-						cout << "Your selection[1]: ";
-						cin >> input;
+						input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
 
 						if (input == 1) {
 							backpack->displayItem();
@@ -140,10 +139,12 @@ void GamePlayController::startGame() {
 					ch->display();
 					this->map->render();
 				}
-				else
-				{
+				else if (goTo == "q") {
+                    gameOver = readYesNoInput("Do you really want to quit the game?[Y/n]", true);
+				}
+				else {
 					ch->display();
-					nextPosition = MapInteractionHelper::readMapLocation(this->map, goTo, "");
+					nextPosition = MapInteractionHelper::convertToCoordinate(this->map, goTo);
 					this->map->movePlayer(nextPosition.row, nextPosition.column);
 					if (nextPosition.row == row && nextPosition.column == col)
 					{

@@ -207,7 +207,7 @@ bool Repository<T>::save(string name, T* entity) {
 
     int currentSize = this->_references->size();
     #ifdef DEBUG
-        logInfo("Repository", "save", "FOR " + referenceFile + ": Start saving entity" + name);
+        logInfo("Repository", "save", "FOR " + referenceFile + ": Start saving entity " + name);
     #endif // DEBUG
 
     if (!this->exists(name)) {

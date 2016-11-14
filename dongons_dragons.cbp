@@ -79,7 +79,6 @@
 		<Unit filename="entity/ItemContainer.h" />
 		<Unit filename="entity/Map.cpp" />
 		<Unit filename="entity/Map.h" />
-		<Unit filename="entity/MapProxy.cpp" />
 		<Unit filename="entity/repo/CharacterRepository.cpp" />
 		<Unit filename="entity/repo/CharacterRepository.h" />
 		<Unit filename="entity/repo/MapRepository.cpp" />
