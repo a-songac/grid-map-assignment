@@ -3,11 +3,14 @@
 //!
 
 #include "ItemContainer.h"
-#include "Enhancement.h"
-#include "Character.h"
+//#include "Enhancement.h"
+//#include "Item.h"
+#include "../controller/ItemEditor.h"
 #include <iostream>
+
 //! default constructor
-Character* c;
+//Character* c;
+vector<Item> ItemContainer::Items;
 ItemContainer::ItemContainer()
 {
 	Items = vector<Item>();
@@ -22,6 +25,7 @@ ItemContainer::ItemContainer( vector<Item> containeritems)
 
 //! method to get the items of the container
 //! @return : return the vector of items contained in the ItemContainer
+
 vector<Item> ItemContainer::getItems()
 {
 	return Items;
@@ -31,21 +35,18 @@ vector<Item> ItemContainer::getItems()
 //! @param anitem : new item to put in the ItemContainer
 void ItemContainer::addItemToBackpack(Item anitem)
 {
-	
 	Items.push_back(anitem);
-
 }
 void ItemContainer::removeItemFromBackpack(Item anitem) {
-	
-	for (size_t i = 0; i < Items.size(); i++){
-		if (Items[i].getName() == anitem.getName()) {
-			Items.erase(Items.begin() + i);
-		}
-	
-	}
 
+	for (size_t i = 0; i < this->Items.size(); i++) {
+		if (this->Items[i].getName() == anitem.getName()) {
+			this->Items.erase(Items.begin() + i);
+		}
+	}
 }
 
+/*
 //! method to return the item of a certain type contained in the ItemContainer
 //! assumption: the container can only contain one element of each type
 //! @param itemType : type of item to extract from the container
@@ -59,27 +60,6 @@ Item* ItemContainer::getItemFromBackpack(string itemType)
 	
 }
 
-void ItemContainer::equipItem(ItemContainer* backpack, string wearItem) {
-	vector<Item> iVec = backpack->getItems();
-	
-	for (size_t i = 0; i < iVec.size(); i++) {
-		string name = iVec[i].getName();
-		if (checkIfItemExists(wearItem, name))
-		{
-			if (validateContainer()) {
-				Items.push_back(iVec[i]);
-				c->updateStatsAtEquip(iVec[i]);
-				cout << "you are now equipped with: " << iVec[i].getName() << endl;
-				backpack->removeItemFromBackpack(iVec[i]);
-				break;
-			}
-		}
-		else {
-			cout << "You cannot equip Item: " << iVec[i].getName()  << endl;
-		}
-		
-	}
-}
 
 void ItemContainer::unequipItem(ItemContainer* backpack, string name) {
 	vector<Item> iVec = this->getItems();
@@ -92,7 +72,7 @@ void ItemContainer::unequipItem(ItemContainer* backpack, string name) {
 		
 			cout << "Item: " <<iVec[i].getName() << " has been successfully unequipped" << endl;
 			backpack->addItemToBackpack(iVec[i]);
-			c->updateStatsAtUnequip(iVec[i]);
+			//c->updateStatsAtUnequip(iVec[i]);
 		}
 		else {
 			if (i + 1 == Items.size()) {
@@ -100,7 +80,7 @@ void ItemContainer::unequipItem(ItemContainer* backpack, string name) {
 			}
 		}
 	}
-}
+
 
 
 bool ItemContainer::checkIfItemExists(string wearItem, string name) {
@@ -111,7 +91,7 @@ bool ItemContainer::checkIfItemExists(string wearItem, string name) {
 
 	return false;
 	
-}
+}*/
 //! method to validate a container, e.g. verify that an ItemContainer only contains a maximum of 1 item of each type (will be used for worn items container)  
 //! @return : true if the Items list is valid according to the rules, false if not
 bool ItemContainer::validateContainer()
@@ -156,9 +136,8 @@ bool ItemContainer::validateContainer()
 	}
 
 }
-
-void ItemContainer::displayItem() {
-
+void ItemContainer::displayItem() 
+{
 	vector<Item> iVec = this->getItems();
 	for (size_t i = 0; i<iVec.size(); ++i) {
 		vector<Enhancement> eVec = iVec[i].getInfluences();
@@ -166,6 +145,18 @@ void ItemContainer::displayItem() {
 		cout << "\tItem Name: " << iVec[i].getName() << endl;
 		for (size_t i = 0; i<eVec.size(); i++) {
 			cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
+		}
+	}
+}
+void ItemContainer::addItemToWornItems(Item anitem)
+{
+	Items.push_back(anitem);
+}
+void ItemContainer::removeItemFromWornItems(Item anitem) {
+
+	for (size_t i = 0; i < this->Items.size(); i++) {
+		if (this->Items[i].getName() == anitem.getName()) {
+			this->Items.erase(Items.begin() + i);
 		}
 	}
 }

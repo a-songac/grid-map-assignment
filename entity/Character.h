@@ -30,12 +30,14 @@
 #include "../core/Subject.h"
 #include "ItemContainer.h"
 #include "Item.h"
-
+#include "../controller/ItemEditor.h"
+//#include "../controller/ItemEditor.h"
 //! Class that implements a character
 class Character: public Subject
 {
 public:
 	Character();
+	~Character();
 	Character(int, int, int, int, int, int);
 	//hit points
 	void hit(int);
@@ -106,10 +108,18 @@ public:
 	//name
 	void setName(std::string name);
 	std::string getName();
-	//destructor
-	~Character();
-	
+
+	void backpackContainer(string);
+	ItemContainer* backpack;
+	ItemContainer* wornItems;
+	ItemEditor* item = new ItemEditor();
+
+	void equipItem(string);
+	void unEquipItem(string);
+	bool checkIfItemExists(string, string);
+	//void Character::unEquipItem(ItemContainer*,string);
 private:
+	vector<Item> items;
 	int lvl;
 	int modifiers[6];
 	int abilityScores[6];

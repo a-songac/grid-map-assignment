@@ -51,17 +51,35 @@ void Character::updateStatsAtEquip(Item equipment) {
 		for (size_t i = 0; i < eVec.size(); i++) {
 
 			if (eVec[i].getType() == "Strength")
-				this->setModStrength(this->abilityScores[0] += eVec[i].getBonus());
-			if (eVec[i].getType() == "Dexterity")
-				this->setModDexterity(this->abilityScores[1] += eVec[i].getBonus());
-			if (eVec[i].getType() == "Intelligence")
-				this->setModIntelligence(this->abilityScores[2] += eVec[i].getBonus());
-			if (eVec[i].getType() == "Charisma")
-				this->setModCharisma(this->abilityScores[3] += eVec[i].getBonus());
+			{
+				this->setStrength(this->getStrength() + eVec[i].getBonus());
+				this->setModStrength(modifier(this->getStrength()));
+			}
+			if (eVec[i].getType() == "Dexterity") 
+			{
+				this->setDexterity(this->getDexterity() + eVec[i].getBonus());
+				this->setModDexterity(modifier(this->getDexterity()));
+			}
+			if (eVec[i].getType() == "Intelligence") 
+			{
+				this->setIntelligence(this->getIntelligence() + eVec[i].getBonus());
+				this->setModIntelligence(modifier(this->getIntelligence()));
+			}
+			if (eVec[i].getType() == "Charisma") 
+			{
+				this->setCharisma(this->getCharisma() + eVec[i].getBonus());
+				this->setModCharisma(modifier(this->getCharisma()));
+			}
 			if (eVec[i].getType() == "Wisdom")
-				this->setModWisdom(this->abilityScores[4] += eVec[i].getBonus());
+			{
+				this->setWisdom(this->getWisdom() + eVec[i].getBonus());
+				this->setModWisdom(modifier(this->getWisdom()));
+			}
 			if (eVec[i].getType() == "Constitution")
-				this->setModConstitution(this->abilityScores[5] += eVec[i].getBonus());
+			{
+				this->setConstitution(this->getConstitution() + eVec[i].getBonus());
+				this->setModConstitution(modifier(this->getConstitution()));
+			}
 			if (eVec[i].getType() == "Armor")
 				this->armorPoints += eVec[i].getBonus();
 			if (eVec[i].getType() == "AtkBonus")
@@ -76,18 +94,36 @@ void Character::updateStatsAtUnequip(Item equipment) {
 
 	vector<Enhancement> eVec = equipment.getInfluences();
 	for (size_t i = 0; i < eVec.size(); i++) {
-		if (eVec[i].getType() == "Strength")
-			this->setModStrength(this->abilityScores[0] -= eVec[i].getBonus());
+		if (eVec[i].getType() == "Strength") 
+		{
+			this->setStrength(this->getStrength() - eVec[i].getBonus());
+			this->setModStrength(modifier(this->getStrength()));
+		}
 		if (eVec[i].getType() == "Dexterity")
-			this->setModDexterity(this->abilityScores[1] -= eVec[i].getBonus());
+		{
+			this->setDexterity(this->getStrength() - eVec[i].getBonus());
+			this->setModDexterity(modifier(this->getDexterity()));
+		}
 		if (eVec[i].getType() == "Intelligence")
-			this->setModIntelligence(this->abilityScores[2] -= eVec[i].getBonus());
+		{
+			this->setIntelligence(this->getIntelligence() - eVec[i].getBonus());
+			this->setModIntelligence(modifier(this->getIntelligence()));
+		}
 		if (eVec[i].getType() == "Charisma")
-			this->setModCharisma(this->abilityScores[3] -= eVec[i].getBonus());
+		{
+			this->setCharisma(this->getCharisma() - eVec[i].getBonus());
+			this->setModCharisma(modifier(this->getCharisma()));
+		}
 		if (eVec[i].getType() == "Wisdom")
-			this->setModWisdom(this->abilityScores[4] -= eVec[i].getBonus());
+		{
+			this->setWisdom(this->getWisdom() - eVec[i].getBonus());
+			this->setModWisdom(modifier(this->getWisdom()));
+		}
 		if (eVec[i].getType() == "Constitution")
-			this->setModConstitution(this->abilityScores[5] -= eVec[i].getBonus());
+		{
+			this->setConstitution(this->getConstitution() - eVec[i].getBonus());
+			this->setModConstitution(modifier(this->getConstitution()));
+		}
 		if (eVec[i].getType() == "Armor")
 			this->armorPoints -= eVec[i].getBonus();
 		if (eVec[i].getType() == "AtkBonus")
@@ -245,7 +281,7 @@ int Character::getAttackBonus()
 {
 	return this->attackB;
 }
-//implementation of a setter method for attack damage
+//! implementation of a setter method for attack damage
 void Character::damageBonus()
 {
 	this->damageB = this->modifiers[0];
@@ -257,9 +293,6 @@ int Character::getDamageBonus()
 {
 	return this->damageB;
 }
-//! Implementation of an equipment method, that enables the user to add equipment per category
-
-
 //! Implementation of the verification of a newly created Character
 //! @return bool value, true of the character is valid (stats should be in the 3-18 range for a new character), false if invalid.
 bool Character::validateNewCharacter()
@@ -364,6 +397,7 @@ bool Character::loadCharacter(string name1)
 		f >> currentHitPoints;
 
 		f.close();
+		Notify();
 		return true;
 	}
 	else
@@ -374,23 +408,76 @@ bool Character::loadCharacter(string name1)
 void Character::update() {
 
 }
-//definition of getter for ability scores
+void Character::equipItem(string itemName)
+{
+	vector<Item> iVec = this->backpack->getItems();
+
+	for (size_t i = 0; i < iVec.size(); i++) {
+		string name = iVec[i].getName();
+		if (checkIfItemExists(itemName, name))
+		{
+			if (ItemContainer::validateContainer()) 
+			{
+				this->items.push_back(iVec[i]);
+				this->wornItems->addItemToWornItems(iVec[i]);
+				this->updateStatsAtEquip(iVec[i]);
+				cout << "you are now equipped with: " << iVec[i].getName() << endl;
+				cout << "your worn Items are: " << endl;
+				this->backpack->removeItemFromBackpack(iVec[i]);
+				break;
+			}
+		}
+		else 
+		{
+			cout << "You cannot equip Item: " << iVec[i].getName() << endl;
+		}
+
+	}
+}
+void Character::unEquipItem(string name) {
+	vector<Item> iVec = this->wornItems->getItems();
+	for (size_t i = 0; i < iVec.size(); ++i)
+	{
+		if (checkIfItemExists(iVec[i].getName(), name))
+		{
+			this->items.erase(items.begin() + i);
+			cout << "Item: " << iVec[i].getName() << " has been successfully unequipped" << endl;
+			this->backpack->addItemToBackpack(iVec[i]);
+			this->updateStatsAtUnequip(iVec[i]);
+		}
+		else {
+			if (i + 1 == items.size()) {
+				cout << "Item: " << iVec[i].getName() << " is not available" << endl;
+			}
+		}
+	}
+}
+bool Character::checkIfItemExists(string wearItem, string name) {
+
+	if (wearItem == name) 
+	{
+		return true;
+	}
+	return false;
+
+}
+void Character::backpackContainer(string backpackItem) {
+	this->backpack = this->item->loadFile(backpackItem);
+}
+
+//ability scores
 void Character::setStrength(int stre) {
 	this->abilityScores[0] = stre;
 }
-
 int Character::getStrength() {
 	return this->abilityScores[0];
 }
-
 void Character::setDexterity(int dex){
 	this->abilityScores[1] = dex;
 }
-
 int Character::getDexterity() {
 	return this->abilityScores[1];
-}
-
+} 
 void Character::setIntelligence(int intel) {
 	this->abilityScores[2] = intel;
 }
@@ -409,13 +496,13 @@ void Character::setCharisma(int cha) {
 int Character::getCharisma() {
 	return this->abilityScores[4];
 }
-
 void Character::setConstitution(int cons) {
 	this->abilityScores[5] = cons;
 }
 int Character::getConstitution() {
 	return this->abilityScores[5];
 }
+//modifier
 void Character::setModStrength(int modStr) {
 	this->modifiers[0] = modStr;
 }
@@ -441,16 +528,16 @@ int Character::getModCharisma() {
 	return this->modifiers[3];
 }
 void Character::setModWisdom(int modWis) {
-	this->abilityScores[4] = modWis;
+	this->modifiers[4] = modWis;
 }
 int Character::getModWisdom() {
-	return this->abilityScores[4];
+	return this->modifiers[4];
 }
 void Character::setModConstitution(int modCons) {
-	this->abilityScores[5] = modCons;
+	this->modifiers[5] = modCons;
 }
 int Character::getModConstitution() {
-	return this->abilityScores[5];
+	return this->modifiers[5];
 }
 
 //! Implementation of Fighter Class. Inherites from the super class Character
@@ -461,7 +548,6 @@ Fighter::Fighter()
 {
 
 }
-
 Character::~Character() {
 
 }

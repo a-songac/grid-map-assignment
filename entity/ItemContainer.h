@@ -19,7 +19,7 @@
 #include <vector>
 #include "Enhancement.h"
 #include "Item.h"
-#include "../entity/Character.h"
+//#include "../entity/Character.h"
 using namespace std;
 
 //! Class that implements an item container
@@ -36,20 +36,24 @@ public:
 	void addItemToBackpack(Item anitem);
 	//method to remove item from backpack
 	void removeItemFromBackpack(Item anitem);
+	//method to add an item to your worn items
+	void addItemToWornItems(Item anitem);
+	//method to remove an item from the worn items
+	void removeItemFromWornItems(Item anitem);
 	// method to get an item from the item container
-	Item* getItemFromBackpack(string itemType);
+	//Item* getItemFromBackpack(string itemType);
 	//equip an item
-	void equipItem(ItemContainer* backpack, string wearItem);
+	//void equipItem(ItemContainer* backpack, string wearItem);
 	//unequip an item
-	void unequipItem(ItemContainer*, string wearItem);
+	//void unequipItem(ItemContainer*, string wearItem);
 	//check if Item exits in the backpack
-	bool checkIfItemExists(string wearItem, string name);
+	//static bool checkIfItemExists(string wearItem, string name);
 	// method to validate container
-	bool validateContainer();
+	static bool validateContainer();
 	void displayItem();
-
+	static vector<Item> Items;
 private:
-	vector<Item> Items;
+	
 };
 #endif
 

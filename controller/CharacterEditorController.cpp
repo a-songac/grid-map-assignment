@@ -98,7 +98,7 @@ Character* CharacterEditorController::selectCharacter() {
 	string name1;
 	bool confirm1 = false;
 	Character* character = new Character();;
-	CharacterView* cv = new CharacterView();
+	CharacterView* cv = new CharacterView(character);
 	srand(static_cast<unsigned int>(time(0)));
 	vector<string>* characterReferences = CharacterRepository::instance()->listAll();
 
@@ -116,6 +116,7 @@ Character* CharacterEditorController::selectCharacter() {
 			character = CharacterRepository::instance()->getEntity(index-1);
 //			cv->display();
 			character->levelUp();
+
 
 			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
 			if (confirm1) {
