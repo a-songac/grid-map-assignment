@@ -1,5 +1,5 @@
-//! @file 
-//! @brief Implementation file for the Item class  
+//! @file
+//! @brief Implementation file for the Item class
 //!
 
 #include <iostream>
@@ -16,7 +16,7 @@ Item::Item()
 //! @param influences : vector containing all the characteristics influenced by the item
 Item::Item(string type, vector<Enhancement> influences,string type_name)
 {
-	// ***todo***: this constructor should verify that an new item of a certain type only 
+	// ***todo***: this constructor should verify that an new item of a certain type only
 	// enhances a character statistic valid for this item type
 	string iType = type;
 	bool isValid = true;
@@ -141,7 +141,7 @@ bool Item::validateItem()
 		}
 		else if (iType == "Helmet") {
 			if (eType == "Intelligence" || eType == "Wisdom" || eType == "Armor") {
-				
+
 				continue;
 			}
 			else {
@@ -206,3 +206,18 @@ bool Item::validateItem()
 
 	return true;
 }
+
+
+
+
+void Item::displayItem()
+{
+    vector<Enhancement> eVec = this->getInfluences();
+    cout << "Item Type: " << this->getType() << endl;
+    cout << "\tItem Name: " << this->getName() << endl;
+    for (size_t i = 0; i<eVec.size(); i++) {
+        cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
+    }
+}
+
+

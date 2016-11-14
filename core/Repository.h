@@ -40,7 +40,7 @@
 template <class T> class Repository {
     public:
 
-        const static int REPO_CAPACITY = 30;
+        const static int REPO_CAPACITY = 100;
         ~Repository();
 
         std::vector<std::string>* listAll();

@@ -7,15 +7,17 @@
 //
 
 #include <iostream>
+#include <random>
+#include <ctime>
+#include <algorithm>
+#include <fstream>
+
 #include "Character.h"
 #include "../core/Subject.h"
 #include "../entity/Dice.h"
 #include "../view/CharacterView.h"
-#include <random>
-#include <ctime>
-#include <algorithm>
-//#include <windows.h>
-#include <fstream>
+#include "repo/ItemRepository.h"
+
 
 using namespace std;
 using namespace d20Logic;
@@ -55,17 +57,17 @@ void Character::updateStatsAtEquip(Item equipment) {
 				this->setStrength(this->getStrength() + eVec[i].getBonus());
 				this->setModStrength(modifier(this->getStrength()));
 			}
-			if (eVec[i].getType() == "Dexterity") 
+			if (eVec[i].getType() == "Dexterity")
 			{
 				this->setDexterity(this->getDexterity() + eVec[i].getBonus());
 				this->setModDexterity(modifier(this->getDexterity()));
 			}
-			if (eVec[i].getType() == "Intelligence") 
+			if (eVec[i].getType() == "Intelligence")
 			{
 				this->setIntelligence(this->getIntelligence() + eVec[i].getBonus());
 				this->setModIntelligence(modifier(this->getIntelligence()));
 			}
-			if (eVec[i].getType() == "Charisma") 
+			if (eVec[i].getType() == "Charisma")
 			{
 				this->setCharisma(this->getCharisma() + eVec[i].getBonus());
 				this->setModCharisma(modifier(this->getCharisma()));
@@ -94,7 +96,7 @@ void Character::updateStatsAtUnequip(Item equipment) {
 
 	vector<Enhancement> eVec = equipment.getInfluences();
 	for (size_t i = 0; i < eVec.size(); i++) {
-		if (eVec[i].getType() == "Strength") 
+		if (eVec[i].getType() == "Strength")
 		{
 			this->setStrength(this->getStrength() - eVec[i].getBonus());
 			this->setModStrength(modifier(this->getStrength()));
@@ -416,7 +418,7 @@ void Character::equipItem(string itemName)
 		string name = iVec[i].getName();
 		if (checkIfItemExists(itemName, name))
 		{
-			if (ItemContainer::validateContainer()) 
+			if (ItemContainer::validateContainer())
 			{
 				this->items.push_back(iVec[i]);
 				this->wornItems->addItemToWornItems(iVec[i]);
@@ -427,7 +429,7 @@ void Character::equipItem(string itemName)
 				break;
 			}
 		}
-		else 
+		else
 		{
 			cout << "You cannot equip Item: " << iVec[i].getName() << endl;
 		}
@@ -454,7 +456,7 @@ void Character::unEquipItem(string name) {
 }
 bool Character::checkIfItemExists(string wearItem, string name) {
 
-	if (wearItem == name) 
+	if (wearItem == name)
 	{
 		return true;
 	}
@@ -477,7 +479,7 @@ void Character::setDexterity(int dex){
 }
 int Character::getDexterity() {
 	return this->abilityScores[1];
-} 
+}
 void Character::setIntelligence(int intel) {
 	this->abilityScores[2] = intel;
 }
@@ -551,3 +553,50 @@ Fighter::Fighter()
 Character::~Character() {
 
 }
+
+
+// /////////////////////////////////////////
+// WORN ITEMS & BACKPACK SECTION
+// /////////////////////////////////////////
+
+void Character::displayItemsHelper(vector<string>* items) {
+
+    string name;
+    Item* item;
+
+    for (size_t i = 0; i < items->size(); i++) {
+        name = items->at(i);
+        item = ItemRepository::instance()->getEntity(name);
+        item->displayItem();
+    }
+
+}
+
+void Character::displayBackpack() {
+    cout << "\n\n********** Backpack **********" << endl;
+    displayItemsHelper(this->backpack);
+}
+
+void Character::displayWornItems() {
+    cout << "\n\n********** Worn Items **********" << endl;
+    displayItemsHelper(this->wornItems);
+}
+
+Item* Character::getItemHelper(vector<string>* items, string name) {
+
+    for (size_t i = 0; i < items->size(); i++) {
+        if (name == items->at(i)) {
+            return ItemRepository::instance()->getEntity(name);
+        }
+    }
+    return nullptr;
+}
+
+Item* Character::getBackpackItem(string name) {
+    return getItemHelper(this->backpack, name);
+}
+
+Item* Character::getWornItemsItem(string name) {
+    return getItemHelper(this->wornItems, name);
+}
+

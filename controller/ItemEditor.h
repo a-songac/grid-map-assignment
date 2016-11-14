@@ -16,10 +16,11 @@ class ItemEditor
 public:
 	ItemEditor();
 	~ItemEditor();
-	ItemContainer* createItem();
-	ItemContainer* loadFile(string load);
-	void saveFile(string name);
-	static void readItem(ItemContainer*, string name, ItemContainer*);
+	void editorAlternatives();
+	void createItem();
+
+	// TODO is it still needed
+//	static void readItem(ItemContainer*, string name, ItemContainer*);
 
 private:
 	int i = 0;

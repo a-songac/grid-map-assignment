@@ -1,11 +1,13 @@
 
-#include "ItemEditor.h"
-#include "../entity/Enhancement.h"
-#include "../entity/ItemContainer.h"
 #include <vector>
 #include <string>
 #include <fstream>
+
+#include "ItemEditor.h"
+#include "../entity/Enhancement.h"
+#include "../entity/ItemContainer.h"
 #include "../utils/IOUtils.h"
+#include "../entity/repo/ItemRepository.h"
 
 using namespace std;
 
@@ -15,26 +17,53 @@ ItemEditor::ItemEditor()
 
 }
 
-ItemContainer* ItemEditor::createItem() {
+void ItemEditor::editorAlternatives() {
 
-	ItemContainer* backpack = new ItemContainer();
+    bool quit = false;
+
+    cout << "\n\n************* Item Editor *************" << endl << endl;
+
+    do {
+    cout << "Please select an option:" << endl;
+    cout << "1. Create an item" << endl;
+    cout << "2. Edit an existing item" << endl;
+    cout << "3. Exit" << endl;
+
+    int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
+
+        switch (choice) {
+            case 1:
+                this->createItem();
+                break;
+            case 2:
+                cout << "To be implemented" << endl;
+                break;
+            case 3:
+                quit = true;
+        }
+
+    } while (!quit);
+}
+
+
+void ItemEditor::createItem() {
+
+	cout << "\n************* Create Itenm *************" << endl << endl;
 
 	do {
 
 
 		cout << "Please chose a number from the list below :" << endl;
-		cout << "1-Create an Armor" << endl;
-		cout << "2-Create a Ring " << endl;
-		cout << "3-Create a Helmet " << endl;
-		cout << "4-Create Boots " << endl;
-		cout << "5-Create a Belt" << endl;
-		cout << "6-Create a Weapon " << endl;
-		cout << "7-Create a Shield" << endl;
-		cout << "--------------------------" << endl;
-		cout << "8- Load an item " << endl;
-		cout << "9-Save item(s)" << endl;
+		cout << "1. Create an Armor" << endl;
+        cout << "2. Create a Ring " << endl;
+        cout << "3. Create a Helmet " << endl;
+        cout << "4. Create Boots " << endl;
+        cout << "5. Create a Belt" << endl;
+        cout << "6. Create a Weapon " << endl;
+        cout << "7. Create a Shield" << endl;
+        cout << "8. Exit" << endl;
 
-		cin >> choice;
+		choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 8);
 
 		bool intelligence =false, wisdom = false, armor = false, strength = false, constitution = false, charisma = false, dexterity = false, atkBonus = false, atkDamage = false;
 
@@ -45,7 +74,7 @@ ItemContainer* ItemEditor::createItem() {
 			cout << "What is the name of your Armor" << endl;
 			cin >> itemName;
 
-			do 
+			do
 			{
 				cout << "Please enter the type of ability you want to enhance for the Armor (ArmorC)" << endl;
 				cin >> enhancementType;
@@ -53,7 +82,7 @@ ItemContainer* ItemEditor::createItem() {
 			if (enhancementType == "ArmorC")
 				armor = true;
 			typeEnhancements.push_back(enhancementType);
-			do 
+			do
 			{
 				cout << "Please enter the Armor enhancement level you want ranging from 1 to 5 " << endl;
 				cin >> armorBonus;
@@ -67,9 +96,9 @@ ItemContainer* ItemEditor::createItem() {
 			itemType = "Ring";
 			cout << "What is the name of your Ring" << endl;
 			cin >> itemName;
-			do 
+			do
 			{
-				do 
+				do
 				{
 					cout << "please enter the type of ability you want to enhance for the Ring (";
 					if (armor == false)
@@ -97,7 +126,7 @@ ItemContainer* ItemEditor::createItem() {
 				else if (enhancementType == "Charisma")
 					charisma = true;
 				typeEnhancements.push_back(enhancementType);
-				do 
+				do
 				{
 					cout << "Please enter the Ring enhancement level you want, ranging from 1 to 5" << endl;
 					cin >> ringBonus;
@@ -123,16 +152,16 @@ ItemContainer* ItemEditor::createItem() {
 			itemType = "Helmet";
 			cout << "What is the name of your Helmet" << endl;
 			cin >> itemName;
-			do 
+			do
 			{
-				do 
+				do
 				{
 					cout << "please enter the type of ability you want to enhance for the Helmet  (";
 					if (intelligence == false)
 						cout << "Intelligence-";
 					if (wisdom == false)
 						cout << "Wisdom-";
-					if (armor == false) 
+					if (armor == false)
 						cout << "ArmorC";
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -145,7 +174,7 @@ ItemContainer* ItemEditor::createItem() {
 				else if (enhancementType == "ArmorC")
 					armor = true;
 				typeEnhancements.push_back(enhancementType);
-				do 
+				do
 				{
 					cout << "Please enter the Helmet enhancement level you want ranging from 1 to 5 " << endl;
 					cin >> helmetBonus;
@@ -174,7 +203,7 @@ ItemContainer* ItemEditor::createItem() {
 					cout << "please enter the type of ability you want to enhance Boots(";
 					if (armor == false)
 						cout << "ArmorC-";
-					if (dexterity == false) 
+					if (dexterity == false)
 						cout << "Dexterity";
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -185,7 +214,7 @@ ItemContainer* ItemEditor::createItem() {
 					else if (enhancementType == "Dexterity")
 						dexterity = true;
 					typeEnhancements.push_back(enhancementType);
-					do 
+					do
 					{
 						cout << "Please enter the Boots enhancement level you want, ranging from 1 to 5" <<  endl;
 						cin >> bootsBonus;
@@ -213,9 +242,9 @@ ItemContainer* ItemEditor::createItem() {
 			do {
 				do {
 					cout << "please enter the type of ability you want to enhance for Belt (";
-					if (constitution == false) 
+					if (constitution == false)
 						cout << "Consitution-";
-					if (strength == false) 
+					if (strength == false)
 						cout << "Strength";
 					cout << ")" << endl;
 					cin >> enhancementType;
@@ -248,12 +277,12 @@ ItemContainer* ItemEditor::createItem() {
 			itemType = "Weapon";
 			cout << "What is the name of your Weapon" << endl;
 			cin >> itemName;
-			do 
+			do
 			{
-				do 
+				do
 				{
 					cout << "please enter the type of ability you want to enhance for the Weapon(";
-					if (atkBonus == false) 
+					if (atkBonus == false)
 						cout << "AtkBonus-";
 				    if (atkDamage == false)
 						cout << "AtkDamage";
@@ -265,7 +294,7 @@ ItemContainer* ItemEditor::createItem() {
 				if (enhancementType == "AtkDamage")
 					atkDamage = true;
 				typeEnhancements.push_back(enhancementType);
-				do 
+				do
 				{
 					cout << "Please enter the Sword enhancement level you want ranging from 1 to 5 " << endl;
 					cin >> swordBonus;
@@ -285,15 +314,15 @@ ItemContainer* ItemEditor::createItem() {
 			itemType = "Shield";
 			cout << "What is the name of your Shield" << endl;
 			cin >> itemName;
-			do 
+			do
 			{
-				do 
+				do
 				{
 					cout << "please enter the type of ability you want to enhance for shield (ArmorC) " << endl;
 					cin >> enhancementType;
 				} while (enhancementType != "ArmorC");
 				typeEnhancements.push_back(enhancementType);
-				do 
+				do
 				{
 					cout << "Please enter the Shield enhancement level you want ranging from 1 to 5 " << endl;
 					cin >> shieldBonus;
@@ -302,158 +331,92 @@ ItemContainer* ItemEditor::createItem() {
 			} while (answer == "y");
 
 		}
-		else if (choice == 8)
+//		else if (choice == 8)
+//		{
+//			cout << "Please enter the name of the file you want to load " << endl;
+//			cin >> load;
+//			backpack = loadFile(load);
+//			break;
+//		}
+//		else if (choice == 9)
+//		{
+//			cout << "enter the save name " << endl;
+//			cin >> save;
+//
+//			saveFile(save);
+//			break;
+//		}
+		else if ( choice == 8)
 		{
-			cout << "Please enter the name of the file you want to load " << endl;
-			cin >> load;
-			backpack = loadFile(load);
 			break;
-		}
-		else if (choice == 9)
-		{
-			cout << "enter the save name " << endl;
-			cin >> save;
-
-			saveFile(save);
-			break;
-		}
-		else if (choice != 1 || choice != 2 || choice != 3 || choice != 4 || choice != 5 || choice != 6 || choice != 7 || choice != 8 || choice != 9)
-		{
-			cout << "Goodbye" << endl;
 
 		}
 
 		for(size_t i = 0; i < typeEnhancements.size(); ++i){
 			Enhancements.push_back(Enhancement(typeEnhancements.at(i), bonus.at(i)));
 		}
-		while(enhancementType.empty()){
+		while(!enhancementType.empty()){
 			typeEnhancements.pop_back();
 			bonus.pop_back();
 		}
-		
-		Item item(itemType, Enhancements, itemName);
-	//	backpack->addItemToBackpack(item);
-		vector<Item> iVec = backpack->getItems();
-		for (size_t i = 0; i < iVec.size(); ++i) {
-		vector<Enhancement> eVec = iVec[i].getInfluences();
-			cout << "Item Type: " << iVec[i].getType() << endl;
-			cout << "\tItem Name: " << iVec[i].getName() << endl;
-			for (size_t i = 0; i<eVec.size(); i++) {
-				cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
-			}
-		}
-		All_items.push_back(item);
+
+		Item* item = new Item(itemType, Enhancements, itemName);
+
+        // TODO: Extract in display method in item class
+        // START EXTRACTION
+		vector<Enhancement> eVec = item->getInfluences();
+        cout << "Item Type: " << item->getType() << endl;
+        cout << "\tItem Name: " << item->getName() << endl;
+        for (size_t i = 0; i<eVec.size(); i++) {
+            cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
+        }
+        // END EXTRACTION
+
 		while (!Enhancements.empty())
 		{
 			Enhancements.pop_back();
 		}
 
-		cout << "Would you like to create an other item or to save (y/n)?" << endl;
-		cin >> quit;
-
-	} while (quit == "y" || quit == "Y");
-
-	return backpack;
-}
-
-//saving
-void ItemEditor::saveFile(string name)
-{
-	ofstream saveFile(name+".txt", std::ios::out);
-	vector<Enhancement> eVec;
-
-	for (size_t i = 0; i < All_items.size(); ++i)
-	{
-		saveFile << All_items[i].getType() << endl;
-		saveFile << All_items[i].getName() << endl;
-		eVec = All_items[i].getInfluences();
-
-		for (size_t i = 0; i < eVec.size(); i++)
-		{
-			saveFile << eVec[i].getType() << endl;
-			saveFile << eVec[i].getBonus() << endl;
-
+		if (readYesNoInput("Would you like to save your newly created item?[Y/n]: ", true)) {
+            ItemRepository::instance()->save(item->getName(), item);
 		}
-	}
-	saveFile.close();
+
+	} while (readYesNoInput("Would you like to create another item?[Y/n]: ", true));
+
 }
 
-//loading
-ItemContainer* ItemEditor::loadFile(string load)
-{
-	ItemContainer* backpack = new ItemContainer();
-	std::ifstream f(load, std::ios::in);
 
-	if (f.is_open())
-	{
-		int bonus;
-		string getBonus;
-		int i = 0;
-
-		getline(f, itemType);
-		itemType = itemType;
-		do {
-
-			getline(f, itemName);
-			getline(f, enhancementType);
-
-			while (enhancementType != "Armor" && enhancementType != "Ring"  && enhancementType != "Helmet" && enhancementType != "Boots" && enhancementType!="Belt" && enhancementType!="Weapon" && enhancementType!="Shield" && enhancementType !="")
-			{
-				getline(f, getBonus);
-				bonus = std::stoi(getBonus);
-				Enhancements.push_back(Enhancement(enhancementType, bonus));
-				getline(f, enhancementType);
-				i++;
-			}
-			i = 0;
-
-			Item item(itemType, Enhancements, itemName);
-			while (!Enhancements.empty())
-			{
-				Enhancements.pop_back();
-			}
-
-			backpack->addItemToBackpack(item);
-			cout << item.getType() << " added to Backpack" << endl;
-			itemType = enhancementType;
-		} while (!f.eof());
-		cout << "Items from " << load << " have been loaded successfully" << endl;
-		return backpack;
-
-
-	}
-	f.close();
-	return nullptr;
-}
 //destructor
 ItemEditor::~ItemEditor()
 {
 
 }
 
-void ItemEditor::readItem(ItemContainer* backpack, string name, ItemContainer* wornItems) {
-	
-	string equipOrGoBack, itemToEquip;
-	if (name == "bp") {
-		//backpack->displayItem();
-		cout << "1 - Equip an item" << endl;
-		cout << "2 - Go back to game" << endl;
-		cin >> equipOrGoBack;
-		readIntegerInputWithRange(equipOrGoBack, 2, 1, 2);
-		if (equipOrGoBack == "1")
-		{
-			cout << "Please enter the name of the Item you wish to equip >> ";
-			cin >> itemToEquip;
-			//wornItems->equipItem(backpack, itemToEquip);
-		}
-		else if (equipOrGoBack == "2"){
-			
-		}
+// TODO: is it still needed?
 
-	}
-	if (name == "e") {
-		cout << "please enter the name of the Item you wish to equip >> ";
-		//wornItems->displayItem();
-	}
-}
+//void ItemEditor::readItem(ItemContainer* backpack, string name, ItemContainer* wornItems) {
+//
+//	string equipOrGoBack, itemToEquip;
+//	if (name == "bp") {
+//		//backpack->displayItem();
+//		cout << "1 - Equip an item" << endl;
+//		cout << "2 - Go back to game" << endl;
+//		cin >> equipOrGoBack;
+//		readIntegerInputWithRange(equipOrGoBack, 2, 1, 2);
+//		if (equipOrGoBack == "1")
+//		{
+//			cout << "Please enter the name of the Item you wish to equip >> ";
+//			cin >> itemToEquip;
+//			//wornItems->equipItem(backpack, itemToEquip);
+//		}
+//		else if (equipOrGoBack == "2"){
+//
+//		}
+//
+//	}
+//	if (name == "e") {
+//		cout << "please enter the name of the Item you wish to equip >> ";
+//		//wornItems->displayItem();
+//	}
+//}
 

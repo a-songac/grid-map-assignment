@@ -110,13 +110,25 @@ public:
 	std::string getName();
 
 	void backpackContainer(string);
-	ItemContainer* backpack;
-	ItemContainer* wornItems;
+//	ItemContainer* backpack;
+//	ItemContainer* wornItems;
 	ItemEditor* item = new ItemEditor();
 
 	void equipItem(string);
 	void unEquipItem(string);
 	bool checkIfItemExists(string, string);
+
+	vector<std::string>* backpack;
+	vector<std::string>* wornItems;
+
+	void displayBackpack();
+	void displayWornItems();
+	void displayItemsHelper(std::vector<string>* items);
+	Item* getBackpackItem(std::string name);
+	Item* getWornItemsItem(std::string name);
+	Item* getItemHelper(std::vector<string>* items, std::string name);
+
+
 	//void Character::unEquipItem(ItemContainer*,string);
 private:
 	vector<Item> items;
@@ -128,6 +140,7 @@ private:
 	int armorPoints;
 	int currentHitPoints = 0;
 	std::string name;
+
 
 
 };
