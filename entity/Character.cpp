@@ -413,8 +413,13 @@ bool Character::loadCharacter(string name1)
 		return false;
 	}
 }
+// TODO Is that needed?
 void Character::update() {
 
+}
+
+void Character::display() {
+    Notify();
 }
 void Character::equipItem(string itemName)
 {
