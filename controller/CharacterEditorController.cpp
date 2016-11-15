@@ -1,16 +1,16 @@
-#include "CharacterEditorController.h"
-#include "../entity/Character.h"
-#include "../view/CharacterView.h"
-#include "../entity/ItemContainer.h"
-#include "ItemEditor.h"
 #include <iostream>
 #include <random>
 #include <ctime>
 #include <algorithm>
 #include <string>
-#include "../utils/IOUtils.h"
-#include "../entity/repo/CharacterRepository.h"
 
+#include "../entity/repo/CharacterRepository.h"
+#include "CharacterEditorController.h"
+#include "../entity/Character.h"
+#include "../view/CharacterView.h"
+#include "../entity/ItemContainer.h"
+#include "../utils/IOUtils.h"
+#include "ItemEditor.h"
 
 
 void CharacterEditorController::createCharacter() {

@@ -3,8 +3,6 @@
 //!
 
 #include "ItemContainer.h"
-//#include "Enhancement.h"
-//#include "Item.h"
 #include "../controller/ItemEditor.h"
 #include <iostream>
 

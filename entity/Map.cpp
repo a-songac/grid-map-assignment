@@ -1,13 +1,11 @@
 #include <iostream>
+
 #include "Map.h"
 #include "../service/MapValidator.h"
 #include "../utils/ArrayUtils.h"
 #include "../view/MapView.h"
 
-
 using namespace std;
-
-
 Map::Map() {
     height = 7;
     width = 7;

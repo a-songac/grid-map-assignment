@@ -1,8 +1,9 @@
+#include <iostream>
+#include <iomanip>
 
 #include "CharacterView.h"
 #include "../entity/Character.h"
-#include <iostream>
-#include <iomanip>
+
 using namespace std;
 
 CharacterView::CharacterView() {

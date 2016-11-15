@@ -6,6 +6,7 @@
 #include "../entity/repo/MapRepository.h"
 #include "CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
+
 void EditorFacadeController::editorMenu() {
 
     bool editorLoop = true;
