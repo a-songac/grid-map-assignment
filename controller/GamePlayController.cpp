@@ -20,6 +20,9 @@
 #include "../controller/CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
 
+using namespace std;
+
+
 GamePlayController::GamePlayController(): level(1), map(nullptr) {}
 
 void GamePlayController::newGame() {
@@ -65,16 +68,14 @@ void GamePlayController::selectMap() {
 
 
 void GamePlayController::startGame() {
-	string load,goTo, itemNameEquip, itemNameUnequip;
+
+	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
-	Character* character = new Character();
-	CharacterView* characterView = new CharacterView(character);
-	CharacterEditorController* selectC = new CharacterEditorController();
+	Character* character;
 
-	character = selectC->selectCharacter();
+	character = CharacterEditorController::selectCharacter();
 
-	load = readStringInput("Please enter the name of the file which contains your item: ", "");
-	//character->backpack->push_back("a");
+    cout << endl << endl << "********** GET READY **********" << endl;
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
 	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;

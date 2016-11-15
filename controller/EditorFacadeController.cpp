@@ -183,7 +183,7 @@ void EditorFacadeController::editorMenu() {
         } // END Campaign editor
         else if(eChoice == 3){
 
-            CharacterEditorController::createCharacter();
+            CharacterEditorController::selectAction();
         }
 
         else if(eChoice == 4){

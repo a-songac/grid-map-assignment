@@ -22,6 +22,12 @@
 using namespace std;
 using namespace d20Logic;
 
+Character::Character()
+{
+    this ->backpack = new vector<string>();
+    this ->wornItems = new vector<string>();
+}
+
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -44,6 +50,9 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	abilityScores[5] = constitution;
 
 	currentHitPoints = 10;
+
+	this ->backpack = new vector<string>();
+    this ->wornItems = new vector<string>();
 
 
 }
@@ -329,10 +338,7 @@ void Character::hit(int damage)
 {
 	currentHitPoints = currentHitPoints - damage;
 }
-Character::Character()
-{
 
-}
 void Character::printAbilityScores() {
 
 	Notify();
@@ -431,7 +437,7 @@ void Character::equipItem(string itemName)
 		}
 	}
 }
-		
+
 void Character::unequipItem(string itemName) {
 
 	for (size_t i = 0; i < this->wornItems->size(); i++)
@@ -498,7 +504,7 @@ bool Character::validateContainer(vector<string>* wornItems)
 		}
 	}
 
-	if (helmetCtr>0 || armorCtr>0 || shieldCtr>0 || ringCtr>0 || beltCtr>0 || bootsCtr>0 || weaponCtr>0) {
+	if (helmetCtr>1 || armorCtr>1 || shieldCtr>1 || ringCtr>1 || beltCtr>1 || bootsCtr>1 || weaponCtr>1) {
 		return false;
 	}
 	else {
@@ -668,5 +674,21 @@ Item* Character::getBackpackItem(string name) {
 
 Item* Character::getWornItemsItem(string name) {
     return getItemHelper(this->wornItems, name);
+}
+
+bool Character::hasItemInBackpack(string name) {
+    return hasItemHelper(this->backpack, name);
+}
+bool Character::isWearingItem(string name) {
+    return hasItemHelper(this->wornItems, name);
+}
+bool Character::hasItemHelper(vector<string>* items, string name) {
+
+    for (size_t i = 0; i < items->size(); i++) {
+        if (name == items->at(i)) {
+            return true;
+        }
+    }
+    return false;
 }
 

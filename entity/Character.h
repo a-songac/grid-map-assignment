@@ -108,12 +108,12 @@ public:
 	//name
 	std::string getName();
 	void setName(std::string name);
-	
-	void Character::removeItemHelper(vector<string>* item, string itemName);
-	void Character::removeItemFromBackpack(std::string);
-	void Character::removeItemFromWornItems(string itemName);
+
+	void removeItemHelper(vector<string>* item, string itemName);
+	void removeItemFromBackpack(std::string);
+	void removeItemFromWornItems(string itemName);
 	//validate worn Items
-	bool Character::validateContainer(vector<std::string>*);
+	bool validateContainer(vector<std::string>*);
 	//equip and unequip
 	void equipItem(string);
 	void unequipItem(string);
@@ -130,6 +130,10 @@ public:
 	Item* getItemHelper(std::vector<string>* items, std::string name);
 	Item* getBackpackItem(std::string name);
 	Item* getWornItemsItem(std::string name);
+
+	bool hasItemInBackpack(std::string itemName);
+	bool isWearingItem(std::string itemName);
+	bool hasItemHelper(std::vector<string>* items, std::string name);
 
 
 

@@ -36,7 +36,7 @@ public:
 	//method to validate an item
 	bool validateItem();
 
-	void Item::displayItem();
+	void displayItem();
 private:
 	string types;
 	vector<Enhancement> influence;

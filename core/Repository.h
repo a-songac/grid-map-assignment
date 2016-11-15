@@ -48,7 +48,7 @@ template <class T> class Repository {
         bool save(std::string name, T* entity);
         bool exists(std::string name);
         T* getEntity(std::string name);
-        T* getEntity(int index);
+        T* getEntity(size_t index);
         bool remove(std::string name);
         T* find(std::string name);
 
@@ -246,7 +246,7 @@ T* Repository<T>::getEntity(std::string name) {
 }
 
 template <class T>
-T* Repository<T>::getEntity(int index) {
+T* Repository<T>::getEntity(size_t index) {
 
     T* entity;
     string fileName = this->_references->at(index);
