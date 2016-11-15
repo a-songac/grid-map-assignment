@@ -75,6 +75,14 @@ void GamePlayController::startGame() {
 
 	character = CharacterEditorController::selectCharacter();
 
+
+	// //////////////////////////////
+	// TMEPORARY
+	// ////////////////////////////////
+    CharacterEditorController::initializeBackpack(character);
+    // END TEMPORARY
+
+
     cout << endl << endl << "********** GET READY **********" << endl;
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
