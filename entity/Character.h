@@ -62,7 +62,7 @@ public:
 	int getAttackDamage();
 	void setAttackDamage(int);
 	//load
-	bool saveCharacter(std::string name);
+	bool saveCharacter(std::string name ,ItemContainer *backpack);
 	bool loadCharacter(std::string name);
 	//update
 	void update();

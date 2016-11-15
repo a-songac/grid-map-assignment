@@ -40,6 +40,8 @@ void CharacterEditorController::createCharacter() {
 		cout << "generating your ability scores....." << endl;
 		Character(character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores(),
         character->genAbilityScores(), character->genAbilityScores(), character->genAbilityScores());
+		
+		
 
 	}
 	else if (abilityScore == 2)

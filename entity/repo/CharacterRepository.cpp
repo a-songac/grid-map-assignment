@@ -100,6 +100,7 @@ void CharacterRepository::updateRepoReference() {
 bool CharacterRepository::save(Character* character) {
 
     string characterName = character->getName();
+	ItemContainer *backpack = new ItemContainer();
     CharacterProxy* proxy = this->find(characterName);
     if (nullptr == proxy) {
 
@@ -108,7 +109,7 @@ bool CharacterRepository::save(Character* character) {
         this->updateRepoReference();
     }
 
-    return character->saveCharacter(characterName);
+    return character->saveCharacter(characterName, backpack);
 }
 
 /// Work with proxy since finding a character does not mean we will need it.  To be discussed

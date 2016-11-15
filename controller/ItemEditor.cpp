@@ -20,6 +20,7 @@ string name;
 string itemName;
 string answer, quit;
 ItemContainer* backpack = new ItemContainer();
+
 ItemEditor::ItemEditor()
 {
 
@@ -27,7 +28,8 @@ ItemEditor::ItemEditor()
 
 ItemContainer* ItemEditor::createItem() {
 
-	ItemContainer* backpack = new ItemContainer();
+	
+	
 
 	do {
 
@@ -43,6 +45,7 @@ ItemContainer* ItemEditor::createItem() {
 		cout << "--------------------------" << endl;
 		cout << "8- Load an item " << endl;
 		cout << "9-Save item(s)" << endl;
+		cout << "10-Delete an item already created " << endl;
 
 		cin >> choice;
 
@@ -240,7 +243,7 @@ ItemContainer* ItemEditor::createItem() {
 			armor = false;
 			dexterity = false;
 
-
+			
 		}
 		else if (choice == 5)
 		{
@@ -364,7 +367,10 @@ ItemContainer* ItemEditor::createItem() {
 
 			saveFile(save);
 			break;
+		
 		}
+		
+		
 		else if (choice != 1 || choice != 2 || choice != 3 || choice != 4 || choice != 5 || choice != 6 || choice != 7 || choice != 8 || choice != 9)
 		{
 			cout << "Goodbye" << endl;
@@ -386,7 +392,8 @@ ItemContainer* ItemEditor::createItem() {
 		Item item(itemType, Enhancements, itemName);
 		backpack->addItemToBackpack(item);
 
-		vector<Item> iVec = backpack->getItems();
+		
+		vector<Item>  iVec = backpack->getItems();
 
 		for (size_t i = 0; i < iVec.size(); ++i) {
 		vector<Enhancement> eVec = iVec[i].getInfluences();
@@ -405,6 +412,7 @@ ItemContainer* ItemEditor::createItem() {
 
 		cout << "Would you like to create an other item or to save (y/n)?" << endl;
 		cin >> quit;
+		
 
 
 	} while (quit == "y" || quit == "Y");
@@ -439,7 +447,7 @@ void ItemEditor::saveFile(string name)
 //loading
 ItemContainer* ItemEditor::loadFile(string load)
 {
-	std::ifstream f(load, std::ios::in);
+	std::ifstream f(load+".txt", std::ios::in);
 
 	if (f.is_open())
 	{
@@ -487,6 +495,8 @@ ItemEditor::~ItemEditor()
 {
 
 }
+
+
 
 void ItemEditor::readItem(ItemContainer* backpack, string name, ItemContainer* wornItems) {
 	

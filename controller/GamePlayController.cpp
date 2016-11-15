@@ -102,7 +102,7 @@ void GamePlayController::startGame() {
         Coordinate nextPosition;
 		Coordinate exitDoor = this->map->getExitDoorCoordinate();
 
-		Coordinate exitDoor = this->map->getExitDoorCoordinate();
+		
 
 		int col = exitDoor.column;
 		int row = exitDoor.row;

@@ -9,6 +9,7 @@
 #include <iostream>
 #include "Character.h"
 #include "../core/Subject.h"
+#include "../entity/ItemContainer.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
@@ -24,6 +25,7 @@ int attackB;
 int armorPoints;
 int currentHitPoints = 0;
 int Character::lvl;
+
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -295,15 +297,17 @@ void Character::printAbilityScores() {
 
 	this->notify();
 }
-bool Character::saveCharacter(string name)
+bool Character::saveCharacter(string name ,ItemContainer *backpack)
 {
 	std::ofstream f(name+".txt", std::ios::out);
+	
+	vector <Item> Ivec = backpack->getItems();
 
 	if (f.is_open())
 	{
 
 
-			f << lvl << endl
+		f << lvl << endl
 			<< abilityScores[0] << endl
 			<< abilityScores[1] << endl
 			<< abilityScores[2] << endl
@@ -319,8 +323,19 @@ bool Character::saveCharacter(string name)
 			<< armorPoints << endl
 			<< attackD << endl
 			<< attackB << endl
-			<< currentHitPoints << endl;
-
+			<< currentHitPoints << endl
+			<< "Item that are in the backpack:" << endl;
+		for (size_t i = 0; i < Ivec.size(); i++) {
+			string name = Ivec[i].getName();
+			string type = Ivec[i].getType();
+			f << name << endl
+				<< type << endl;
+		}
+		
+		
+		
+			
+			
 
 		f.close();
 		return true;
