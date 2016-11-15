@@ -112,7 +112,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		}
 		if (eVec[i].getType() == "Dexterity")
 		{
-			this->setDexterity(this->getStrength() - eVec[i].getBonus());
+			this->setDexterity(this->getDexterity() - eVec[i].getBonus());
 			this->setModDexterity(modifier(this->getDexterity()));
 		}
 		if (eVec[i].getType() == "Intelligence")
@@ -444,8 +444,8 @@ void Character::unequipItem(string itemName) {
 	{
 		if (this->wornItems->at(i) == itemName)
 		{
-			this->removeItemFromWornItems(itemName);
 			this->updateStatsAtUnequip(this->getWornItemsItem(itemName));
+			this->removeItemFromWornItems(itemName);
 			this->backpack->push_back(itemName);
 			break;
 		}

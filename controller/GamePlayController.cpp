@@ -71,6 +71,7 @@ void GamePlayController::startGame() {
 
 	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
+	bool quit = false;
 	Character* character;
 
 	character = CharacterEditorController::selectCharacter();
@@ -111,43 +112,38 @@ void GamePlayController::startGame() {
 
 				if (goTo == "bp") {
 					do {
+						cout << "************* Menu *************" << endl << endl;
 						cout << "1 - View backpack" << endl;
-						cout << "2 - Equip item" << endl;
-						cout << "3 - Unequip item" << endl;
-						cout << "4 - View your worn items" << endl;
+						cout << "2 - View worn items" << endl;
+						cout << "3 - Equip itemUnequip item" << endl;
+						cout << "4 - Unequip item" << endl;
 						cout << "5 - Exit" << endl;
 						input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
 
-						if (input == 1)
-						{
+						switch (input) {
+						case 1:
 							character->displayBackpack();
-						}
-						else if (input == 2)
-						{
-							cout << "Enter the item name you wish to equip >> ";
+							break;
+						case 2:
 							character->displayWornItems();
-							cin >> itemNameEquip;
+							break;
+						case 3:
+							itemNameEquip = readStringInputNoEmpty("Enter the item name with which you want to equip: ");
 							character->equipItem(itemNameEquip);
-							cout << "**WORNITEMS**" << endl;
 							character->displayWornItems();
-							cout << "**BACKPACKITEMS" << endl;
+							character->printAbilityScores();
+							break;
+						case 4:
+							itemNameUnequip = readStringInputNoEmpty("Enter the item name which you want to unequip: ");
+							character->unequipItem(itemNameUnequip);
 							character->displayBackpack();
 							character->printAbilityScores();
+							break;
+						case 5:
+							quit = true;
+							break;
 						}
-						else if (input == 3) {
-							cout << "Enter the item name you wish to unequip >> ";
-							cin >> itemNameUnequip;
-						//	character->unEquipItem(itemNameUnequip);
-							cout << "**WORNITEMS**" << endl;
-							//character->wornItems->displayItem();
-							cout << "**BACKPACKITEMS" << endl;
-							//character->backpack->displayItem();
-
-						}
-						else if(input == 4){
-							//character->wornItems->displayItem();
-						}
-					} while (input != 5);
+					} while (!quit);
 
 					this->map->render();
 				}
@@ -163,7 +159,6 @@ void GamePlayController::startGame() {
 					if (nextPosition.row == row && nextPosition.column == col)
 					{
 						cout << "you have reached the end of the map " << endl;
-
 						cout << "You will now be returned to the main menu" << endl;
 						character->levelUp();
 						cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
