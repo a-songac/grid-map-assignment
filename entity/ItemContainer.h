@@ -27,19 +27,19 @@ class ItemContainer
 {
 public:
 	// Default constructor
-	ItemContainer();
+	//ItemContainer();
 	// Constructor
-	ItemContainer(vector<Item> items);
+	//ItemContainer(vector<Item> items);
 	// method to get the items of the container
-	vector<Item> getItems();
+	//vector<Item> getItems();
 	// method to add an item to the item container
-	void addItemToBackpack(Item anitem);
+	//void addItemToBackpack(Item anitem);
 	//method to remove item from backpack
-	void removeItemFromBackpack(Item anitem);
+	//void removeItemFromBackpack(Item anitem);
 	//method to add an item to your worn items
-	void addItemToWornItems(Item anitem);
+	//void addItemToWornItems(Item anitem);
 	//method to remove an item from the worn items
-	void removeItemFromWornItems(Item anitem);
+
 	// method to get an item from the item container
 	//Item* getItemFromBackpack(string itemType);
 	//equip an item
@@ -49,9 +49,9 @@ public:
 	//check if Item exits in the backpack
 	//static bool checkIfItemExists(string wearItem, string name);
 	// method to validate container
-	static bool validateContainer();
-	void displayItem();
-	static vector<Item> Items;
+	//static bool validateContainer();
+	//void displayItem();
+	//static vector<Item> Items;
 private:
 	
 };

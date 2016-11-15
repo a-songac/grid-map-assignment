@@ -26,3 +26,4 @@ void Subject::Notify() {
 		(*i)->update();
 }
 
+ 

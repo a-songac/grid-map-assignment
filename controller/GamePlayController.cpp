@@ -74,9 +74,7 @@ void GamePlayController::startGame() {
 	character = selectC->selectCharacter();
 
 	load = readStringInput("Please enter the name of the file which contains your item: ", "");
-	//character->backpackContainer(load);
-	//character->backpack->displayItem();
-	//character->wornItems->displayItem();
+	//character->backpack->push_back("a");
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
 	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
@@ -113,18 +111,18 @@ void GamePlayController::startGame() {
 
 						if (input == 1)
 						{
-							//character->backpack->displayItem();
+							character->displayBackpack();
 						}
 						else if (input == 2)
 						{
 							cout << "Enter the item name you wish to equip >> ";
-							//character->wornItems->displayItem();
+							character->displayWornItems();
 							cin >> itemNameEquip;
-							//character->equipItem(itemNameEquip);
+							character->equipItem(itemNameEquip);
 							cout << "**WORNITEMS**" << endl;
-							//character->wornItems->displayItem();
+							character->displayWornItems();
 							cout << "**BACKPACKITEMS" << endl;
-							//character->backpack->displayItem();
+							character->displayBackpack();
 							character->printAbilityScores();
 						}
 						else if (input == 3) {

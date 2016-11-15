@@ -26,6 +26,7 @@
 #include "Repository.h"
 #include "../entity/Map.h"
 #include "../view/MapView.h"
+#include "../view/CharacterView.h"
 #include "../entity/Character.h"
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
@@ -315,6 +316,7 @@ Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
     character->loadCharacter(fileName);
     character->setName(fileName);
+	CharacterView* charView = new CharacterView(character);
     return character;
 }
 

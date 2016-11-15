@@ -69,8 +69,8 @@ public:
 	//update
 	void update();
 	//Item update
-	void updateStatsAtEquip(Item);
-	void updateStatsAtUnequip(Item);
+	void updateStatsAtEquip(Item*);
+	void updateStatsAtUnequip(Item*);
 	//print ability score
 	void printAbilityScores();
 	//unit testing validation
@@ -106,27 +106,31 @@ public:
 	void setModWisdom(int);
 	void setModConstitution(int);
 	//name
-	void setName(std::string name);
 	std::string getName();
-
-	//void backpackContainer(string);
-//	ItemContainer* backpack;
-//	ItemContainer* wornItems;
-	ItemEditor* item = new ItemEditor();
-
-	//void equipItem(string);
-	//void unEquipItem(string);
+	void setName(std::string name);
+	
+	void Character::removeItemHelper(vector<string>* item, string itemName);
+	void Character::removeItemFromBackpack(std::string);
+	void Character::removeItemFromWornItems(string itemName);
+	//validate worn Items
+	bool Character::validateContainer(vector<std::string>*);
+	//equip and unequip
+	void equipItem(string);
+	void unequipItem(string);
+	//checkIfItemExists in backpack
 	bool checkIfItemExists(string, string);
 
 	vector<std::string>* backpack;
 	vector<std::string>* wornItems;
-
+	//display Items
+	void displayItemsHelper(std::vector<string>* items);
 	void displayBackpack();
 	void displayWornItems();
-	void displayItemsHelper(std::vector<string>* items);
+	//get item
+	Item* getItemHelper(std::vector<string>* items, std::string name);
 	Item* getBackpackItem(std::string name);
 	Item* getWornItemsItem(std::string name);
-	Item* getItemHelper(std::vector<string>* items, std::string name);
+
 
 
 	//void Character::unEquipItem(ItemContainer*,string);

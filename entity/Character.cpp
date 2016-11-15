@@ -47,9 +47,9 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 
 
 }
-void Character::updateStatsAtEquip(Item equipment) {
+void Character::updateStatsAtEquip(Item* equipment) {
 
-	vector<Enhancement> eVec = equipment.getInfluences();
+	vector<Enhancement> eVec = equipment->getInfluences();
 		for (size_t i = 0; i < eVec.size(); i++) {
 
 			if (eVec[i].getType() == "Strength")
@@ -92,9 +92,9 @@ void Character::updateStatsAtEquip(Item equipment) {
 		this->hitPoints();
 
 }
-void Character::updateStatsAtUnequip(Item equipment) {
+void Character::updateStatsAtUnequip(Item* equipment) {
 
-	vector<Enhancement> eVec = equipment.getInfluences();
+	vector<Enhancement> eVec = equipment->getInfluences();
 	for (size_t i = 0; i < eVec.size(); i++) {
 		if (eVec[i].getType() == "Strength")
 		{
@@ -410,32 +410,102 @@ bool Character::loadCharacter(string name1)
 void Character::update() {
 
 }
-//void Character::equipItem(string itemName)
-//{
-//	vector<Item> iVec = this->backpack->getItems();
-//
-//	for (size_t i = 0; i < iVec.size(); i++) {
-//		string name = iVec[i].getName();
-//		if (checkIfItemExists(itemName, name))
-//		{
-//			if (ItemContainer::validateContainer())
-//			{
-//				this->items.push_back(iVec[i]);
-//				this->wornItems->addItemToWornItems(iVec[i]);
-//				this->updateStatsAtEquip(iVec[i]);
-//				cout << "you are now equipped with: " << iVec[i].getName() << endl;
-//				cout << "your worn Items are: " << endl;
-//				this->backpack->removeItemFromBackpack(iVec[i]);
-//				break;
-//			}
-//		}
-//		else
-//		{
-//			cout << "You cannot equip Item: " << iVec[i].getName() << endl;
-//		}
-//
-//	}
-//}
+void Character::equipItem(string itemName)
+{
+	for (size_t i = 0; i < this->backpack->size(); i++)
+	{
+		if (this->backpack->at(i) == itemName)
+		{
+			if (validateContainer(this->wornItems))
+			{
+				this->wornItems->push_back(itemName);
+				this->updateStatsAtEquip(this->getWornItemsItem(itemName));
+				cout << "you are now equipped with: " << itemName << endl;
+				this->removeItemFromBackpack(itemName);
+				break;
+			}
+			else
+			{
+				cout << "You cannot equip Item: " << itemName << endl;
+			}
+		}
+	}
+}
+		
+void Character::unequipItem(string itemName) {
+
+	for (size_t i = 0; i < this->wornItems->size(); i++)
+	{
+		if (this->wornItems->at(i) == itemName)
+		{
+			this->removeItemFromWornItems(itemName);
+			this->updateStatsAtUnequip(this->getWornItemsItem(itemName));
+			this->backpack->push_back(itemName);
+			break;
+		}
+		else {
+			cout << "You are not equipped with: " << itemName << endl;
+		}
+	}
+}
+
+void Character::removeItemFromBackpack(string itemName) {
+
+	removeItemHelper(this->backpack, itemName);
+}
+void Character::removeItemFromWornItems(string itemName) {
+	removeItemHelper(this->wornItems, itemName);
+}
+void Character::removeItemHelper(vector<string>* item, string itemName) {
+	for (size_t i = 0; i < item->size(); i++)
+	{
+		if (item->at(i) == itemName) {
+			item->erase(item->begin() + i);
+		}
+	}
+}
+bool Character::validateContainer(vector<string>* wornItems)
+{
+	int helmetCtr = 0;
+	int armorCtr = 0;
+	int shieldCtr = 0;
+	int ringCtr = 0;
+	int beltCtr = 0;
+	int bootsCtr = 0;
+	int weaponCtr = 0;
+
+	for (size_t i = 0; i < wornItems->size(); i++) {
+		if (wornItems->at(i) == "Helmet") {
+			helmetCtr++;
+		}
+		else if (wornItems->at(i) == "Armor") {
+			armorCtr++;
+		}
+		else if (wornItems->at(i) == "Shield") {
+			shieldCtr++;
+		}
+		else if (wornItems->at(i) == "Ring") {
+			ringCtr++;
+		}
+		else if (wornItems->at(i) == "Belt") {
+			beltCtr++;
+		}
+		else if (wornItems->at(i) == "Boots") {
+			bootsCtr++;
+		}
+		else if (wornItems->at(i) == "Weapon") {
+			weaponCtr++;
+		}
+	}
+
+	if (helmetCtr>0 || armorCtr>0 || shieldCtr>0 || ringCtr>0 || beltCtr>0 || bootsCtr>0 || weaponCtr>0) {
+		return false;
+	}
+	else {
+		return true;
+	}
+
+}
 //void Character::unEquipItem(string name) {
 //	vector<Item> iVec = this->wornItems->getItems();
 //	for (size_t i = 0; i < iVec.size(); ++i)
