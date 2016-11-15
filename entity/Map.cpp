@@ -1,13 +1,11 @@
 #include <iostream>
+
 #include "Map.h"
 #include "../service/MapValidator.h"
 #include "../utils/ArrayUtils.h"
 #include "../view/MapView.h"
 
-
 using namespace std;
-
-
 Map::Map() {
     height = 7;
     width = 7;
@@ -127,7 +125,7 @@ bool Map::fillCell(int row, int column, char occupant) {
         return false;
     }
     grid.at(row).at(column).setOccupant(occupant);
-    notify();
+    Notify();
     return true;
 }
 
@@ -141,7 +139,7 @@ bool Map::validate() {
 }
 
 void Map::render() {
-    notify();
+    Notify();
 }
 
 

@@ -6,6 +6,7 @@
 #include "../entity/repo/MapRepository.h"
 #include "CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
+
 void EditorFacadeController::editorMenu() {
 
     bool editorLoop = true;
@@ -182,7 +183,7 @@ void EditorFacadeController::editorMenu() {
         } // END Campaign editor
         else if(eChoice == 3){
 
-            CharacterEditorController::createCharacter();
+            CharacterEditorController::selectAction();
         }
 
         else if(eChoice == 4){

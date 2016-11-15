@@ -10,19 +10,20 @@ Subject::~Subject() {
 	delete _observers;
 }
 
-void Subject::attach(Observer* addObserver) {
+void Subject::Attach(Observer* addObserver) {
 	_observers->push_back(addObserver);
 }
 
-void Subject::detach(Observer* removeObserver) {
+void Subject::Detach(Observer* removeObserver) {
 	_observers->remove(removeObserver);
 
 }
 
-void Subject::notify() {
+void Subject::Notify() {
 
 	list<Observer*>::iterator i = _observers->begin();
 	for (; i != _observers->end(); i++)
 		(*i)->update();
 }
 
+ 

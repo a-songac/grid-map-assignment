@@ -1,0 +1,10 @@
+Armor
+A
+Armor
+2
+Ring
+r
+Armor
+2
+Strength
+3

@@ -7,7 +7,7 @@
 //
 
 #pragma once
-
+#include "../entity/Map.h"
 /// Class that implements 
 class MapEditorController {
 public:

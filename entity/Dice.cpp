@@ -1,10 +1,9 @@
-/*
-#include "Dice.h"
-
-
-#include "Dice.h"
 #include <cstdlib>
 #include <ctime>
+
+#include "Dice.h"
+#include "Dice.h"
+
 using namespace d20Logic;
 //Default constructor
 Dice::Dice()
@@ -63,4 +62,3 @@ int Dice::roll_d20() {
 	return ((rand() % 20) + 1);
 
 }
-*/

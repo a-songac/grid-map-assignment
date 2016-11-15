@@ -2,11 +2,20 @@
 
 #include "../entity/Character.h"
 #include "../view/CharacterView.h"
+
+
 class CharacterEditorController {
     public:
-        static void createCharacter();
-		Character* selectCharacter();
 
-private:
+        static const size_t BACKPACK_INIT_SIZE;
+
+        static void selectAction();
+		static Character* selectCharacter();
+
+    private:
+        static void createCharacter(bool pregenerated);
+        static void editExistingcharacter();
+        static void saveCharacter(Character* character);
+        static void initializeBackpack(Character* character);
 
 };

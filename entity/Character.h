@@ -30,21 +30,25 @@
 #include "../core/Subject.h"
 #include "ItemContainer.h"
 #include "Item.h"
+#include "../controller/ItemEditor.h"
+//#include "../controller/ItemEditor.h"
 //! Class that implements a character
 class Character: public Subject
 {
 public:
 	Character();
+	~Character();
 	Character(int, int, int, int, int, int);
 	//hit points
 	void hit(int);
-	void setHitPoints();
+	void hitPoints();
 	int getHitPoints();
 	void resetHitPoints();
 	//set modifier based on ability scores
 	int modifier(int);
 	//generate ability scores
 	int genAbilityScores();
+	void randomlyGenAbilityScores();
 	void preGenAbilityScores();
 	//leveling up
 	void levelUp();
@@ -56,62 +60,95 @@ public:
 	//attack bonus
 	void attackBonus();
 	int getAttackBonus();
-	void setAttackBonus(int);
 	//attack damage
-	void attackDamage();
-	int getAttackDamage();
-	void setAttackDamage(int);
+	void damageBonus();
+	int getDamageBonus();
 	//load
 	bool saveCharacter(std::string name);
 	bool loadCharacter(std::string name);
 	//update
 	void update();
 	//Item update
-	void updateStatsAtEquip(Item);
-	void updateStatsAtUnequip(Item);
+	void updateStatsAtEquip(Item*);
+	void updateStatsAtUnequip(Item*);
 	//print ability score
 	void printAbilityScores();
 	//unit testing validation
 	bool validateNewCharacter();
 	bool validateHitPoints();
 	bool validateAttackBonus();
+	//setter for ability scores
+	void setStrength(int);
+	void setDexterity(int);
+	void setIntelligence(int);
+	void setCharisma(int);
+	void setWisdom(int);
+	void setConstitution(int);
 	//getter for ability score
-	int getStrenght();
+	int getStrength();
 	int getDexterity();
 	int getIntelligence();
 	int getCharisma();
 	int getWisdom();
 	int getConstitution();
-	//setter for ability scores
-	void static setStrenght(int);
-	void static setDexterity(int);
-	void static setIntelligence(int);
-	void static setCharisma(int);
-	void static setWisdom(int);
-	void static setConstitution(int);
 	//getter for modifiers
-	int getModStrenght();
+	int getModStrength();
 	int getModDexterity();
 	int getModIntelligence();
 	int getModCharisma();
 	int getModWisdom();
 	int getModConstitution();
 	//setter for modifiers
-	//void setModStrength(int);
-	//void setModDexterity(int);
-	//void setModIntelligence(int);
-	//void setModCharisma(int);
-	//void setModWisdom(int);
-	//void setModConstitution(int);
-
-	void setName(std::string name);
+	void setModStrength(int);
+	void setModDexterity(int);
+	void setModIntelligence(int);
+	void setModCharisma(int);
+	void setModWisdom(int);
+	void setModConstitution(int);
+	//name
 	std::string getName();
-	int static lvl;
-private:
+	void setName(std::string name);
 
-	int equip[6];
-	Character *_subject;
+	void removeItemHelper(vector<string>* item, string itemName);
+	void removeItemFromBackpack(std::string);
+	void removeItemFromWornItems(string itemName);
+	//validate worn Items
+	bool validateContainer(vector<std::string>*);
+	//equip and unequip
+	void equipItem(string);
+	void unequipItem(string);
+	//checkIfItemExists in backpack
+	bool checkIfItemExists(string, string);
+
+	vector<std::string>* backpack;
+	vector<std::string>* wornItems;
+	//display Items
+	void displayItemsHelper(std::vector<string>* items);
+	void displayBackpack();
+	void displayWornItems();
+	//get item
+	Item* getItemHelper(std::vector<string>* items, std::string name);
+	Item* getBackpackItem(std::string name);
+	Item* getWornItemsItem(std::string name);
+
+	bool hasItemInBackpack(std::string itemName);
+	bool isWearingItem(std::string itemName);
+	bool hasItemHelper(std::vector<string>* items, std::string name);
+
+
+
+	//void Character::unEquipItem(ItemContainer*,string);
+private:
+	vector<Item> items;
+	int lvl;
+	int modifiers[6];
+	int abilityScores[6];
+	int damageB;
+	int attackB;
+	int armorPoints;
+	int currentHitPoints = 0;
 	std::string name;
+
 
 
 };

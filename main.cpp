@@ -10,6 +10,7 @@
 #include "controller/EditorFacadeController.h"
 #include "entity/repo/MapRepository.h"
 #include "entity/repo/CharacterRepository.h"
+#include "entity/repo/ItemRepository.h"
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 
@@ -18,8 +19,10 @@ using namespace std;
 int main()
 {
 
-    MapRepository* mapRepo = MapRepository::instance();
-    CharacterRepository* characterRepo = CharacterRepository::instance();
+    MapRepository::instance();
+    CharacterRepository::instance();
+    ItemRepository::instance();
+
     int choice;
     bool gameLoop = true;
 
@@ -31,9 +34,8 @@ int main()
         cout << "1. Play Game" << endl;
         cout << "2. Edit Game Elements" << endl;
         cout << "3. Exit :(" << endl;
-		cout << "Your choice[1]: ";
 		choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
-       
+
 
         switch (choice) {
             case 1:

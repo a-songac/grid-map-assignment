@@ -12,7 +12,7 @@ public:
 	void update();
 	void display();
 
+
 private:
-	Character *_subject;
-	int counter = 0;
+	Character* _subject;
 };

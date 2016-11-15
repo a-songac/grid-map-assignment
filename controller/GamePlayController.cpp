@@ -20,6 +20,9 @@
 #include "../controller/CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
 
+using namespace std;
+
+
 GamePlayController::GamePlayController(): level(1), map(nullptr) {}
 
 void GamePlayController::newGame() {
@@ -65,26 +68,18 @@ void GamePlayController::selectMap() {
 
 
 void GamePlayController::startGame() {
-	string load,goTo, itemNameEquip, itemNameUnequip;
+
+	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
-	Character* cha = new Character();
-	CharacterView* ch = new CharacterView(cha);
-	CharacterEditorController* selectC = new CharacterEditorController();
-	ItemEditor* itemToLoad = new ItemEditor();
-	ItemContainer* backpack = new ItemContainer();
-	ItemContainer* wornItem = new ItemContainer();
+	Character* character;
 
-	cha = selectC->selectCharacter();
+	character = CharacterEditorController::selectCharacter();
 
-//	cin >> load;
-	load = readStringInput("Please enter the name of the file which contains your item: ", "");
-	backpack = itemToLoad->loadFile(load);
-
+    cout << endl << endl << "********** GET READY **********" << endl;
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
 	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
 	cout << "    - To quit the game, type: 'q'" << endl;
-
 
     bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
     if (!startGame) {
@@ -97,12 +92,11 @@ void GamePlayController::startGame() {
 
         cout << "\n************* Start Game *************" << endl << endl;
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
-        Coordinate nextPosition;
-
-		Coordinate exitDoor = this->map->getExitDoorCoordinate();
-
+        Coordinate exitDoor = this->map->getExitDoorCoordinate();
+		Coordinate nextPosition;
 		int col = exitDoor.column;
 		int row = exitDoor.row;
+
         this->map->movePlayer(entryDoor.row, entryDoor.column);
 			do {
 				goTo = MapInteractionHelper::readMapLocationWhileInGame(this->map, "Go to [bp]: ", "bp");
@@ -116,44 +110,55 @@ void GamePlayController::startGame() {
 						cout << "5 - Exit" << endl;
 						input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
 
-						if (input == 1) {
-							backpack->displayItem();
+						if (input == 1)
+						{
+							character->displayBackpack();
 						}
 						else if (input == 2)
 						{
 							cout << "Enter the item name you wish to equip >> ";
+							character->displayWornItems();
 							cin >> itemNameEquip;
-							wornItem->equipItem(backpack, itemNameEquip);
-							ch->display();
+							character->equipItem(itemNameEquip);
+							cout << "**WORNITEMS**" << endl;
+							character->displayWornItems();
+							cout << "**BACKPACKITEMS" << endl;
+							character->displayBackpack();
+							character->printAbilityScores();
 						}
 						else if (input == 3) {
 							cout << "Enter the item name you wish to unequip >> ";
 							cin >> itemNameUnequip;
-							wornItem->unequipItem(backpack, itemNameUnequip);
-							ch->display();
+						//	character->unEquipItem(itemNameUnequip);
+							cout << "**WORNITEMS**" << endl;
+							//character->wornItems->displayItem();
+							cout << "**BACKPACKITEMS" << endl;
+							//character->backpack->displayItem();
+
 						}
 						else if(input == 4){
-                            wornItem->displayItem();
+							//character->wornItems->displayItem();
 						}
 					} while (input != 5);
-					ch->display();
+
 					this->map->render();
 				}
 				else if (goTo == "q") {
                     gameOver = readYesNoInput("Do you really want to quit the game?[Y/n]", true);
 				}
 				else {
-					ch->display();
+//					ch->display();
+					character->printAbilityScores();
 					nextPosition = MapInteractionHelper::convertToCoordinate(this->map, goTo);
+
 					this->map->movePlayer(nextPosition.row, nextPosition.column);
 					if (nextPosition.row == row && nextPosition.column == col)
 					{
 						cout << "you have reached the end of the map " << endl;
 
 						cout << "You will now be returned to the main menu" << endl;
-						cha->levelUp();
+						character->levelUp();
 						cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
-						ch->display();
 						gameOver = true;
 					}
 				}

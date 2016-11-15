@@ -21,10 +21,12 @@
 #include <stdio.h>
 #include <boost/filesystem.hpp>
 #include <sstream>
+#include <stdexcept>
 
 #include "Repository.h"
 #include "../entity/Map.h"
 #include "../view/MapView.h"
+#include "../view/CharacterView.h"
 #include "../entity/Character.h"
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
@@ -39,14 +41,14 @@
 template <class T> class Repository {
     public:
 
-        const static int REPO_CAPACITY = 30;
+        const static int REPO_CAPACITY = 100;
         ~Repository();
 
         std::vector<std::string>* listAll();
         bool save(std::string name, T* entity);
         bool exists(std::string name);
         T* getEntity(std::string name);
-        T* getEntity(int index);
+        T* getEntity(size_t index);
         bool remove(std::string name);
         T* find(std::string name);
 
@@ -115,7 +117,7 @@ void Repository<T>::construct() {
     #ifdef DEBUG
         logInfo("Repository",
                 "Constructor",
-                "FOR " + referenceFile + ": Initialization of Repository; loading persisted map references...");
+                "FOR " + referenceFile + ": Initialization of Repository; loading persisted entity references...");
     #endif // DEBUG
 
     this->_references = new vector<string>;
@@ -244,7 +246,7 @@ T* Repository<T>::getEntity(std::string name) {
 }
 
 template <class T>
-T* Repository<T>::getEntity(int index) {
+T* Repository<T>::getEntity(size_t index) {
 
     T* entity;
     string fileName = this->_references->at(index);
@@ -270,6 +272,8 @@ T* Repository<T>::getEntity(int index) {
 // //////////////////////////////////////////
 // LOAD AND PERSIST METHODS FOR THE ENTITIES
 // //////////////////////////////////////////
+
+ //////////// MAP //////////////
 
 template <class T>
 Map* Repository<T>::loadMap(string fileName) {
@@ -303,11 +307,16 @@ bool Repository<T>::persistMap(Map* map, std::string name) {
     return true;
 }
 
+
+
+//////////// CHARACTER //////////////
+
 template <class T>
 Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
     character->loadCharacter(fileName);
     character->setName(fileName);
+	CharacterView* charView = new CharacterView(character);
     return character;
 }
 
@@ -319,15 +328,71 @@ bool Repository<T>::persistCharacter(Character* character, std::string name) {
 }
 
 
+
+
+//////////// ITEM//////////////
+
 template <class T>
 Item* Repository<T>::loadItem(string fileName) {
-    // TODO
-    Item* item= new Item();
-    return item;
+
+    string itemType, itemName, enhancementType;
+
+    vector <Enhancement> Enhancements;
+	std::ifstream f(fileName, std::ios::in);
+
+	if (f.is_open())
+	{
+		int bonus;
+		string getBonus;
+		int i = 0;
+
+		getline(f, itemType);
+
+        getline(f, itemName);
+
+//			while (enhancementType != "Armor" && enhancementType != "Ring"  && enhancementType != "Helmet" && enhancementType != "Boots" && enhancementType!="Belt" && enhancementType!="Weapon" && enhancementType!="Shield" && enhancementType !="")
+        while (!f.eof())
+        {
+            getline(f, enhancementType);
+            getline(f, getBonus);
+            bonus = std::stoi(getBonus);
+            Enhancements.push_back(Enhancement(enhancementType, bonus));
+        }
+        f.close();
+        Item* item = new Item(itemType, Enhancements, itemName);
+
+		return item;
+
+
+	} else {
+
+       throw std::invalid_argument( "Could not load item from given file name" );
+	}
+    return nullptr;
 }
 
 template <class T>
 bool Repository<T>::persistItem(Item* item, std::string name) {
-    // TODO
+
+    ofstream saveFile(name, std::ios::trunc);
+	vector<Enhancement> eVec;
+
+    if (saveFile.is_open()) {
+
+        saveFile << item->getType() << endl;
+        saveFile << item->getName() << endl;
+        eVec = item->getInfluences();
+
+        for (size_t i = 0; i < eVec.size(); i++)
+        {
+            saveFile << eVec[i].getType() << endl;
+            saveFile << eVec[i].getBonus() << endl;
+
+        }
+        saveFile.close();
+	} else {
+        throw std::invalid_argument( "Could not save item to file" );
+        return false;
+	}
     return true;
 }

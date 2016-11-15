@@ -1,6 +1,5 @@
 #include <iostream>
 #include <string> //for conversion from string to int/double
-
 #include <regex>
 
 #include "IOUtils.h"
@@ -41,6 +40,24 @@ string readStringInput(string prompt, string defaultAns) {
 
 }
 
+string readStringInputNoEmpty(string prompt) {
+
+	string input;
+	bool error,result;
+
+	do {
+		error = false;
+		cout << prompt;
+		getline(cin, input);
+
+		if (input == "") {
+			error = true;
+			cout << "Invalid Input, please retry: " << endl;
+		}
+
+	} while (error);
+	return input;
+}
 int readIntegerInput(string prompt, int defaultAns) {
     bool error = false;
     string input;
@@ -69,8 +86,31 @@ int readIntegerInput(string prompt, int defaultAns) {
     return result;
 
 }
+int readIntegerInput(string prompt) {
+	bool error = false;
+	string input;
+	int result;
+	cout << prompt;
+	do {
+		error = false;
+		getline(cin, input);
 
-
+		if (input == "") {
+			error = true;
+			cout << "Invalid Input, please retry: " << endl;
+		}
+	} while (error);
+	result = stoi(input, nullptr);
+	return result;
+}
+int readIntegerInputWithRange(string prompt, int minimum, int maximum) {
+	int result;
+	result = readIntegerInput(prompt);
+	while (result < minimum || result > maximum) {
+		result = readIntegerInput("Invalid input, please retry: ");
+	}
+	return result;
+}
 int readIntegerInputWithRange(string prompt, int defaultAns, int minimum, int maximum) {
 
     int result;

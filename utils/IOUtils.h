@@ -11,7 +11,10 @@ using namespace std;
 
 bool readYesNoInput(string prompt, bool defaultAns);
 string readStringInput(string prompt, string defaultAns);
+string readStringInputNoEmpty(string prompt);
 string readFileName(string prompt);
 int readIntegerInput(string prompt, int defaultAns);
+int readIntegerInput(string prompt);
 int readIntegerInputWithRange(string prompt, int defaultAns, int minimum, int maximum);
+int readIntegerInputWithRange(string prompt, int minimum, int maximum);
 double readDoubleInput(string prompt, double defaultAns);

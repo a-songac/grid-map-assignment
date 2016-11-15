@@ -7,23 +7,27 @@
 //
 
 #include <iostream>
-#include "Character.h"
-#include "../core/Subject.h"
 #include <random>
 #include <ctime>
 #include <algorithm>
-//#include <windows.h>
 #include <fstream>
 
-using namespace std;
+#include "Character.h"
+#include "../core/Subject.h"
+#include "../entity/Dice.h"
+#include "../view/CharacterView.h"
+#include "repo/ItemRepository.h"
 
-int modifiers[6];
-int abilityScores[6];
-int attackD;
-int attackB;
-int armorPoints;
-int currentHitPoints = 0;
-int Character::lvl;
+
+using namespace std;
+using namespace d20Logic;
+
+Character::Character()
+{
+    this ->backpack = new vector<string>();
+    this ->wornItems = new vector<string>();
+}
+
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -45,78 +49,102 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	abilityScores[4] = wisdom;
 	abilityScores[5] = constitution;
 
-	setHitPoints();
+	currentHitPoints = 10;
+
+	this ->backpack = new vector<string>();
+    this ->wornItems = new vector<string>();
 
 
 }
-void Character::updateStatsAtEquip(Item equipment) {
+void Character::updateStatsAtEquip(Item* equipment) {
 
-	vector<Enhancement> eVec = equipment.getInfluences();
+	vector<Enhancement> eVec = equipment->getInfluences();
 		for (size_t i = 0; i < eVec.size(); i++) {
 
 			if (eVec[i].getType() == "Strength")
-				abilityScores[0] += eVec[i].getBonus();
+			{
+				this->setStrength(this->getStrength() + eVec[i].getBonus());
+				this->setModStrength(modifier(this->getStrength()));
+			}
 			if (eVec[i].getType() == "Dexterity")
-				abilityScores[1] += eVec[i].getBonus();
+			{
+				this->setDexterity(this->getDexterity() + eVec[i].getBonus());
+				this->setModDexterity(modifier(this->getDexterity()));
+			}
 			if (eVec[i].getType() == "Intelligence")
-				abilityScores[2] += eVec[i].getBonus();
+			{
+				this->setIntelligence(this->getIntelligence() + eVec[i].getBonus());
+				this->setModIntelligence(modifier(this->getIntelligence()));
+			}
 			if (eVec[i].getType() == "Charisma")
-				abilityScores[3] += eVec[i].getBonus();
+			{
+				this->setCharisma(this->getCharisma() + eVec[i].getBonus());
+				this->setModCharisma(modifier(this->getCharisma()));
+			}
 			if (eVec[i].getType() == "Wisdom")
-				abilityScores[4] += eVec[i].getBonus();
+			{
+				this->setWisdom(this->getWisdom() + eVec[i].getBonus());
+				this->setModWisdom(modifier(this->getWisdom()));
+			}
 			if (eVec[i].getType() == "Constitution")
-				abilityScores[5] += eVec[i].getBonus();
+			{
+				this->setConstitution(this->getConstitution() + eVec[i].getBonus());
+				this->setModConstitution(modifier(this->getConstitution()));
+			}
 			if (eVec[i].getType() == "Armor")
-				armorPoints += eVec[i].getBonus();
+				this->armorPoints += eVec[i].getBonus();
 			if (eVec[i].getType() == "AtkBonus")
-				attackB += eVec[i].getBonus();
+				this->attackB += eVec[i].getBonus();
 			if (eVec[i].getType() == "AtkDamage")
-				attackD += eVec[i].getBonus();
-
+				this->damageB += eVec[i].getBonus();
 		}
-
-		setHitPoints();
+		this->hitPoints();
 
 }
-void Character::updateStatsAtUnequip(Item equipment) {
+void Character::updateStatsAtUnequip(Item* equipment) {
 
-	vector<Enhancement> eVec = equipment.getInfluences();
+	vector<Enhancement> eVec = equipment->getInfluences();
 	for (size_t i = 0; i < eVec.size(); i++) {
-
-		resetHitPoints();
 		if (eVec[i].getType() == "Strength")
-			abilityScores[0] -= eVec[i].getBonus();
+		{
+			this->setStrength(this->getStrength() - eVec[i].getBonus());
+			this->setModStrength(modifier(this->getStrength()));
+		}
 		if (eVec[i].getType() == "Dexterity")
-			abilityScores[1] -= eVec[i].getBonus();
+		{
+			this->setDexterity(this->getStrength() - eVec[i].getBonus());
+			this->setModDexterity(modifier(this->getDexterity()));
+		}
 		if (eVec[i].getType() == "Intelligence")
-			abilityScores[2] -= eVec[i].getBonus();
+		{
+			this->setIntelligence(this->getIntelligence() - eVec[i].getBonus());
+			this->setModIntelligence(modifier(this->getIntelligence()));
+		}
 		if (eVec[i].getType() == "Charisma")
-			abilityScores[3] -= eVec[i].getBonus();
+		{
+			this->setCharisma(this->getCharisma() - eVec[i].getBonus());
+			this->setModCharisma(modifier(this->getCharisma()));
+		}
 		if (eVec[i].getType() == "Wisdom")
-			abilityScores[4] -= eVec[i].getBonus();
+		{
+			this->setWisdom(this->getWisdom() - eVec[i].getBonus());
+			this->setModWisdom(modifier(this->getWisdom()));
+		}
 		if (eVec[i].getType() == "Constitution")
-			abilityScores[5] -= eVec[i].getBonus();
+		{
+			this->setConstitution(this->getConstitution() - eVec[i].getBonus());
+			this->setModConstitution(modifier(this->getConstitution()));
+		}
 		if (eVec[i].getType() == "Armor")
-			armorPoints -= eVec[i].getBonus();
+			this->armorPoints -= eVec[i].getBonus();
 		if (eVec[i].getType() == "AtkBonus")
-			attackB -= eVec[i].getBonus();
+			this->attackB -= eVec[i].getBonus();
 		if (eVec[i].getType() == "AtkDamage")
-			attackD -= eVec[i].getBonus();
-
+			this->damageB -= eVec[i].getBonus();
 	}
-
-
-
-}
-//! Implementation of Fighter Class. Inherites from the super class Character
-Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
+	this->resetHitPoints();
 
 }
-Fighter::Fighter()
-{
-
-}
-
 //! Implementation of a modifier method, that calculates the modifier of each ability
 //! @return int:: value of modifier
 int Character::modifier(int abilityScore)
@@ -130,19 +158,11 @@ int Character::modifier(int abilityScore)
 //! Implementation of a levelUp method, at the same time updates everything else depending on the level
 void Character::levelUp()
 {
-	++lvl;
+	this->lvl++;
+	this->attackB++;
+	Notify();
 
-	for (int i = 0; i < 6; i++)
-	{
-		modifiers[i] = modifier(abilityScores[i] * lvl);
-		abilityScores[i] = abilityScores[i] * lvl + modifiers[i];
-	}
-	setLevel(lvl);
-	setHitPoints();
-	attackDamage();
-	attackBonus();
-	armor();
-	notify();
+
 }
 //! implementation of setLevel that initializes the level at the beginning of the game depending on what the user provides.
 void Character::setLevel(int level)
@@ -154,7 +174,7 @@ void Character::setLevel(int level)
 //! @return int: value of lvl
 int Character::getLevel()
 {
-	return lvl;
+	return this->lvl;
 }
 //! Implementation of generate randomly the ability scores
 //! @return int:: value of the ability Score
@@ -193,66 +213,97 @@ int Character::genAbilityScores()
 void Character::preGenAbilityScores()
 {
 	//pre generated numbers
-	Character(15, 14, 13, 12, 10, 8);
+	abilityScores[0] = 15;
+	abilityScores[1] = 14;
+	abilityScores[2] = 13;
+	abilityScores[3] = 12;
+	abilityScores[4] = 10;
+	abilityScores[5] = 8;
+	//modifiers
+	modifiers[0] = modifier(abilityScores[0]);
+	modifiers[1] = modifier(abilityScores[1]);
+	modifiers[2] = modifier(abilityScores[2]);
+	modifiers[3] = modifier(abilityScores[3]);
+	modifiers[4] = modifier(abilityScores[4]);
+	modifiers[5] = modifier(abilityScores[5]);
+
+	currentHitPoints = 10;
+
+}
+
+void Character::randomlyGenAbilityScores() {
+
+	//ability scores
+	abilityScores[0] = genAbilityScores();
+	abilityScores[1] = genAbilityScores();
+	abilityScores[2] = genAbilityScores();
+	abilityScores[3] = genAbilityScores();
+	abilityScores[4] = genAbilityScores();
+	abilityScores[5] = genAbilityScores();
+	//modifiers
+	modifiers[0] = modifier(abilityScores[0]);
+	modifiers[1] = modifier(abilityScores[1]);
+	modifiers[2] = modifier(abilityScores[2]);
+	modifiers[3] = modifier(abilityScores[3]);
+	modifiers[4] = modifier(abilityScores[4]);
+	modifiers[5] = modifier(abilityScores[5]);
+
+	currentHitPoints = 10;
+
 }
 //implementation of a setter method for hit points
 void Character::resetHitPoints() {
-	currentHitPoints = currentHitPoints - modifiers[5];
+	this->currentHitPoints = this->currentHitPoints - this->getModConstitution();
 }
-void Character::setHitPoints()
+void Character::hitPoints()
 {
+	Dice d;
+	int d10 = d.roll_d10();
 	//roll a d10 dice
-	currentHitPoints = currentHitPoints + modifiers[5];
-	if (currentHitPoints < 10)
-	{
-		currentHitPoints = 10;
-	}
-
+	this->currentHitPoints = this->currentHitPoints + this->getModConstitution() + d10;
 }
 //! Implementation of a getter method for currentHitPoints
 //! @return int: value of currentHitPoints
 int Character::getHitPoints()
 {
-	return currentHitPoints;
+	return this->currentHitPoints;
 }
 //implementation of a setter method for armor
 void Character::armor()
 {
-	armorPoints = modifiers[1];
+	this->armorPoints = this->getModDexterity();
 }
 //! Implementation of a getter method for armor
 //! @return int: value of armorPoints
 int Character::getArmor()
 {
-	return armorPoints;
+	return this->armorPoints;
 }
 //implementation of a setter method for attack bonus
 void Character::attackBonus()
 {
-	attackB = lvl + modifiers[0] + modifiers[1];
+	//depends on the weapon of choice
+	this->attackB = this->lvl + modifiers[0] + modifiers[1];
 
 }
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB
 int Character::getAttackBonus()
 {
-	return attackB;
+	return this->attackB;
 }
-//implementation of a setter method for attack damage
-void Character::attackDamage()
+//! implementation of a setter method for attack damage
+void Character::damageBonus()
 {
-	attackD = modifiers[0];
+	this->damageB = this->modifiers[0];
 
 }
 //! Implementation of a getter method for attack damage
 //! @return int: value of attackD
-int Character::getAttackDamage()
+int Character::getDamageBonus()
 {
-	return attackD;
+	return this->damageB;
 }
-//! Implementation of an equipment method, that enables the user to add equipment per category
-
-
 //! Implementation of the verification of a newly created Character
 //! @return bool value, true of the character is valid (stats should be in the 3-18 range for a new character), false if invalid.
 bool Character::validateNewCharacter()
@@ -287,13 +338,10 @@ void Character::hit(int damage)
 {
 	currentHitPoints = currentHitPoints - damage;
 }
-Character::Character()
-{
 
-}
 void Character::printAbilityScores() {
 
-	this->notify();
+	Notify();
 }
 bool Character::saveCharacter(string name)
 {
@@ -317,7 +365,7 @@ bool Character::saveCharacter(string name)
 			<< modifiers[4] << endl
 			<< modifiers[5] << endl
 			<< armorPoints << endl
-			<< attackD << endl
+			<< damageB << endl
 			<< attackB << endl
 			<< currentHitPoints << endl;
 
@@ -352,11 +400,12 @@ bool Character::loadCharacter(string name1)
 		f >> modifiers[4];
 		f >> modifiers[5];
 		f >> armorPoints;
-		f >> attackD;
+		f >> damageB;
 		f >> attackB;
 		f >> currentHitPoints;
 
 		f.close();
+		Notify();
 		return true;
 	}
 	else
@@ -367,59 +416,279 @@ bool Character::loadCharacter(string name1)
 void Character::update() {
 
 }
-//definition of getter for ability scores
-int Character::getStrenght() {
-	return abilityScores[0];
+void Character::equipItem(string itemName)
+{
+	for (size_t i = 0; i < this->backpack->size(); i++)
+	{
+		if (this->backpack->at(i) == itemName)
+		{
+			if (validateContainer(this->wornItems))
+			{
+				this->wornItems->push_back(itemName);
+				this->updateStatsAtEquip(this->getWornItemsItem(itemName));
+				cout << "you are now equipped with: " << itemName << endl;
+				this->removeItemFromBackpack(itemName);
+				break;
+			}
+			else
+			{
+				cout << "You cannot equip Item: " << itemName << endl;
+			}
+		}
+	}
+}
+
+void Character::unequipItem(string itemName) {
+
+	for (size_t i = 0; i < this->wornItems->size(); i++)
+	{
+		if (this->wornItems->at(i) == itemName)
+		{
+			this->removeItemFromWornItems(itemName);
+			this->updateStatsAtUnequip(this->getWornItemsItem(itemName));
+			this->backpack->push_back(itemName);
+			break;
+		}
+		else {
+			cout << "You are not equipped with: " << itemName << endl;
+		}
+	}
+}
+
+void Character::removeItemFromBackpack(string itemName) {
+
+	removeItemHelper(this->backpack, itemName);
+}
+void Character::removeItemFromWornItems(string itemName) {
+	removeItemHelper(this->wornItems, itemName);
+}
+void Character::removeItemHelper(vector<string>* item, string itemName) {
+	for (size_t i = 0; i < item->size(); i++)
+	{
+		if (item->at(i) == itemName) {
+			item->erase(item->begin() + i);
+		}
+	}
+}
+bool Character::validateContainer(vector<string>* wornItems)
+{
+	int helmetCtr = 0;
+	int armorCtr = 0;
+	int shieldCtr = 0;
+	int ringCtr = 0;
+	int beltCtr = 0;
+	int bootsCtr = 0;
+	int weaponCtr = 0;
+
+	for (size_t i = 0; i < wornItems->size(); i++) {
+		if (wornItems->at(i) == "Helmet") {
+			helmetCtr++;
+		}
+		else if (wornItems->at(i) == "Armor") {
+			armorCtr++;
+		}
+		else if (wornItems->at(i) == "Shield") {
+			shieldCtr++;
+		}
+		else if (wornItems->at(i) == "Ring") {
+			ringCtr++;
+		}
+		else if (wornItems->at(i) == "Belt") {
+			beltCtr++;
+		}
+		else if (wornItems->at(i) == "Boots") {
+			bootsCtr++;
+		}
+		else if (wornItems->at(i) == "Weapon") {
+			weaponCtr++;
+		}
+	}
+
+	if (helmetCtr>1 || armorCtr>1 || shieldCtr>1 || ringCtr>1 || beltCtr>1 || bootsCtr>1 || weaponCtr>1) {
+		return false;
+	}
+	else {
+		return true;
+	}
+
+}
+//void Character::unEquipItem(string name) {
+//	vector<Item> iVec = this->wornItems->getItems();
+//	for (size_t i = 0; i < iVec.size(); ++i)
+//	{
+//		if (checkIfItemExists(iVec[i].getName(), name))
+//		{
+//			this->items.erase(items.begin() + i);
+//			cout << "Item: " << iVec[i].getName() << " has been successfully unequipped" << endl;
+//			this->backpack->addItemToBackpack(iVec[i]);
+//			this->updateStatsAtUnequip(iVec[i]);
+//		}
+//		else {
+//			if (i + 1 == items.size()) {
+//				cout << "Item: " << iVec[i].getName() << " is not available" << endl;
+//			}
+//		}
+//	}
+//}
+bool Character::checkIfItemExists(string wearItem, string name) {
+
+	if (wearItem == name)
+	{
+		return true;
+	}
+	return false;
+
+}
+//void Character::backpackContainer(string backpackItem) {
+//	this->backpack = this->item->loadFile(backpackItem);
+//}
+
+//ability scores
+void Character::setStrength(int stre) {
+	this->abilityScores[0] = stre;
+}
+int Character::getStrength() {
+	return this->abilityScores[0];
+}
+void Character::setDexterity(int dex){
+	this->abilityScores[1] = dex;
 }
 int Character::getDexterity() {
-	return abilityScores[1];
+	return this->abilityScores[1];
+}
+void Character::setIntelligence(int intel) {
+	this->abilityScores[2] = intel;
 }
 int Character::getIntelligence() {
-	return abilityScores[2];
+	return this->abilityScores[2];
 }
-int Character::getCharisma() {
-	return abilityScores[3];
+void Character::setWisdom(int wis) {
+	this->abilityScores[3] = wis;
 }
 int Character::getWisdom() {
-	return abilityScores[4];
+	return this->abilityScores[3];
+}
+void Character::setCharisma(int cha) {
+	this->abilityScores[4] = cha;
+}
+int Character::getCharisma() {
+	return this->abilityScores[4];
+}
+void Character::setConstitution(int cons) {
+	this->abilityScores[5] = cons;
 }
 int Character::getConstitution() {
-	return abilityScores[5];
+	return this->abilityScores[5];
 }
-void  Character::setStrenght(int strenght) {
-	abilityScores[0] = abilityScores[0] + strenght;
+//modifier
+void Character::setModStrength(int modStr) {
+	this->modifiers[0] = modStr;
 }
-void  Character::setDexterity(int dexterity) {
-	abilityScores[1] = abilityScores[1] + dexterity;
+int Character::getModStrength() {
+	return this->modifiers[0];
 }
-void  Character::setIntelligence(int intelligence) {
-	abilityScores[0] = abilityScores[2] + intelligence;
-}
-void  Character::setCharisma(int charisma) {
-	abilityScores[0] = abilityScores[3] + charisma;
-}
-void  Character::setWisdom(int wisdom) {
-	abilityScores[0] = abilityScores[0] + wisdom;
-}
-void  Character::setConstitution(int constitution) {
-	abilityScores[0] = abilityScores[0] + constitution;
-}
-//defintion of getter for modifiers
-int Character::getModStrenght() {
-	return  modifiers[0];
+void Character::setModDexterity(int modDex) {
+	this->modifiers[1] = modDex;
 }
 int Character::getModDexterity() {
-	return  modifiers[1];
+	return this->modifiers[1];
+}
+void Character::setModIntelligence(int modIntel) {
+	this->modifiers[2] = modIntel;
 }
 int Character::getModIntelligence() {
-	return modifiers[2];
+	return this->modifiers[2];
+}
+void Character::setModCharisma(int modCha) {
+	this->modifiers[3] = modCha;
 }
 int Character::getModCharisma() {
-	return  modifiers[3];
+	return this->modifiers[3];
+}
+void Character::setModWisdom(int modWis) {
+	this->modifiers[4] = modWis;
 }
 int Character::getModWisdom() {
-	return  modifiers[4];
+	return this->modifiers[4];
+}
+void Character::setModConstitution(int modCons) {
+	this->modifiers[5] = modCons;
 }
 int Character::getModConstitution() {
-	return  modifiers[5];
+	return this->modifiers[5];
 }
+
+//! Implementation of Fighter Class. Inherites from the super class Character
+Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
+
+}
+Fighter::Fighter()
+{
+
+}
+Character::~Character() {
+
+}
+
+
+// /////////////////////////////////////////
+// WORN ITEMS & BACKPACK SECTION
+// /////////////////////////////////////////
+
+void Character::displayItemsHelper(vector<string>* items) {
+
+    string name;
+    Item* item;
+
+    for (size_t i = 0; i < items->size(); i++) {
+        name = items->at(i);
+        item = ItemRepository::instance()->getEntity(name);
+        item->displayItem();
+    }
+
+}
+
+void Character::displayBackpack() {
+    cout << "\n\n********** Backpack **********" << endl;
+    displayItemsHelper(this->backpack);
+}
+
+void Character::displayWornItems() {
+    cout << "\n\n********** Worn Items **********" << endl;
+    displayItemsHelper(this->wornItems);
+}
+
+Item* Character::getItemHelper(vector<string>* items, string name) {
+
+    for (size_t i = 0; i < items->size(); i++) {
+        if (name == items->at(i)) {
+            return ItemRepository::instance()->getEntity(name);
+        }
+    }
+    return nullptr;
+}
+
+Item* Character::getBackpackItem(string name) {
+    return getItemHelper(this->backpack, name);
+}
+
+Item* Character::getWornItemsItem(string name) {
+    return getItemHelper(this->wornItems, name);
+}
+
+bool Character::hasItemInBackpack(string name) {
+    return hasItemHelper(this->backpack, name);
+}
+bool Character::isWearingItem(string name) {
+    return hasItemHelper(this->wornItems, name);
+}
+bool Character::hasItemHelper(vector<string>* items, string name) {
+
+    for (size_t i = 0; i < items->size(); i++) {
+        if (name == items->at(i)) {
+            return true;
+        }
+    }
+    return false;
+}
+

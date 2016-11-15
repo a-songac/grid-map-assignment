@@ -19,7 +19,7 @@
 #include <vector>
 #include "Enhancement.h"
 #include "Item.h"
-#include "../entity/Character.h"
+//#include "../entity/Character.h"
 using namespace std;
 
 //! Class that implements an item container
@@ -27,29 +27,33 @@ class ItemContainer
 {
 public:
 	// Default constructor
-	ItemContainer();
+	//ItemContainer();
 	// Constructor
-	ItemContainer(vector<Item> items);
+	//ItemContainer(vector<Item> items);
 	// method to get the items of the container
-	vector<Item> getItems();
+	//vector<Item> getItems();
 	// method to add an item to the item container
-	void addItemToBackpack(Item anitem);
+	//void addItemToBackpack(Item anitem);
 	//method to remove item from backpack
-	void removeItemFromBackpack(Item anitem);
-	// method to get an item from the item container
-	Item* getItemFromBackpack(string itemType);
-	//equip an item
-	void equipItem(ItemContainer* backpack, string wearItem);
-	//unequip an item
-	void unequipItem(ItemContainer*, string wearItem);
-	//check if Item exits in the backpack
-	bool checkIfItemExists(string wearItem, string name);
-	// method to validate container
-	bool validateContainer();
-	void displayItem();
+	//void removeItemFromBackpack(Item anitem);
+	//method to add an item to your worn items
+	//void addItemToWornItems(Item anitem);
+	//method to remove an item from the worn items
 
+	// method to get an item from the item container
+	//Item* getItemFromBackpack(string itemType);
+	//equip an item
+	//void equipItem(ItemContainer* backpack, string wearItem);
+	//unequip an item
+	//void unequipItem(ItemContainer*, string wearItem);
+	//check if Item exits in the backpack
+	//static bool checkIfItemExists(string wearItem, string name);
+	// method to validate container
+	//static bool validateContainer();
+	//void displayItem();
+	//static vector<Item> Items;
 private:
-	vector<Item> Items;
+	
 };
 #endif
 
