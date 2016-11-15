@@ -109,13 +109,13 @@ public:
 	void setName(std::string name);
 	std::string getName();
 
-	void backpackContainer(string);
+	//void backpackContainer(string);
 //	ItemContainer* backpack;
 //	ItemContainer* wornItems;
 	ItemEditor* item = new ItemEditor();
 
-	void equipItem(string);
-	void unEquipItem(string);
+	//void equipItem(string);
+	//void unEquipItem(string);
 	bool checkIfItemExists(string, string);
 
 	vector<std::string>* backpack;

@@ -30,7 +30,7 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 		string eType = it->getType();
 
 		if (iType == "Helmet") {
-			if (eType == "Intelligence" || eType == "Wisdom" || eType == "Armor") {
+			if (eType == "Intelligence" || eType == "Wisdom" || eType == "ArmorC") {
 				continue;
 			}
 			else {
@@ -38,7 +38,7 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 			}
 		}
 		else if (iType == "Armor") {
-			if (eType == "Armor") {
+			if (eType == "ArmorC") {
 				continue;
 			}
 			else {
@@ -46,7 +46,7 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 			}
 		}
 		else if (iType == "Shield") {
-			if (eType == "Armor") {
+			if (eType == "ArmorC") {
 				continue;
 			}
 			else {
@@ -54,7 +54,7 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 			}
 		}
 		else if (iType == "Ring") {
-			if (eType == "Armor" || eType == "Strength" || eType == "Constitution" || eType == "Wisdom" || eType == "Charisma") {
+			if (eType == "ArmorC" || eType == "Strength" || eType == "Constitution" || eType == "Wisdom" || eType == "Charisma") {
 				continue;
 			}
 			else {
@@ -70,7 +70,7 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 			}
 		}
 		else if (iType == "Boots") {
-			if (eType == "Armor" || eType == "Dexterity") {
+			if (eType == "ArmorC" || eType == "Dexterity") {
 				continue;
 			}
 			else {

@@ -10,8 +10,6 @@
 #include "../entity/repo/ItemRepository.h"
 
 using namespace std;
-
-
 ItemEditor::ItemEditor()
 {
 
@@ -19,8 +17,7 @@ ItemEditor::ItemEditor()
 
 void ItemEditor::editorAlternatives() {
 
-    bool quit = false;
-
+    bool quit = false, armorC = false;
     cout << "\n\n************* Item Editor *************" << endl << endl;
 
     do {
@@ -47,11 +44,11 @@ void ItemEditor::editorAlternatives() {
 
 
 void ItemEditor::createItem() {
-
-	cout << "\n************* Create Itenm *************" << endl << endl;
-
+	bool quit = false;
+	Item* item = new Item();
 	do {
-
+		cout << "************* Create Item *************" << endl << endl;
+		Item* item = new Item();
 
 		cout << "Please chose a number from the list below :" << endl;
 		cout << "1. Create an Armor" << endl;
@@ -65,327 +62,385 @@ void ItemEditor::createItem() {
 
 		choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 8);
 
-		bool intelligence =false, wisdom = false, armor = false, strength = false, constitution = false, charisma = false, dexterity = false, atkBonus = false, atkDamage = false;
-
-
-		if (choice == 1)
-		{
-			itemType = "Armor";
-			cout << "What is the name of your Armor" << endl;
-			cin >> itemName;
-
-			do
-			{
-				cout << "Please enter the type of ability you want to enhance for the Armor (ArmorC)" << endl;
-				cin >> enhancementType;
-			} while (enhancementType != "ArmorC");
-			if (enhancementType == "ArmorC")
-				armor = true;
-			typeEnhancements.push_back(enhancementType);
-			do
-			{
-				cout << "Please enter the Armor enhancement level you want ranging from 1 to 5 " << endl;
-				cin >> armorBonus;
-			} while (armorBonus < 1 || armorBonus > 5);
-
-			bonus.push_back(armorBonus);
-		}
-		else if (choice == 2)
-		{
-			int i = 0;
-			itemType = "Ring";
-			cout << "What is the name of your Ring" << endl;
-			cin >> itemName;
-			do
-			{
-				do
-				{
-					cout << "please enter the type of ability you want to enhance for the Ring (";
-					if (armor == false)
-						cout << "ArmorC-";
-					if (strength == false)
-						cout << "Strength-";
-					if (constitution == false)
-						cout << "Constitution-";
-					if (wisdom == false)
-						cout << "Wisdom-";
-					if (charisma == false)
-						cout << "Charisma";
-					cout << ")" << endl;
-					cin >> enhancementType;
-				} while (enhancementType != "ArmorC" && enhancementType != "Strength" && enhancementType != "Constitution" && enhancementType != "Wisdom" && enhancementType != "Charisma");
-
-				if (enhancementType == "Strength")
-					strength = true;
-				else if (enhancementType == "Wisdom")
-					wisdom = true;
-				else if (enhancementType == "ArmorC")
-					armor = true;
-				else if (enhancementType == "Constitution")
-					constitution = true;
-				else if (enhancementType == "Charisma")
-					charisma = true;
-				typeEnhancements.push_back(enhancementType);
-				do
-				{
-					cout << "Please enter the Ring enhancement level you want, ranging from 1 to 5" << endl;
-					cin >> ringBonus;
-				} while (ringBonus < 1 || ringBonus > 5);
-				bonus.push_back(ringBonus);
-				if (armor == true && strength == true && constitution == true && wisdom == true && charisma == true)
-					answer = 'n';
-				else
-					cout << "Would like to add another enhancement?(y/n)" << endl;
-					cin >> answer;
-			} while (answer == "y");
-
-			strength = false;
-			wisdom = false;
-			armor = false;
-			constitution = false;
-			charisma = false;
-
-		}
-		else if (choice == 3)
-		{
-			int i = 0;
-			itemType = "Helmet";
-			cout << "What is the name of your Helmet" << endl;
-			cin >> itemName;
-			do
-			{
-				do
-				{
-					cout << "please enter the type of ability you want to enhance for the Helmet  (";
-					if (intelligence == false)
-						cout << "Intelligence-";
-					if (wisdom == false)
-						cout << "Wisdom-";
-					if (armor == false)
-						cout << "ArmorC";
-					cout << ")" << endl;
-					cin >> enhancementType;
-				} while (enhancementType != "Intelligence" && enhancementType != "Wisdom" && enhancementType != "ArmorC");
-
-				if (enhancementType == "Intelligence")
-					intelligence = true;
-				else if (enhancementType == "Wisdom")
-					wisdom = true;
-				else if (enhancementType == "ArmorC")
-					armor = true;
-				typeEnhancements.push_back(enhancementType);
-				do
-				{
-					cout << "Please enter the Helmet enhancement level you want ranging from 1 to 5 " << endl;
-					cin >> helmetBonus;
-				} while (helmetBonus < 1 || helmetBonus > 5);
-				bonus.push_back(helmetBonus);
-				if (intelligence == true && wisdom == true && armor == true)
-					answer = 'n';
-				else
-					cout << "Would like to add another enhancement?(y/n)" << endl;
-					cin >> answer;
-
-			} while (answer == "y");
-
-			intelligence = false;
-			wisdom = false;
-			armor = false;
-		}
-		else if (choice == 4)
-		{
-			int i = 0;
-			itemType = "Boots";
-			cout << "What is the name of your Boots" << endl;
-			cin >> itemName;
-			do {
-				do {
-					cout << "please enter the type of ability you want to enhance Boots(";
-					if (armor == false)
-						cout << "ArmorC-";
-					if (dexterity == false)
-						cout << "Dexterity";
-					cout << ")" << endl;
-					cin >> enhancementType;
-					}while (enhancementType != "ArmorC" && enhancementType != "Dexterity");
-
-					if (enhancementType == "ArmorC")
-						armor = true;
-					else if (enhancementType == "Dexterity")
-						dexterity = true;
-					typeEnhancements.push_back(enhancementType);
-					do
-					{
-						cout << "Please enter the Boots enhancement level you want, ranging from 1 to 5" <<  endl;
-						cin >> bootsBonus;
-					} while (bootsBonus < 1 || bootsBonus > 5);
-
-					bonus.push_back(bootsBonus);
-					if (armor == true && dexterity == true)
-						answer = 'n';
-					else
-						cout << "Would like to add another enhancement?(y/n)" << endl;
-						cin >> answer;
- 			} while (answer == "y");
-
-			armor = false;
-			dexterity = false;
-
-
-		}
-		else if (choice == 5)
-		{
-			int i = 0;
-			itemType = "Belt";
-			cout << "What is the name of your Belt" << endl;
-			cin >> itemName;
-			do {
-				do {
-					cout << "please enter the type of ability you want to enhance for Belt (";
-					if (constitution == false)
-						cout << "Consitution-";
-					if (strength == false)
-						cout << "Strength";
-					cout << ")" << endl;
-					cin >> enhancementType;
-				} while (enhancementType != "Constitution" && enhancementType != "Strength");
-
-				if (enhancementType == "Constitution")
-					constitution = true;
-				else if (enhancementType == "Strength")
-					strength = true;
-				typeEnhancements.push_back(enhancementType);
-				do {
-					cout << "Please enter the Belt enhancement level you want ranging from 1 to 5 " << endl;
-					cin >> beltBonus;
-
-				} while (beltBonus < 1 || beltBonus > 5);
-
-				bonus.push_back(beltBonus);
-				if (constitution == true && strength == true)
-					answer = 'n';
-				else
-					cout << "Would like to add another enhancement?(y/n)" << endl;
-					cin >> answer;
-			} while (answer == "y");
-
-		}
-		else if (choice == 6)
-
-		{
-			int i = 0;
-			itemType = "Weapon";
-			cout << "What is the name of your Weapon" << endl;
-			cin >> itemName;
-			do
-			{
-				do
-				{
-					cout << "please enter the type of ability you want to enhance for the Weapon(";
-					if (atkBonus == false)
-						cout << "AtkBonus-";
-				    if (atkDamage == false)
-						cout << "AtkDamage";
-					cout << ")" << endl;
-					cin >> enhancementType;
-				} while (enhancementType != "AtkBonus" && enhancementType != "AtkDamage");
-				if (enhancementType == "AtkBonus")
-					atkBonus = true;
-				if (enhancementType == "AtkDamage")
-					atkDamage = true;
-				typeEnhancements.push_back(enhancementType);
-				do
-				{
-					cout << "Please enter the Sword enhancement level you want ranging from 1 to 5 " << endl;
-					cin >> swordBonus;
-				} while (swordBonus < 1 || swordBonus > 5);
-				bonus.push_back(swordBonus);
-				if (atkBonus == true && atkDamage == true)
-					answer = 'n';
-				else
-					cout << "Would like to add another enhancement?(y/n)" << endl;
-					cin >> answer;
-			} while (answer == "y");
-
-		}
-		else if (choice == 7)
-		{
-			int i = 0;
-			itemType = "Shield";
-			cout << "What is the name of your Shield" << endl;
-			cin >> itemName;
-			do
-			{
-				do
-				{
-					cout << "please enter the type of ability you want to enhance for shield (ArmorC) " << endl;
-					cin >> enhancementType;
-				} while (enhancementType != "ArmorC");
-				typeEnhancements.push_back(enhancementType);
-				do
-				{
-					cout << "Please enter the Shield enhancement level you want ranging from 1 to 5 " << endl;
-					cin >> shieldBonus;
-				} while (shieldBonus < 1 || shieldBonus > 5);
-				bonus.push_back(shieldBonus);
-			} while (answer == "y");
-
-		}
-//		else if (choice == 8)
-//		{
-//			cout << "Please enter the name of the file you want to load " << endl;
-//			cin >> load;
-//			backpack = loadFile(load);
-//			break;
-//		}
-//		else if (choice == 9)
-//		{
-//			cout << "enter the save name " << endl;
-//			cin >> save;
-//
-//			saveFile(save);
-//			break;
-//		}
-		else if ( choice == 8)
-		{
+		switch (choice) {
+		case 1:
+			item = this->armor();
+			break;
+		case 2:
+			item = this->ring();
+			break;
+		case 3:
+			item = this->helmet();
+			break;
+		case 4:
+			item = this->boots();
+			break;
+		case 5:
+			item = this->belt();
+			break;
+		case 6:
+			item = this->weapon();
+			break;
+		case 7:
+			item = this->shield();
 			break;
 
 		}
-
-		for(size_t i = 0; i < typeEnhancements.size(); ++i){
-			Enhancements.push_back(Enhancement(typeEnhancements.at(i), bonus.at(i)));
+		if (choice == 8) {
+			quit = true;
+			break;
 		}
-		while(!enhancementType.empty()){
-			typeEnhancements.pop_back();
-			bonus.pop_back();
-		}
-
-		Item* item = new Item(itemType, Enhancements, itemName);
-
-        // TODO: Extract in display method in item class
-        // START EXTRACTION
-		vector<Enhancement> eVec = item->getInfluences();
-        cout << "Item Type: " << item->getType() << endl;
-        cout << "\tItem Name: " << item->getName() << endl;
-        for (size_t i = 0; i<eVec.size(); i++) {
-            cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
-        }
-        // END EXTRACTION
-
-		while (!Enhancements.empty())
-		{
-			Enhancements.pop_back();
+		else {
+			item->displayItem();
+			if (readYesNoInput("Would you like to save your newly created item?[Y/n]: ", true)) {
+				ItemRepository::instance()->save(item->getName(), item);
+			}
 		}
 
-		if (readYesNoInput("Would you like to save your newly created item?[Y/n]: ", true)) {
-            ItemRepository::instance()->save(item->getName(), item);
-		}
-
-	} while (readYesNoInput("Would you like to create another item?[Y/n]: ", true));
+	} while (readYesNoInput("Would you like to create another item?[Y/n]: ", true) && !quit);
 
 }
 
+Item* ItemEditor::armor() {
 
+	
+	itemType = "Armor";
+	enhancementType = "ArmorC";
+	
+	itemName = readStringInputNoEmpty("Select a name for you Armor: ");
+	armorBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+	typeEnhancements.push_back(enhancementType);
+	bonus.push_back(armorBonus);
+	Enhancements.push_back(Enhancement(typeEnhancements[0], bonus[0]));
+	Item* armorItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return armorItem;
+
+}
+Item* ItemEditor::ring() {
+	armorC = 0;
+	strength = 0;
+	constitution = 0;
+	wisdom = 0;
+	charisma = 0;
+	itemType = "Ring";
+	itemName = readStringInputNoEmpty("Select a name for your Ring: ");
+
+	do
+	{
+		isEnhancementsFull = false;
+		do {
+			retry = false;
+			cout << endl;
+			cout << "Please Select an option: " << endl;
+			cout << "1. ArmorC" << endl;
+			cout << "2. Strength" << endl;
+			cout << "3. Constitution" << endl;
+			cout << "4. Wisdom" << endl;
+			cout << "5. Charisma" << endl;
+			choice = readIntegerInputWithRange("Your choice: ", 1, 5);
+			if (choice == 1 && armorC == 1 || choice == 2 && strength == 1 ||
+				choice == 3 && constitution == 1 || 
+				choice == 4 && wisdom == 1 || choice == 5 && charisma == 1)
+			{
+				cout << "You can select atmost one enhancement type" << endl;
+				retry = true;
+			}
+		} while (retry);
+		switch (choice)
+		{
+		case 1:
+			enhancementType = "ArmorC";
+			armorC = 1;
+			break;
+		case 2:
+			enhancementType = "Strength";
+			strength = 1;
+			break;
+		case 3:
+			enhancementType = "Constitution";
+			constitution = 1 ;
+			break;
+		case 4:
+			enhancementType = "Wisdom";
+			wisdom = 1;
+			break;
+		case 5:
+			enhancementType = "Charisma";
+			charisma = 1;
+			break;
+		}
+
+		typeEnhancements.push_back(enhancementType);
+		ringBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+		bonus.push_back(ringBonus);
+		if(armorC == 1 && strength == 1 && constitution == 1 && wisdom == 1 && charisma == 1) {
+			isEnhancementsFull = true;
+		}
+		else {
+			addEnhancement = readYesNoInput("Would you like to add another enhancement[Y/n]: ", true);
+		}
+	} while (addEnhancement && !isEnhancementsFull);
+	for (size_t i = 0; i < typeEnhancements.size(); i++)
+	{
+		Enhancements.push_back(Enhancement(typeEnhancements[i], bonus[i]));
+	}
+	Item* ringItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return ringItem;
+}
+Item* ItemEditor::helmet() {
+	armorC = 0;
+	wisdom = 0;
+	intelligence = 0;
+	itemType = "Helmet";
+	itemName = readStringInputNoEmpty("Select a name Helmet: ");
+	do
+	{
+		isEnhancementsFull = false;
+		do
+		{
+			retry = false;
+			cout << "Please Select an option: " << endl;
+			cout << "1. ArmorC" << endl;
+			cout << "2. Wisdom" << endl;
+			cout << "3. Intelligence" << endl;
+			choice = readIntegerInputWithRange("Your choice[1]: ", 1, 3);
+			if (choice == 1 && armorC == 1 || choice == 2 && wisdom == 1 || 
+				choice == 3 && intelligence == 1)
+			{
+				cout << "You can select atmost one enhancement type" << endl;
+				retry = true;
+			}
+		} while (retry);
+
+		switch (choice)
+		{
+		case 1:
+			enhancementType = "ArmorC";
+			armorC = 1;
+			break;
+		case 2:
+			enhancementType = "Wisdom";
+			wisdom = 1;
+			break;
+		case 3:
+			enhancementType = "Intelligence";
+			intelligence = 1;
+			break;
+		}
+		typeEnhancements.push_back(enhancementType);
+		helmetBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+		bonus.push_back(helmetBonus);
+		if (armorC == 1 && wisdom == 1 && intelligence == 1) {
+			isEnhancementsFull = true;
+		}
+		else {
+			addEnhancement = readYesNoInput("Would you like to add another enhancement[Y/n]: ", true);
+		}
+	} while (addEnhancement && !isEnhancementsFull);
+
+	for (size_t i = 0; i < typeEnhancements.size(); i++)
+	{
+		Enhancements.push_back(Enhancement(typeEnhancements[i], bonus[i]));
+	}
+	Item* helmetItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return helmetItem;
+}
+
+Item* ItemEditor::boots() {
+
+	armorC = 0;
+	dexterity = 0;
+	
+	itemType = "Boots";
+	itemName = itemName = readStringInputNoEmpty("Select a name for your item with type Boots: ");
+	do {
+		isEnhancementsFull = false;
+		do {
+			retry = false;
+			cout << "Please Select an option: " << endl;
+			cout << "1. ArmorC" << endl;
+			cout << "2. Dexterity" << endl;
+			choice = readIntegerInputWithRange("Your choice[1]: ", 1, 2);
+			if (choice == 1 && armorC == 1 || choice == 2 && dexterity == 1)
+				{
+					cout << "You can select atmost one enhancement type" << endl;
+					retry = true;
+				}
+			} while (retry);
+			switch (choice)
+			{
+			case 1:
+				enhancementType = "ArmorC";
+				armorC = 1;
+				break;
+			case 2:
+				enhancementType = "Dexterity";
+				dexterity = 1;
+				break;
+			}
+
+			typeEnhancements.push_back(enhancementType);
+			bootsBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+			bonus.push_back(bootsBonus);
+			if (armorC == 1 && dexterity == 1)
+			{
+				isEnhancementsFull = true;
+			}
+			else {
+				addEnhancement = readYesNoInput("Would you like to add another enhancement[Y/n]: ", true);
+			}
+
+		} while (addEnhancement && !isEnhancementsFull);
+
+		for (size_t i = 0; i < typeEnhancements.size(); i++)
+		{
+			Enhancements.push_back(Enhancement(typeEnhancements[i], bonus[i]));
+		}
+
+		Item* bootsItem = new Item(itemType, Enhancements, itemName);
+		Enhancements.clear();
+		typeEnhancements.clear();
+		bonus.clear();
+		return bootsItem;
+}
+
+Item* ItemEditor::belt() {
+
+	strength = 0;
+	constitution = 0;
+
+	itemType = "Belt";
+	itemName = itemName = readStringInputNoEmpty("Select a name for your item with type Belt: ");
+	do {
+		isEnhancementsFull = false;
+		do {
+			retry = false;
+			cout << "Please Select an option: " << endl;
+			cout << "1. Strength" << endl;
+			cout << "2. Consitution" << endl;
+			choice = readIntegerInputWithRange("Your choice[1]: ", 1, 2);
+			if (choice == 1 && strength == 1 || choice == 2 && constitution == 1)
+			{
+				cout << "You can select atmost one enhancement type" << endl;
+				retry = true;
+			}
+		} while (retry);
+	
+		switch (choice)
+		{
+		case 1:
+			enhancementType = "Strength";
+			strength = 1;
+			break;
+		case 2:
+			enhancementType = "Consitution";
+			constitution = 1;
+			break;
+		}
+
+		typeEnhancements.push_back(enhancementType);
+		helmetBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+		bonus.push_back(helmetBonus);
+		if (strength == 1 && constitution == 1)
+		{
+			isEnhancementsFull = true;
+		}
+		else {
+			addEnhancement = readYesNoInput("Would you like to add another enhancement[Y/n]: ", true);
+		}
+	} while (addEnhancement && !isEnhancementsFull);
+	for (size_t i = 0; i < typeEnhancements.size(); i++)
+	{
+		Enhancements.push_back(Enhancement(typeEnhancements[i], bonus[i]));
+	}
+	Item* beltItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return beltItem;
+}
+
+Item* ItemEditor::weapon() {
+
+	atkBonus = 0;
+	dmgBonus = 0;
+
+	itemType = "Weapon";
+	itemName = itemName = readStringInputNoEmpty("Select a name for your item with type weapon: ");
+	do
+	{
+		isEnhancementsFull = false;
+		do
+		{
+			retry = false;
+			cout << "Please Select an option: " << endl;
+			cout << "1. AtkBonus" << endl;
+			cout << "2. DmgBonus" << endl;
+			choice = readIntegerInputWithRange("Your choice[1]: ", 1, 2);
+			if (choice == 1 && atkBonus == 1 || choice == 2 && dmgBonus == 1)
+			{
+				cout << "You can select atmost one enhancement type" << endl;
+				retry = true;
+			}
+		} while (retry);
+		switch (choice)
+		{
+		case 1:
+			enhancementType = "AtkBonus";
+			atkBonus = 1;
+			break;
+		case 2:
+			enhancementType = "DmgBonus";
+			dmgBonus = 1;
+			break;
+		}
+		typeEnhancements.push_back(enhancementType);
+		helmetBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+		bonus.push_back(helmetBonus);
+		if (atkBonus == 1 && dmgBonus == 1) {
+			isEnhancementsFull = true;
+		}
+		else {
+			addEnhancement = readYesNoInput("Would you like to add another enhancement[Y/n]: ", true);
+		}
+	} while (addEnhancement && !isEnhancementsFull);
+	for (size_t i = 0; i < typeEnhancements.size(); i++)
+	{
+		Enhancements.push_back(Enhancement(typeEnhancements[i], bonus[i]));
+	}
+	Item* weaponItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return weaponItem;
+}
+
+Item* ItemEditor::shield() {
+
+
+	itemType = "Shield";
+	enhancementType = "ArmorC";
+	itemName = readStringInputNoEmpty("What is the name of your Shield");
+	armorBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
+	typeEnhancements.push_back(enhancementType);
+	bonus.push_back(armorBonus);
+	Enhancements.push_back(Enhancement(typeEnhancements[0], bonus[0]));
+	Item* shielItem = new Item(itemType, Enhancements, itemName);
+	Enhancements.clear();
+	typeEnhancements.clear();
+	bonus.clear();
+	return shielItem;
+
+}
 //destructor
 ItemEditor::~ItemEditor()
 {

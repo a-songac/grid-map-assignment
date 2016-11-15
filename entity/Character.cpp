@@ -410,50 +410,50 @@ bool Character::loadCharacter(string name1)
 void Character::update() {
 
 }
-void Character::equipItem(string itemName)
-{
-	vector<Item> iVec = this->backpack->getItems();
-
-	for (size_t i = 0; i < iVec.size(); i++) {
-		string name = iVec[i].getName();
-		if (checkIfItemExists(itemName, name))
-		{
-			if (ItemContainer::validateContainer())
-			{
-				this->items.push_back(iVec[i]);
-				this->wornItems->addItemToWornItems(iVec[i]);
-				this->updateStatsAtEquip(iVec[i]);
-				cout << "you are now equipped with: " << iVec[i].getName() << endl;
-				cout << "your worn Items are: " << endl;
-				this->backpack->removeItemFromBackpack(iVec[i]);
-				break;
-			}
-		}
-		else
-		{
-			cout << "You cannot equip Item: " << iVec[i].getName() << endl;
-		}
-
-	}
-}
-void Character::unEquipItem(string name) {
-	vector<Item> iVec = this->wornItems->getItems();
-	for (size_t i = 0; i < iVec.size(); ++i)
-	{
-		if (checkIfItemExists(iVec[i].getName(), name))
-		{
-			this->items.erase(items.begin() + i);
-			cout << "Item: " << iVec[i].getName() << " has been successfully unequipped" << endl;
-			this->backpack->addItemToBackpack(iVec[i]);
-			this->updateStatsAtUnequip(iVec[i]);
-		}
-		else {
-			if (i + 1 == items.size()) {
-				cout << "Item: " << iVec[i].getName() << " is not available" << endl;
-			}
-		}
-	}
-}
+//void Character::equipItem(string itemName)
+//{
+//	vector<Item> iVec = this->backpack->getItems();
+//
+//	for (size_t i = 0; i < iVec.size(); i++) {
+//		string name = iVec[i].getName();
+//		if (checkIfItemExists(itemName, name))
+//		{
+//			if (ItemContainer::validateContainer())
+//			{
+//				this->items.push_back(iVec[i]);
+//				this->wornItems->addItemToWornItems(iVec[i]);
+//				this->updateStatsAtEquip(iVec[i]);
+//				cout << "you are now equipped with: " << iVec[i].getName() << endl;
+//				cout << "your worn Items are: " << endl;
+//				this->backpack->removeItemFromBackpack(iVec[i]);
+//				break;
+//			}
+//		}
+//		else
+//		{
+//			cout << "You cannot equip Item: " << iVec[i].getName() << endl;
+//		}
+//
+//	}
+//}
+//void Character::unEquipItem(string name) {
+//	vector<Item> iVec = this->wornItems->getItems();
+//	for (size_t i = 0; i < iVec.size(); ++i)
+//	{
+//		if (checkIfItemExists(iVec[i].getName(), name))
+//		{
+//			this->items.erase(items.begin() + i);
+//			cout << "Item: " << iVec[i].getName() << " has been successfully unequipped" << endl;
+//			this->backpack->addItemToBackpack(iVec[i]);
+//			this->updateStatsAtUnequip(iVec[i]);
+//		}
+//		else {
+//			if (i + 1 == items.size()) {
+//				cout << "Item: " << iVec[i].getName() << " is not available" << endl;
+//			}
+//		}
+//	}
+//}
 bool Character::checkIfItemExists(string wearItem, string name) {
 
 	if (wearItem == name)
@@ -463,9 +463,9 @@ bool Character::checkIfItemExists(string wearItem, string name) {
 	return false;
 
 }
-void Character::backpackContainer(string backpackItem) {
-	this->backpack = this->item->loadFile(backpackItem);
-}
+//void Character::backpackContainer(string backpackItem) {
+//	this->backpack = this->item->loadFile(backpackItem);
+//}
 
 //ability scores
 void Character::setStrength(int stre) {
