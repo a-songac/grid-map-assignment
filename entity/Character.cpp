@@ -10,6 +10,8 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
+ // istream_iterator, ostream_iterator, back_inserter
+#include <sstream> 
 #include <fstream>
 
 #include "Character.h"
@@ -17,10 +19,14 @@
 #include "../entity/Dice.h"
 #include "../view/CharacterView.h"
 #include "repo/ItemRepository.h"
+#include <iterator>
+using std::istream_iterator;
+
 
 
 using namespace std;
 using namespace d20Logic;
+
 
 Character::Character()
 {
@@ -343,6 +349,8 @@ void Character::printAbilityScores() {
 
 	Notify();
 }
+
+
 bool Character::saveCharacter(string name)
 {
 	std::ofstream f(name, std::ios::out);
@@ -351,24 +359,23 @@ bool Character::saveCharacter(string name)
 	{
 
 
-			f << lvl << endl
+		f << lvl << endl
 			<< abilityScores[0] << endl
 			<< abilityScores[1] << endl
 			<< abilityScores[2] << endl
 			<< abilityScores[3] << endl
 			<< abilityScores[4] << endl
 			<< abilityScores[5] << endl
-			<< modifiers[0] << endl
-			<< modifiers[1] << endl
-			<< modifiers[2] << endl
-			<< modifiers[3] << endl
-			<< modifiers[4] << endl
-			<< modifiers[5] << endl
-			<< armorPoints << endl
-			<< damageB << endl
-			<< attackB << endl
 			<< currentHitPoints << endl;
+		std::ostream_iterator<std::string> output_iterator(f , "\n");
 
+		std::copy(backpack->begin(), backpack->end(), output_iterator);
+
+		f << "WornItems: " << endl;
+		
+	std::ostream_iterator<std::string> output_iterator1(f, "\n");
+
+	std::copy(wornItems->begin(), wornItems->end(), output_iterator1);
 
 		f.close();
 		return true;
@@ -386,6 +393,10 @@ bool Character::loadCharacter(string name1)
 
 	if (f.is_open())
 	{
+		
+		string s;
+		string t;
+		
 		f >> lvl;
 		f >> abilityScores[0];
 		f >> abilityScores[1];
@@ -393,20 +404,45 @@ bool Character::loadCharacter(string name1)
 		f >> abilityScores[3];
 		f >> abilityScores[4];
 		f >> abilityScores[5];
-		f >> modifiers[0];
-		f >> modifiers[1];
-		f >> modifiers[2];
-		f >> modifiers[3];
-		f >> modifiers[4];
-		f >> modifiers[5];
-		f >> armorPoints;
-		f >> damageB;
-		f >> attackB;
 		f >> currentHitPoints;
-
+		std::getline(f, s);
+		std::getline(f, s);
+		
+		while (!f.eof())
+		{
+				if (s != "wornItems:")
+			{
+					
+					backpack->push_back(s);
+					std::getline(f, s);
+			}
+			else
+			{
+				std::getline(f, t);
+				wornItems->push_back(t);
+				std::getline(f, t);
+			}
+		}
+		
+		
+		
+		
 		f.close();
+
+		for (int i = 0; i < backpack->size(); i++)
+		{
+			cout << "Item :"<<" " <<i+1<<" "<<"In backpack is :"<<backpack->at(i) << endl;
+		}
+
+		for (int i = 0; i < wornItems->size(); i++)
+		{
+			cout << "Warn item number"<<" "<<i +1<<" "<<"Is :"<<wornItems->at(i) << endl;
+		}
 		Notify();
+		
 		return true;
+		
+		
 	}
 	else
 	{

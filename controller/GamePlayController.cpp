@@ -162,6 +162,16 @@ void GamePlayController::startGame() {
 						cout << "You will now be returned to the main menu" << endl;
 						character->levelUp();
 						cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
+						string name;
+
+						if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
+						{
+							name = readFileName("please provide a name for the character: ");
+
+							if (CharacterRepository::instance()->save(name, character)) {
+								cout << "Character successfully saved!" << endl;
+							}
+						}
 						gameOver = true;
 					}
 				}
