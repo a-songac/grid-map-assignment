@@ -6,6 +6,7 @@
 #include "../entity/repo/MapRepository.h"
 #include "CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
+#include "MapInteractionHelper.h"
 
 void EditorFacadeController::editorMenu() {
 
@@ -40,7 +41,7 @@ void EditorFacadeController::editorMenu() {
 
                 //Load map for editing
                 MapEditorController mapEditor;
-                Map* map = mapEditor.loadMap();
+                Map* map = MapInteractionHelper::selectMap();
 
                 //Edit Options
 

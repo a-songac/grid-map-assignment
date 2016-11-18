@@ -28,6 +28,11 @@ Character::Character()
     this ->wornItems = new vector<string>();
 }
 
+Character::~Character() {
+    delete this->backpack;
+    delete this->wornItems;
+}
+
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
@@ -629,9 +634,6 @@ Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, in
 }
 Fighter::Fighter()
 {
-
-}
-Character::~Character() {
 
 }
 

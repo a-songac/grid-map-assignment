@@ -8,9 +8,11 @@
 #include <fstream>
 
 #include "../entity/Map.h"
-#include "../view/MapView.h"
+#include "../view/MapElementsView.h"
 #include "../entity/Cell.h"
 #include "MapEditorController.h"
+#include "CharacterInteractionHelper.h"
+#include "ItemInteractionHelper.h"
 #include "../service/MapValidator.h"
 #include "../utils/IOUtils.h"
 #include "../entity/repo/MapRepository.h"
@@ -58,8 +60,9 @@ void MapEditorController::createMap() {
 
     Map* map = new Map(height, width);
     MapView* mapView = new MapView(map);
+    MapElementsView* mapElementsView = new MapElementsView(map);
      #ifdef DEBUG
-        logInfo("Repository", "loadMap", "Attaching view to created map");
+        logInfo("Repository", "loadMap", "Attaching views to created map");
     #endif // DEBUG
 
     this->map = map;
@@ -92,10 +95,13 @@ void MapEditorController::createMap() {
     cout << "Here is the map created:" << endl << endl;
     map->render();
 
-//new
+
     this->buildMap();
 
-    bool save = readYesNoInput("Would you like to save this map? (Y/n)", true);
+    cout << "\n\nHere is the map created:" << endl << endl;
+    map->render();
+
+    bool save = readYesNoInput("Would you like to save this map?[Y/n] ", true);
 
     if(save){
         if(map->validate()){
@@ -107,6 +113,8 @@ void MapEditorController::createMap() {
         else{
             cout << "Invalid Map, Please Try Again. (Map not Saved)" << endl;
         }
+    } else {
+        delete map;
     }
 
 }
@@ -173,14 +181,30 @@ void MapEditorController::addOccupant() {
             }
             else {
 
-                if (map->isOccupied(location.row, location.column)
-                        && readYesNoInput("This cell is occupied, do you simply want to remove its occupant?[Y/n]", true)) {
+                if (map->isOccupied(location.row, location.column)) {
 
-                    map->fillCell(location.row, location.column, ' ');
+                    if (readYesNoInput("You confirm to remove the occupant of this cell[Y/n]", true)) {
+
+                        char oldItem = map->getOccupant(location.row, location.column);
+                        switch (oldItem) {
+                            case Cell::OCCUPANT_CHEST:
+                                map->removeGameItem(location);
+                                break;
+                            case Cell::OCCUPANT_FRIEND:
+                            case Cell::OCCUPANT_OPPONENT:
+                                map->removeGamePlayer(location);
+                                break;
+                        }
+                        map->fillCell(location.row, location.column, Cell::OCCUPANT_EMPTY);
+                    }
                 }
                 else {
-
-                    map->fillCell(location.row, location.column, setOccupantOnMap());
+                    try {
+                        map->fillCell(location.row, location.column, setOccupantOnMap(location));
+                    } catch (std::runtime_error& e) {
+                        cerr << e.what() << endl;
+                        error = true;
+                    }
 
                 }
 //                map->render();
@@ -215,7 +239,7 @@ Coordinate MapEditorController::defineDoor(string message, Map* map, string defa
 }
 
 
-char MapEditorController::setOccupantOnMap() {
+char MapEditorController::setOccupantOnMap(Coordinate location) {
 
     int choice;
 
@@ -231,14 +255,45 @@ char MapEditorController::setOccupantOnMap() {
 
     switch (choice) {
         case 1:
+            this->addGamePlayer(location, Cell::OCCUPANT_OPPONENT);
             return Cell::OCCUPANT_OPPONENT;
         case 2:
+            this->addGamePlayer(location, Cell::OCCUPANT_FRIEND);
             return Cell::OCCUPANT_FRIEND;
         case 3:
+            this->addGameItem(location);
             return Cell::OCCUPANT_CHEST;
     }
     return Cell::OCCUPANT_OPPONENT;
 }
+
+void MapEditorController::addGamePlayer(Coordinate location, char occupantType) {
+
+    Coordinate* playerLocation = new Coordinate(location.row, location.column);
+
+    Character* character;
+    character = CharacterInteractionHelper::selectCharacter();
+    if (nullptr == character) {
+        throw new std::runtime_error("Could not load character");
+    }
+    GamePlayer* gamePlayer = new GamePlayer(character->getName(), playerLocation, occupantType);
+    map->getGamePlayers()->push_back(gamePlayer);
+
+}
+
+void MapEditorController::addGameItem(Coordinate location) {
+    Coordinate* itemLocation = new Coordinate(location.row, location.column);
+    Item* item;
+    item = ItemInteractionHelper::selectItem();
+    if (nullptr == item) {
+        throw new std::runtime_error("Could not load item");
+    }
+    GameItem* gameItem = new GameItem(item->getName(), itemLocation);
+    map->getGameItems()->push_back(gameItem);
+
+}
+
+
 
 
 int readMapDimension(string message, int defaultValue, int min, int max) {
@@ -258,34 +313,8 @@ int readMapDimension(string message, int defaultValue, int min, int max) {
 }
 
 
-Map* MapEditorController::loadMap(){
-    //Load map for editing
-    cout << "************** Map Editor **************" << endl << endl;
 
-    Map* map;
-    string filename;
-    vector<string>* mapReferences = MapRepository::instance()->listAll();
-    if(mapReferences->empty()){
-        cout << "No maps currently saved. Redirecting to editor menu." << endl;
-    }
-    else{
-        for (size_t i = 0; i < mapReferences->size(); i++) {
-            cout << (i+1) << ":" << mapReferences->at(i) << endl;
-        }
-
-        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
-        map = MapRepository::instance()->getEntity(index-1);
-
-    }
-
-    if (map == nullptr) {
-        cout << "Could not load map! Redirecting to editor menu." << endl;
-    }
-
-    return map;
-}
-
-void MapEditorController::editMap(Map *map){
+void MapEditorController::editMap(Map *map) {
     if(map->validate()){
         this->setMap(map);
 
@@ -296,7 +325,7 @@ void MapEditorController::editMap(Map *map){
 
             cout << "What changes do you want to make to this map?:" << endl;
             cout << "1. Add/Remove Wall" << endl;
-            cout << "2. Add Occupant" << endl;
+            cout << "2. Add/Remove Occupant" << endl;
             cout << "3. Save and Exit" << endl;
             cout << "4. Exit without saving" << endl;
 
@@ -322,6 +351,11 @@ void MapEditorController::editMap(Map *map){
                     break;
                 case 4:
                     done = readYesNoInput("Do you really want to leave without saving your changes?[Y/n]: ", true);
+                    if (done) {
+
+                        MapRepository::instance()->clearEntity(map->getName());
+
+                    }
                     break;
             }
 

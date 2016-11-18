@@ -211,12 +211,14 @@ bool Item::validateItem()
 
 void Item::displayItem()
 {
+    cout << endl << "============================================" << endl;
     vector<Enhancement> eVec = this->getInfluences();
     cout << "Item Type: " << this->getType() << endl;
     cout << "\tItem Name: " << this->getName() << endl;
     for (size_t i = 0; i<eVec.size(); i++) {
         cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
     }
+    cout << "============================================" << endl << endl;
 }
 
 
