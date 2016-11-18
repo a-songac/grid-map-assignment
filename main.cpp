@@ -1,4 +1,5 @@
 #define RUN_TESTS
+#define RUN_TEST_MANUAL
 
 #include <iostream>
 
@@ -13,15 +14,28 @@
 #include "entity/repo/ItemRepository.h"
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
+#include "test/ShortestPathTest.h"
 
 using namespace std;
 
 int main()
 {
+    #ifdef RUN_TESTS
+
+    #endif // RUN_TESTS
+
+
 
     MapRepository::instance();
     CharacterRepository::instance();
     ItemRepository::instance();
+
+    #ifdef RUN_TEST_MANUAL
+        if (readYesNoInput("Test Shortest path algorithm?[Y/n]: ", true)) {
+            ShortestPathTest::interactiveTest();
+        }
+    #endif // RUN_TEST_MANUAL
+
 
     int choice;
     bool gameLoop = true;
