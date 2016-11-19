@@ -91,49 +91,66 @@ void CharacterEditorController::createCharacter(bool pregenerated) {
 }
 
 void CharacterEditorController::initializeBackpack(Character* character) {
+	bool invalid;
+	string choiceName;
+	stringstream sStream;
+	vector<string>* allItems = ItemRepository::instance()->listAll();
 
-    cout << "\nIt is now time to add items to your character's backpack" << endl;
-    cout << "You have the possibility to select 2 items.  If you want more, you'll have to earn new ones while playing the game!!!" << endl << endl;
-    cout << "Here is the selection: " << endl;
+	if (character->backpack->size() >= 2)
+	{
+		cout << "the character already has 2 or more items inside of his backpack " << endl;
+		for (int i = 0; i < character->backpack->size();i++) {
 
-    bool invalid;
-    string choiceName;
-    stringstream sStream;
-    vector<string>* allItems = ItemRepository::instance()->listAll();
+		
+				cout << (i + 1) << ". " << character->backpack->at(i) << endl;
+			}
+		
+	}
+	else
+	{
+
+		cout << "\nIt is now time to add items to your character's backpack" << endl;
+		cout << "You have the possibility to select 2 items.  If you want more, you'll have to earn new ones while playing the game!!!" << endl << endl;
+		cout << "Here is the selection: " << endl;
+
+		
 
 
-    for (size_t i = 0; i < min(BACKPACK_INIT_SIZE, allItems->size()); i++) {
+		for (size_t i = 0; i < min(BACKPACK_INIT_SIZE, allItems->size()); i++) {
 
-        do {
-            for (size_t j = 0; j < allItems->size(); j++) {
-                cout << (j+1) << ". " << allItems->at(j) << endl;
-            }
+			do {
+				for (size_t j = 0; j < allItems->size(); j++) {
+					cout << (j + 1) << ". " << allItems->at(j) << endl;
+				}
 
-            invalid = false;
-            sStream << "See details of item: ";
-            choiceName = allItems->at(readIntegerInputWithRange(sStream.str(), 1, allItems->size()) - 1);
-            cout << endl;
-            ItemRepository::instance()->getEntity(choiceName)->displayItem();
-            cout << endl;
+				invalid = false;
+				sStream << "See details of item: ";
+				choiceName = allItems->at(readIntegerInputWithRange(sStream.str(), 1, allItems->size()) - 1);
+				cout << endl;
+				ItemRepository::instance()->getEntity(choiceName)->displayItem();
+				cout << endl;
 
-            sStream.str("");
-            sStream << "Confirm the selection of this item for your choice " << (i+1) << "?[Y/n] ";
-            if (readYesNoInput(sStream.str(), true)) {
-                if (character->hasItemInBackpack(choiceName)) {
-                    invalid = true;
-                    cout << "You already have this item, please choose another one" << endl;
-                } else {
-                    character->backpack->push_back(choiceName);
-                }
-            } else {
-                invalid = true;
-            }
-            cout << endl;
+				sStream.str("");
+				sStream << "Confirm the selection of this item for your choice " << (i + 1) << "?[Y/n] ";
+				if (readYesNoInput(sStream.str(), true)) {
+					if (character->hasItemInBackpack(choiceName)) {
+						invalid = true;
+						cout << "You already have this item, please choose another one" << endl;
+					}
+					else {
+						character->backpack->push_back(choiceName);
+					}
+				}
+				else {
+					invalid = true;
+				}
+				cout << endl;
 
-            sStream.str("");
-        } while (invalid);
-    }
+				sStream.str("");
+			} while (invalid);
+		}
 
+	}
 }
 
 
@@ -162,6 +179,7 @@ void CharacterEditorController::editExistingcharacter() {
         } else {
             // TODO What is thi for?
             character->levelUp();
+			
         }
     }
 }

@@ -258,6 +258,16 @@ void Character::randomlyGenAbilityScores() {
 
 }
 //implementation of a setter method for hit points
+
+void Character::GenerateModifiers()
+{
+	modifiers[0] = modifier(abilityScores[0]);
+	modifiers[1] = modifier(abilityScores[1]);
+	modifiers[2] = modifier(abilityScores[2]);
+	modifiers[3] = modifier(abilityScores[3]);
+	modifiers[4] = modifier(abilityScores[4]);
+	modifiers[5] = modifier(abilityScores[5]);
+}
 void Character::resetHitPoints() {
 	this->currentHitPoints = this->currentHitPoints - this->getModConstitution();
 }
@@ -371,7 +381,7 @@ bool Character::saveCharacter(string name)
 
 		std::copy(backpack->begin(), backpack->end(), output_iterator);
 
-		f << "WornItems: " << endl;
+		f << "wornItems:" << endl;
 		
 	std::ostream_iterator<std::string> output_iterator1(f, "\n");
 
@@ -390,13 +400,15 @@ bool Character::saveCharacter(string name)
 bool Character::loadCharacter(string name1)
 {
 	std::ifstream f(name1, std::ios::in);
+	bool out = false;
 
 	if (f.is_open())
 	{
-		
+
 		string s;
 		string t;
-		
+
+
 		f >> lvl;
 		f >> abilityScores[0];
 		f >> abilityScores[1];
@@ -407,48 +419,49 @@ bool Character::loadCharacter(string name1)
 		f >> currentHitPoints;
 		std::getline(f, s);
 		std::getline(f, s);
-		
-		while (!f.eof())
+
+		while (!f.eof() && out == false)
 		{
-				if (s != "wornItems:")
+			if (s != "wornItems:")
 			{
-					
-					backpack->push_back(s);
-					std::getline(f, s);
+
+				backpack->push_back(s);
+				std::getline(f, s);
 			}
+
 			else
 			{
 				std::getline(f, t);
-				wornItems->push_back(t);
-				std::getline(f, t);
+				if (t != "")
+				{
+					wornItems->push_back(t);
+				}
+				else
+				{
+					out == true;
+				}
+
 			}
 		}
-		
-		
-		
-		
-		f.close();
-
-		for (int i = 0; i < backpack->size(); i++)
-		{
-			cout << "Item :"<<" " <<i+1<<" "<<"In backpack is :"<<backpack->at(i) << endl;
-		}
-
-		for (int i = 0; i < wornItems->size(); i++)
-		{
-			cout << "Warn item number"<<" "<<i +1<<" "<<"Is :"<<wornItems->at(i) << endl;
-		}
-		Notify();
-		
-		return true;
-		
-		
 	}
-	else
+	f.close();
+	GenerateModifiers();
+
+	for (int i = 0; i < backpack->size(); i++)
 	{
-		return false;
+		cout << "Item :" << " " << i + 1 << " " << "In backpack is :" << backpack->at(i) << endl;
 	}
+
+	for (int i = 0; i < wornItems->size(); i++)
+	{
+		cout << "Warn item number" << " " << i + 1 << " " << "Is :" << wornItems->at(i) << endl;
+	}
+	Notify();
+
+	return true;
+
 }
+
 void Character::update() {
 
 }

@@ -44,6 +44,7 @@ public:
 	void hitPoints();
 	int getHitPoints();
 	void resetHitPoints();
+	void GenerateModifiers();
 	//set modifier based on ability scores
 	int modifier(int);
 	//generate ability scores
