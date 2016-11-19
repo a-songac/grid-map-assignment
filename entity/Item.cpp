@@ -93,7 +93,6 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 	}
 
 	if (isValid) {
-		cout << "****************************Item " << type_name << " has been added to your backpack*****************************" << endl;
 		types = type;
 		influence = influences;
 		names = type_name;

@@ -6,8 +6,8 @@ void initialize2DArray(vector< vector <Cell> >* grid, int height, int width) {
 
     vector< vector <Cell> > v(height, vector<Cell> (width));
     *grid = v;
-    
-    
+
+
 }
 */
 

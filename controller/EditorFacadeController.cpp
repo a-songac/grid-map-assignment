@@ -188,7 +188,7 @@ void EditorFacadeController::editorMenu() {
 
         else if(eChoice == 4){
 			ItemEditor* item = new ItemEditor();
-			item->createItem();
+			item->editorAlternatives();
         }
         else{
             editorLoop = false;

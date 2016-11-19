@@ -77,7 +77,7 @@ void CharacterEditorController::createCharacter(bool pregenerated) {
     character->armor();
     character->attackBonus();
     character->damageBonus();
-    character->levelUp();
+    character->display();
 
     initializeBackpack(character);
 

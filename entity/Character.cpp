@@ -465,6 +465,10 @@ bool Character::loadCharacter(string name1)
 void Character::update() {
 
 }
+
+void Character::display() {
+    Notify();
+}
 void Character::equipItem(string itemName)
 {
 	for (size_t i = 0; i < this->backpack->size(); i++)

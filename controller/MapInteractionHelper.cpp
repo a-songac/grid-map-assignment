@@ -120,4 +120,14 @@ Coordinate MapInteractionHelper::convertToCoordinate(Map* map, string locationSt
     return location;
 }
 
+string MapInteractionHelper::coordinateToString(Coordinate point) {
+
+    stringstream sstream;
+    char column = 'A' + point.column;
+    int row = point.row+1;
+    sstream << "[" << column << row << "] ";
+    return sstream.str();
+
+}
+
 
