@@ -12,16 +12,17 @@ Map::Map() {
     playerPosition = {-1, -1};
 
 
-    //grid = new Cell* [height];
     std::vector<std::vector<Cell> > g(height, std::vector<Cell>(width));
     this->grid = g;
-    //initialize2DArray(this->grid, height, width);
 
     Coordinate entryDoor = {0,0};
     Coordinate exitDoor = {height-1, width-1};
 
     grid.at(entryDoor.row).at(entryDoor.column).setType(Cell::TYPE_DOOR_ENTRY);
     grid.at(exitDoor.row).at(exitDoor.column).setType(Cell::TYPE_DOOR_EXIT);
+
+    this->gameItems = new vector<GameItem*>();
+    this->gamePlayers = new vector<GamePlayer*>();
 
 }
 
@@ -34,7 +35,8 @@ Map::Map(int height, int width) {
     std::vector<std::vector<Cell> > g(height, std::vector<Cell>(width));
     this->grid = g;
 
-    //initialize2DArray(grid, height, width);
+    this->gameItems = new vector<GameItem*>();
+    this->gamePlayers = new vector<GamePlayer*>();
 }
 
 Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
@@ -57,20 +59,28 @@ Map::Map(int height, int width, Coordinate entryDoor, Coordinate exitDoor) {
     grid.at(entryDoor.row).at(entryDoor.column).setType(Cell::TYPE_DOOR_ENTRY);
     grid.at(exitDoor.row).at(exitDoor.column).setType(Cell::TYPE_DOOR_EXIT);
 
+    this->gameItems = new vector<GameItem*>();
+    this->gamePlayers = new vector<GamePlayer*>();
+
 }
 
-Map::Map(Map* map) {
+Map::Map(Map* toCopy) {
 
-    this->height = map->getHeight();
-    this->width = map->getWidth();
-    this->name = map->getName();
+    this->height = toCopy->getHeight();
+    this->width = toCopy->getWidth();
+    this->name = toCopy->getName();
+    this->gameItems = new vector<GameItem*>();
+    this->gamePlayers = new vector<GamePlayer*>();
+    GameItem* gameItem;
+    GamePlayer* gamePlayer;
+
     playerPosition = {-1, -1};
 
     std::vector<std::vector<Cell> > g(this->height, std::vector<Cell>(this->width));
     this->grid = g;
 
-    Coordinate entryDoor = map->getEntryDoorCoordinate();
-    Coordinate exitDoor = map->getExitDoorCoordinate();
+    Coordinate entryDoor = toCopy->getEntryDoorCoordinate();
+    Coordinate exitDoor = toCopy->getExitDoorCoordinate();
 
     this->entryDoor.column = entryDoor.column;
     this->entryDoor.row = entryDoor.row;
@@ -83,20 +93,32 @@ Map::Map(Map* map) {
 
     for (int i = 0; i < this->height; i++) {
         for (int j = 0; j < this->width; j++){
-            this->grid.at(i).at(j).setType(map->getCellType(i, j));
-            this->grid.at(i).at(j).setOccupant(map->getOccupant(i, j));
+            this->grid.at(i).at(j).setType(toCopy->getCellType(i, j));
+            this->grid.at(i).at(j).setOccupant(toCopy->getOccupant(i, j));
         }
+    }
+
+
+    for (size_t i = 0; i < toCopy->getGameItems()->size(); i++) {
+        gameItem = static_cast<GameItem*>(toCopy->getGameItems()->at(i));
+        this->gameItems->push_back(new GameItem(gameItem));
+    }
+
+    for (size_t i = 0; i < toCopy->getGamePlayers()->size(); i++) {
+        gamePlayer = static_cast<GamePlayer*>(toCopy->getGamePlayers()->at(i));
+        this->gamePlayers->push_back(new GamePlayer(gamePlayer));
     }
 
 }
 
-/**
+
 Map::~Map() {
 
-    destroy2DArray(grid, height, width);
+    delete this->gameItems;
+    delete this->gamePlayers;
 
 }
-*/
+
 
 void Map::initDoors(Coordinate entryDoor, Coordinate exitDoor) {
 
@@ -142,5 +164,28 @@ void Map::render() {
     Notify();
 }
 
+
+bool Map::removeGameItem(Coordinate location) {
+    Coordinate* elementLocation;
+    for (size_t i = 0; i < this->gameItems->size(); i++) {
+        elementLocation = this->gameItems->at(i)->getLocation();
+        if (*elementLocation == location) {
+            this->gameItems->erase(this->gameItems->begin() + i);
+            return true;
+        }
+    }
+    return false;
+}
+bool Map::removeGamePlayer(Coordinate location) {
+    Coordinate* elementLocation;
+    for (size_t i = 0; i < this->gamePlayers->size(); i++) {
+        elementLocation = this->gamePlayers->at(i)->getLocation();
+        if (*elementLocation == location) {
+            this->gamePlayers->erase(this->gamePlayers->begin() + i);
+            return true;
+        }
+    }
+    return false;
+}
 
 
