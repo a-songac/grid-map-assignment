@@ -25,17 +25,19 @@ class MapEditorController {
         void createMap();
         void addWall();
         void addOccupant();
-        Map* loadMap();
         void editMap(Map* map);
         void setMap(Map* map);
         Map* getMap();
 
     private:
+        Map* map;
 
         Coordinate defineDoor(string message, Map* map, string defaultLocation);
         Coordinate promptForMapLocation(string message, string defaultLocation);
-        char setOccupantOnMap();
-        Map* map;
+        char setOccupantOnMap(Coordinate location);
+
+        void addGamePlayer(Coordinate location, char occupantType);
+        void addGameItem(Coordinate location);
 
         friend class boost::serialization::access;
 

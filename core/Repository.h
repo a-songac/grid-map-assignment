@@ -26,6 +26,7 @@
 #include "Repository.h"
 #include "../entity/Map.h"
 #include "../view/MapView.h"
+#include "../view/MapElementsView.h"
 #include "../view/CharacterView.h"
 #include "../entity/Character.h"
 #include "../utils/FileUtils.h"
@@ -49,6 +50,8 @@ template <class T> class Repository {
         bool exists(std::string name);
         T* getEntity(std::string name);
         T* getEntity(size_t index);
+        T* clearEntity(std::string name);
+        T* clearEntity(size_t index);
         bool remove(std::string name);
         T* find(std::string name);
 
@@ -222,7 +225,7 @@ bool Repository<T>::save(string name, T* entity) {
             return false;
         }
         #ifdef DEBUG
-            logInfo("Repository", "save", "FOR " + referenceFile + ": " + name + "is new, updating reference file");
+            logInfo("Repository", "save", "FOR " + referenceFile + ": " + name + " is new, updating reference file");
         #endif // DEBUG
 
         this->_references->push_back(name);
@@ -267,6 +270,41 @@ T* Repository<T>::getEntity(size_t index) {
     return entity;
 }
 
+template <class T>
+T* Repository<T>::clearEntity(std::string name) {
+    for (size_t i = 0; i < this->_references->size(); i++) {
+        if (name == this->_references->at(i)) {
+            return this->clearEntity(i);
+        }
+    }
+    return nullptr;
+}
+
+template <class T>
+T* Repository<T>::clearEntity(size_t index) {
+
+    T* entity;
+    string fileName = this->_references->at(index);
+
+    if (index < 0 || index > this->_references->size()) {
+        return nullptr;
+    }
+
+    entity = this->_entities[index];
+    delete entity;
+    entity = nullptr;
+    #ifdef DEBUG
+        logInfo("Repository", "clearEntity", "FOR " + referenceFile + ":Clear entity from memory and reload it from persistence file");
+    #endif // DEBUG
+
+    this->_entities[index] = entity = (this->*loadEntity)(fileName);
+
+    return entity;
+}
+
+
+
+
 
 
 // //////////////////////////////////////////
@@ -294,6 +332,7 @@ Map* Repository<T>::loadMap(string fileName) {
         logInfo("Repository", "loadMap", "Attaching view to loaded map");
     #endif // DEBUG
     MapView* mapView = new MapView(loadedMap);
+    MapElementsView* mapElementsView = new MapElementsView(loadedMap);
     return loadedMap;
 }
 

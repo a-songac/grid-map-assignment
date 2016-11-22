@@ -2,10 +2,12 @@
 #include <regex>
 #include <sstream>
 #include <string>
+#include <vector>
 #include <stdexcept>
 
 #include "../utils/IOUtils.h"
 #include "MapInteractionHelper.h"
+#include "../entity/repo/MapRepository.h"
 
 using namespace std;
 
@@ -118,6 +120,63 @@ Coordinate MapInteractionHelper::convertToCoordinate(Map* map, string locationSt
     }
     Coordinate location = {rowIndex, columnIndex};
     return location;
+}
+
+string MapInteractionHelper::coordinateToString(Coordinate* point) {
+
+    stringstream sstream;
+    char column = 'A' + point->column;
+    int row = point->row+1;
+    sstream << "[" << column << row << "] ";
+    return sstream.str();
+
+}
+
+string MapInteractionHelper::coordinateToString(Coordinate point) {
+
+    stringstream sstream;
+    char column = 'A' + point.column;
+    int row = point.row+1;
+    sstream << "[" << column << row << "] ";
+    return sstream.str();
+
+}
+
+Map* MapInteractionHelper::selectMap() {
+     Map* map = nullptr;
+
+    bool confirm = false;
+    string filename, name1;
+    vector<string>* mapReferences = MapRepository::instance()->listAll();
+
+    if(mapReferences->size() > 0){
+
+        do {
+            cout << "Please select a map: " << endl;
+            for (size_t i = 0; i < mapReferences->size(); i++) {
+                cout << i+1 << ":" << mapReferences->at(i) << endl;
+            }
+            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
+
+            map = MapRepository::instance()->getEntity(index-1);
+
+            if (nullptr == map) {
+
+                cout << "Sorry, could not load map" << endl;
+                confirm = true;
+
+            } else {
+                map->render();
+                confirm = readYesNoInput("You confirm the selection of this map displayed above?[Y/n]: ", true);
+            }
+
+        } while (!confirm);
+
+    } else {
+        cout << "No maps to be loaded" << endl;
+    }
+    return map;
+
 }
 
 

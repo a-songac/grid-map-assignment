@@ -8,6 +8,7 @@
 #include "../entity/ItemContainer.h"
 #include "../utils/IOUtils.h"
 #include "../entity/repo/ItemRepository.h"
+#include "ItemInteractionHelper.h"
 
 using namespace std;
 ItemEditor::ItemEditor()
@@ -33,10 +34,13 @@ void ItemEditor::editorAlternatives() {
                 this->createItem();
                 break;
             case 2:
-                cout << "To be implemented" << endl;
+                Item* item;
+                item = ItemInteractionHelper::selectItem();
+                cout << "\nEditing yet to be implemented" << endl << endl;
                 break;
             case 3:
                 quit = true;
+                break;
         }
 
     } while (!quit);
@@ -94,6 +98,8 @@ void ItemEditor::createItem() {
 			item->displayItem();
 			if (readYesNoInput("Would you like to save your newly created item?[Y/n]: ", true)) {
 				ItemRepository::instance()->save(item->getName(), item);
+			} else {
+                delete item;
 			}
 		}
 
@@ -103,10 +109,10 @@ void ItemEditor::createItem() {
 
 Item* ItemEditor::armor() {
 
-	
+
 	itemType = "Armor";
 	enhancementType = "ArmorC";
-	
+
 	itemName = readStringInputNoEmpty("Select a name for you Armor: ");
 	armorBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
 	typeEnhancements.push_back(enhancementType);
@@ -142,7 +148,7 @@ Item* ItemEditor::ring() {
 			cout << "5. Charisma" << endl;
 			choice = readIntegerInputWithRange("Your choice: ", 1, 5);
 			if (choice == 1 && armorC == 1 || choice == 2 && strength == 1 ||
-				choice == 3 && constitution == 1 || 
+				choice == 3 && constitution == 1 ||
 				choice == 4 && wisdom == 1 || choice == 5 && charisma == 1)
 			{
 				cout << "You can select atmost one enhancement type" << endl;
@@ -210,7 +216,7 @@ Item* ItemEditor::helmet() {
 			cout << "2. Wisdom" << endl;
 			cout << "3. Intelligence" << endl;
 			choice = readIntegerInputWithRange("Your choice[1]: ", 1, 3);
-			if (choice == 1 && armorC == 1 || choice == 2 && wisdom == 1 || 
+			if (choice == 1 && armorC == 1 || choice == 2 && wisdom == 1 ||
 				choice == 3 && intelligence == 1)
 			{
 				cout << "You can select atmost one enhancement type" << endl;
@@ -259,7 +265,7 @@ Item* ItemEditor::boots() {
 
 	armorC = 0;
 	dexterity = 0;
-	
+
 	itemType = "Boots";
 	itemName = itemName = readStringInputNoEmpty("Select a name for your item with type Boots: ");
 	do {
@@ -334,7 +340,7 @@ Item* ItemEditor::belt() {
 				retry = true;
 			}
 		} while (retry);
-	
+
 		switch (choice)
 		{
 		case 1:
@@ -446,32 +452,4 @@ ItemEditor::~ItemEditor()
 {
 
 }
-
-// TODO: is it still needed?
-
-//void ItemEditor::readItem(ItemContainer* backpack, string name, ItemContainer* wornItems) {
-//
-//	string equipOrGoBack, itemToEquip;
-//	if (name == "bp") {
-//		//backpack->displayItem();
-//		cout << "1 - Equip an item" << endl;
-//		cout << "2 - Go back to game" << endl;
-//		cin >> equipOrGoBack;
-//		readIntegerInputWithRange(equipOrGoBack, 2, 1, 2);
-//		if (equipOrGoBack == "1")
-//		{
-//			cout << "Please enter the name of the Item you wish to equip >> ";
-//			cin >> itemToEquip;
-//			//wornItems->equipItem(backpack, itemToEquip);
-//		}
-//		else if (equipOrGoBack == "2"){
-//
-//		}
-//
-//	}
-//	if (name == "e") {
-//		cout << "please enter the name of the Item you wish to equip >> ";
-//		//wornItems->displayItem();
-//	}
-//}
 

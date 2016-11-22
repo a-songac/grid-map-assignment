@@ -11,7 +11,7 @@
 #include <ctime>
 #include <algorithm>
  // istream_iterator, ostream_iterator, back_inserter
-#include <sstream> 
+#include <sstream>
 #include <fstream>
 
 #include "Character.h"
@@ -32,6 +32,11 @@ Character::Character()
 {
     this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
+}
+
+Character::~Character() {
+    delete this->backpack;
+    delete this->wornItems;
 }
 
 //! implementation of Character method that initializes strength, dexterity, intelligence, charisma, wisdom, constitution, whether it is generated randomly or not
@@ -382,7 +387,7 @@ bool Character::saveCharacter(string name)
 		std::copy(backpack->begin(), backpack->end(), output_iterator);
 
 		f << "wornItems:" << endl;
-		
+
 	std::ostream_iterator<std::string> output_iterator1(f, "\n");
 
 	std::copy(wornItems->begin(), wornItems->end(), output_iterator1);
@@ -462,8 +467,13 @@ bool Character::loadCharacter(string name1)
 
 }
 
+// TODO Is that needed?
 void Character::update() {
 
+}
+
+void Character::display() {
+    Notify();
 }
 void Character::equipItem(string itemName)
 {
@@ -673,9 +683,6 @@ Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, in
 }
 Fighter::Fighter()
 {
-
-}
-Character::~Character() {
 
 }
 

@@ -93,7 +93,6 @@ Item::Item(string type, vector<Enhancement> influences,string type_name)
 	}
 
 	if (isValid) {
-		cout << "****************************Item " << type_name << " has been added to your backpack*****************************" << endl;
 		types = type;
 		influence = influences;
 		names = type_name;
@@ -212,12 +211,14 @@ bool Item::validateItem()
 
 void Item::displayItem()
 {
+    cout << endl << "============================================" << endl;
     vector<Enhancement> eVec = this->getInfluences();
     cout << "Item Type: " << this->getType() << endl;
     cout << "\tItem Name: " << this->getName() << endl;
     for (size_t i = 0; i<eVec.size(); i++) {
         cout << "\tEnhancement Type: " << eVec[i].getType() << "\n\tBonus Value: " << eVec[i].getBonus() << endl;
     }
+    cout << "============================================" << endl << endl;
 }
 
 

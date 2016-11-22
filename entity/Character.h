@@ -69,6 +69,7 @@ public:
 	bool loadCharacter(std::string name);
 	//update
 	void update();
+	void display();
 	//Item update
 	void updateStatsAtEquip(Item*);
 	void updateStatsAtUnequip(Item*);

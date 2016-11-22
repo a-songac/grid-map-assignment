@@ -6,28 +6,20 @@
 /// 3. Libraries: The map uses the boost archive libraries in order for its state to be saved/loaded.
 
 #pragma once
+
 #include "Cell.h"
+#include "Coordinate.h"
 #include "../core/Subject.h"
+#include <vector>
+#include "GameElement.h"
+#include "GameItem.h"
+#include "GamePlayer.h"
+
+
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/serialization/vector.hpp>
 #include <boost/serialization/serialization.hpp>
-/// Struct that represents a map coordinate
-struct Coordinate {
-    int row;
-    int column;
-
-
-    private:
-        friend class boost::serialization::access;
-        template<class Archive>
-        void serialize(Archive & ar, const unsigned int version)
-        {
-            ar & row;
-            ar & column;
-        }
-
-};
 
 /// Class to implement the game map
 class Map : public Subject{
@@ -37,10 +29,10 @@ class Map : public Subject{
         Map(int h, int w);
         Map();
         Map(Map* mapToCopy);
-        //~Map();
+        ~Map();
 
-        void setName(string name);
-        string getName();
+        void setName(std::string name);
+        std::string getName();
 
         int getHeight();
         int getWidth();
@@ -70,6 +62,15 @@ class Map : public Subject{
         char getCellType(int row, int column);
         bool isInbound(int row, int column);
 
+        std::vector<GameItem*>* getGameItems();
+        std::vector<GamePlayer*>* getGamePlayers();
+
+        // Wanted to use a helperfor the following 2 methods since
+        // all that changes is the subtype of the collection.  Issues of casting
+        // and object slicing tho.
+        bool removeGameItem(Coordinate location);
+        bool removeGamePlayer(Coordinate location);
+
     private:
         std::vector<std::vector <Cell> > grid;
         int height;
@@ -77,7 +78,9 @@ class Map : public Subject{
         Coordinate entryDoor;
         Coordinate exitDoor;
         Coordinate playerPosition;
-        string name;
+        std::string name;
+        std::vector<GameItem*>* gameItems;
+        std::vector<GamePlayer*>* gamePlayers;
 
         friend class boost::serialization::access;
         template<class Archive>
@@ -89,6 +92,8 @@ class Map : public Subject{
             ar & entryDoor;
             ar & exitDoor;
             ar & name;
+            ar & gameItems;
+            ar & gamePlayers;
 
         }
 
@@ -217,5 +222,12 @@ inline bool Map::isPlayerAdjacent(int row, int column) {
             || (row == currentRow - 1 && column == currentColumn)
             || (row == currentRow && column == currentColumn + 1)
             || (row == currentRow - 1 && column == currentColumn - 1);
+}
+
+inline std::vector<GameItem*>* Map::getGameItems() {
+    return this->gameItems;
+}
+inline std::vector<GamePlayer*>* Map::getGamePlayers() {
+    return this->gamePlayers;
 }
 
