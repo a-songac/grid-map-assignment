@@ -14,6 +14,7 @@
 #include "../utils/IOUtils.h"
 #include "ItemEditor.h"
 #include "../entity/repo/ItemRepository.h"
+#include "CharacterInteractionHelper.h"
 
 using namespace std;
 
@@ -101,10 +102,10 @@ void CharacterEditorController::initializeBackpack(Character* character) {
 		cout << "the character already has 2 or more items inside of his backpack " << endl;
 		for (int i = 0; i < character->backpack->size();i++) {
 
-		
+
 				cout << (i + 1) << ". " << character->backpack->at(i) << endl;
 			}
-		
+
 	}
 	else
 	{
@@ -113,7 +114,7 @@ void CharacterEditorController::initializeBackpack(Character* character) {
 		cout << "You have the possibility to select 2 items.  If you want more, you'll have to earn new ones while playing the game!!!" << endl << endl;
 		cout << "Here is the selection: " << endl;
 
-		
+
 
 
 		for (size_t i = 0; i < min(BACKPACK_INIT_SIZE, allItems->size()); i++) {
@@ -171,15 +172,12 @@ void CharacterEditorController::editExistingcharacter() {
         int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
         character = CharacterRepository::instance()->getEntity(index-1);
 
-        // TODO Display or no?
-		// cv->display();
-
         if (nullptr == character) {
             cout << "Error, could not load chosen character" << endl;
         } else {
-            // TODO What is thi for?
-            character->levelUp();
-			
+
+            cv->display();
+
         }
     }
 }
@@ -199,58 +197,8 @@ void CharacterEditorController::saveCharacter(Character* character) {
         {
             cout << "ERROR, character could not be saved" << endl;
         }
+    } else {
+        delete character;
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-// /////////////////////
-// USED IN GAMEPLAY CONTROLLER ONLLY
-// /////////////////////
-
-Character* CharacterEditorController::selectCharacter() {
-	string name1;
-	bool confirm1 = false;
-	Character* character;
-	srand(static_cast<unsigned int>(time(0)));
-	vector<string>* characterReferences = CharacterRepository::instance()->listAll();
-
-	do {
-		if (characterReferences->empty()) {
-			cout << "No characters currently saved. Redirecting to editor menu." << endl;
-		}
-		else {
-			cout << "Please select the character you want to load and view: " << endl;
-			for (size_t i = 0; i < characterReferences->size(); i++) {
-				cout << (i + 1) << ":" << characterReferences->at(i) << endl;
-			}
-
-			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
-			character = CharacterRepository::instance()->getEntity(index-1);
-//			cv->display();
-			character->levelUp();
-
-
-			confirm1 = readYesNoInput("You confirm the selection of this character displayed above?[Y/n]: ", true);
-			if (confirm1) {
-				return character;
-			}
-			if (nullptr == character) {
-				cout << "Error, could not load character " << name1 << endl;
-				return nullptr;
-			}
-		}
-	} while (!confirm1);
-	return character;
-}

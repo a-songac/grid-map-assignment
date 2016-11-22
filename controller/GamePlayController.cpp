@@ -19,6 +19,8 @@
 #include "../view/CharacterView.h"
 #include "../controller/CharacterEditorController.h"
 #include "../controller/ItemEditor.h"
+#include "CharacterInteractionHelper.h"
+#include "MapInteractionHelper.h"
 
 using namespace std;
 
@@ -32,37 +34,14 @@ void GamePlayController::newGame() {
 
     do {
 
-		this->selectMap();
+		this->map = MapInteractionHelper::selectMap();
+		if (nullptr == this->map) {
+            return;
+		}
         this->startGame();
 
 
     } while (gameLoop);
-
-}
-
-void GamePlayController::selectMap() {
-
-    bool confirm = false;
-    string filename, name1;
-    vector<string>* mapReferences = MapRepository::instance()->listAll();
-
-    if(mapReferences->size() > 0){
-
-        do {
-            cout << "Please select a map: " << endl;
-            for (size_t i = 0; i < mapReferences->size(); i++) {
-                cout << i+1 << ":" << mapReferences->at(i) << endl;
-            }
-            int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
-
-            this->map = MapRepository::instance()->getEntity(index-1);
-            this->map->render();
-            confirm = readYesNoInput("You confirm the selection of this map displayed above?[Y/n]: ", true);
-
-        } while (!confirm);
-    } else {
-        cout << "Error could not load maps" << endl;
-    }
 
 }
 
@@ -74,7 +53,7 @@ void GamePlayController::startGame() {
 	bool quit = false;
 	Character* character;
 
-	character = CharacterEditorController::selectCharacter();
+	character = CharacterInteractionHelper::selectCharacter();
 
 
 	// //////////////////////////////
