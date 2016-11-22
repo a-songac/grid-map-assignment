@@ -176,7 +176,8 @@ void CharacterEditorController::editExistingcharacter() {
             cout << "Error, could not load chosen character" << endl;
         } else {
 
-            cv->display();
+            character->display();
+            character->displayBackpack();
 
         }
     }

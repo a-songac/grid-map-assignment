@@ -452,17 +452,6 @@ bool Character::loadCharacter(string name1)
 	f.close();
 	GenerateModifiers();
 
-	for (int i = 0; i < backpack->size(); i++)
-	{
-		cout << "Item :" << " " << i + 1 << " " << "In backpack is :" << backpack->at(i) << endl;
-	}
-
-	for (int i = 0; i < wornItems->size(); i++)
-	{
-		cout << "Warn item number" << " " << i + 1 << " " << "Is :" << wornItems->at(i) << endl;
-	}
-	Notify();
-
 	return true;
 
 }
