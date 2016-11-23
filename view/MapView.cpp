@@ -153,7 +153,6 @@ void MapView::renderMap() {
     for (int x=0;x<charsWidth;x++)
         cout << HORIZONTAL_BORDER;
     cout << endl << endl;
-
 }
 
 

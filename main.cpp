@@ -1,5 +1,5 @@
 #define RUN_TESTS
-#define RUN_TEST_MANUAL
+//#define RUN_TEST_MANUAL
 
 #include <iostream>
 

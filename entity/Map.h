@@ -52,9 +52,13 @@ class Map : public Subject{
         bool isWall(int row, int column);
         bool isFloor(int row, int column);
         bool isOccupied(int row, int column);
+        bool isOccupiedByChest(int row, int column);
+        bool isOccupiedByCharacter(int row, int column);
         bool fillCell(int row, int column, char occupant);
         char getOccupant(int row, int column);
         bool isPlayerAdjacent(int row, int column);
+        void setOriginalOccupant(Coordinate location, char occupant);
+        char getOriginalOccupant(Coordinate location);
 
         void render();
         bool validate();
@@ -200,6 +204,7 @@ inline bool Map::movePlayer(int row, int column) {
         return false;
     }
     if (!isPlayerAdjacent(row, column)
+        && !(column == this->playerPosition.column && row == this->playerPosition.row)
         && (-1 != this->playerPosition.column && -1 != this->playerPosition.row)) {
         cout << "Trying to teleport my friend?! Please retry" << endl;
         return false;
@@ -223,7 +228,7 @@ inline bool Map::isPlayerAdjacent(int row, int column) {
     return (row == currentRow + 1 && column == currentColumn)
             || (row == currentRow - 1 && column == currentColumn)
             || (row == currentRow && column == currentColumn + 1)
-            || (row == currentRow - 1 && column == currentColumn - 1);
+            || (row == currentRow && column == currentColumn - 1);
 }
 
 inline std::vector<GameItem*>* Map::getGameItems() {
@@ -236,4 +241,5 @@ inline std::vector<GamePlayer*>* Map::getGamePlayers() {
 inline Coordinate Map::getPlayerPosition() {
     return this->playerPosition;
 }
+
 

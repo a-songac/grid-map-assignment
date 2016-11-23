@@ -1,14 +1,12 @@
 
 #pragma once
 
-#include "PlayerStrategy.h"
+#include "NonUserStrategy.h"
 
 
-class AggressivePlayerStrategy : public PlayerStrategy {
+class AggressivePlayerStrategy : public NonUserStrategy {
     public:
-        void move(GamePlayer* player);
         void attack(GamePlayer* player, GamePlayer* victim);
         void freeAction(GamePlayer* player);
-        bool turn(GamePlayer* player, Map* map);
 
 };

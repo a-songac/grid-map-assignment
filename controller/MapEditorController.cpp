@@ -196,11 +196,17 @@ void MapEditorController::addOccupant() {
                                 break;
                         }
                         map->fillCell(location.row, location.column, Cell::OCCUPANT_EMPTY);
+                        map->setOriginalOccupant(location, Cell::OCCUPANT_EMPTY);
                     }
                 }
                 else {
                     try {
-                        map->fillCell(location.row, location.column, setOccupantOnMap(location));
+                        char occupant = setOccupantOnMap(location);
+                        map->fillCell(location.row, location.column, occupant);
+                        map->setOriginalOccupant(
+                                location,
+                                occupant);
+
                     } catch (std::runtime_error& e) {
                         cerr << e.what() << endl;
                         error = true;

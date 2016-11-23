@@ -55,7 +55,7 @@ void ShortestPathTest::interactiveTest() {
             start = MapInteractionHelper::readMapLocation(map, "Select starting location: ", "");
             destination = MapInteractionHelper::readMapLocation(map, "Select destination location: ", "");
 
-            path = pathCalculator.computeShortestPath(start, destination);
+            path = pathCalculator.computeShortestPath(start, destination, false);
             map->render();
             cout << "Computed Shortest Path: " << endl;
             cout << "    length: " << path.size() << endl;

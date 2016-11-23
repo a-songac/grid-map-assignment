@@ -13,8 +13,8 @@ class ShortestPath
         ShortestPath(Map* map);
         ~ShortestPath();
 
-        vector<Coordinate> computeShortestPath(Coordinate start , Coordinate destination);
-        void backTrack(int row, int column, int destinationRow, int destinationColumn);
+        vector<Coordinate> computeShortestPath(Coordinate start , Coordinate destination, bool considerPlayers);
+        void backTrack(int row, int column, int destinationRow, int destinationColumn, bool considerPlayers);
 
     protected:
 

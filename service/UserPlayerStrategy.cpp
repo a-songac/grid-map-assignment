@@ -17,7 +17,7 @@
 #include "../controller/MapInteractionHelper.h"
 
 
-void UserPlayerStrategy::move(GamePlayer* player) {
+void UserPlayerStrategy::move(GamePlayer* player, Map* map) {
 }
 void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim) {
 }

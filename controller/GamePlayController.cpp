@@ -87,18 +87,14 @@ void GamePlayController::startGame() {
 
                 if (!gameOver) {
                     for (size_t i = 0; i < gamePlayers->size(); i++) {
-
                         gamePlayers->at(i)->turn(this->map);
-
                     }
                 }
-
 
 			} while (!gameOver);
 
             // reset map to what it was
 			MapRepository::instance()->clearEntity(this->map->getName());
-
 
     } else {
         logError("GamePlayController", "startGame", "No map was loaded for this game");
