@@ -1,13 +1,13 @@
 #include "FriendlyPlayerStrategy.h"
 
 
-void FriendlyPlayerStrategy::move(const GamePlayer* player) {
+void FriendlyPlayerStrategy::move(GamePlayer* player) {
 }
-void FriendlyPlayerStrategy::attack(const GamePlayer* player, GamePlayer* victim) {
+void FriendlyPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim) {
 }
-void FriendlyPlayerStrategy::freeAction(const GamePlayer* player) {
+void FriendlyPlayerStrategy::freeAction(GamePlayer* player) {
 }
-bool FriendlyPlayerStrategy::turn(const GamePlayer* player, const Map* map){
+bool FriendlyPlayerStrategy::turn(GamePlayer* player, Map* map){
     cout << "Friendly took his turn" << endl;
     return true;
 }

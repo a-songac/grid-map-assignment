@@ -31,7 +31,7 @@ GamePlayer::GamePlayer(GamePlayer* gamePlayer)
 GamePlayer::GamePlayer() : type(Cell::OCCUPANT_EMPTY) {}
 
 
-bool GamePlayer::turn(const Map* map) {
+bool GamePlayer::turn(Map* map) {
 
     this->actionStrategy->turn(this, map);
 

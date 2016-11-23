@@ -5,10 +5,10 @@
 
 class UserPlayerStrategy : public PlayerStrategy {
     public:
-        void move(const GamePlayer* player);
-        void attack(const GamePlayer* player, GamePlayer* victim);
-        void freeAction(const GamePlayer* player);
-        bool turn(const GamePlayer* player, const Map* map);
+        void move(GamePlayer* player);
+        void attack(GamePlayer* player, GamePlayer* victim);
+        void freeAction(GamePlayer* player);
+        bool turn(GamePlayer* player, Map* map);
 
 
 };
