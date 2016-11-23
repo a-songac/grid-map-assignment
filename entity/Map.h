@@ -71,6 +71,8 @@ class Map : public Subject{
         bool removeGameItem(Coordinate location);
         bool removeGamePlayer(Coordinate location);
 
+        Coordinate getPlayerPosition();
+
     private:
         std::vector<std::vector <Cell> > grid;
         int height;
@@ -229,5 +231,9 @@ inline std::vector<GameItem*>* Map::getGameItems() {
 }
 inline std::vector<GamePlayer*>* Map::getGamePlayers() {
     return this->gamePlayers;
+}
+
+inline Coordinate Map::getPlayerPosition() {
+    return this->playerPosition;
 }
 
