@@ -3,12 +3,12 @@
 
 #include "PlayerStrategy.h"
 
-
-class AggressivePlayerStrategy : public PlayerStrategy {
+class UserPlayerStrategy : public PlayerStrategy {
     public:
         void move(const GamePlayer* player);
         void attack(const GamePlayer* player, GamePlayer* victim);
         void freeAction(const GamePlayer* player);
         bool turn(const GamePlayer* player, const Map* map);
+
 
 };

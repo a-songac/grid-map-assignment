@@ -3,7 +3,3 @@
 PlayerStrategy::PlayerStrategy()
 {
 }
-
-PlayerStrategy::~PlayerStrategy()
-{
-}

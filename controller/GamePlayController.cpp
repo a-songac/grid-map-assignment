@@ -8,13 +8,14 @@
 
 #include "../entity/Map.h"
 #include "../entity/Cell.h"
-#include "../utils/IOUtils.h"
-#include "MapInteractionHelper.h"
-#include "../entity/repo/MapRepository.h"
-#include "../core/Repository.h"
-#include "../utils/LogUtils.h"
-#include "../controller/CharacterEditorController.h"
 #include "../entity/Character.h"
+#include "../entity/GamePlayer.h"
+#include "../entity/repo/MapRepository.h"
+#include "../utils/IOUtils.h"
+#include "../utils/LogUtils.h"
+#include "MapInteractionHelper.h"
+#include "../core/Repository.h"
+#include "../controller/CharacterEditorController.h"
 #include "../entity/repo/CharacterRepository.h"
 #include "../view/CharacterView.h"
 #include "../controller/CharacterEditorController.h"
@@ -56,13 +57,6 @@ void GamePlayController::startGame() {
 	character = CharacterInteractionHelper::selectCharacter();
 
 
-	// //////////////////////////////
-	// TMEPORARY
-	// ////////////////////////////////
-    CharacterEditorController::initializeBackpack(character);
-    // END TEMPORARY
-
-
     cout << endl << endl << "********** GET READY **********" << endl;
 	cout << "The game is ready to be played, here are some advice before you start: " << endl;
 	cout << "    - To move on the map, enter a location eg: a2" << endl;
@@ -84,6 +78,8 @@ void GamePlayController::startGame() {
 		Coordinate nextPosition;
 		int col = exitDoor.column;
 		int row = exitDoor.row;
+
+		vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
         this->map->movePlayer(entryDoor.row, entryDoor.column);
 			do {
@@ -154,6 +150,16 @@ void GamePlayController::startGame() {
 						gameOver = true;
 					}
 				}
+
+
+                for (size_t i = 0; i < gamePlayers->size(); i++) {
+
+                    gamePlayers->at(i)->turn(this->map);
+
+                }
+
+
+
 			} while (!gameOver);
 
 

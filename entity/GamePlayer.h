@@ -20,6 +20,8 @@ class GamePlayer : public GameElement
         GamePlayer(GamePlayer* gamePlayer);
         char getType();
 
+        bool turn(const Map* map);
+
 
     protected:
 
