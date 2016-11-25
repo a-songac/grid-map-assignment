@@ -109,6 +109,8 @@
 		<Unit filename="service/CombatService.h" />
 		<Unit filename="service/FriendlyPlayerStrategy.cpp" />
 		<Unit filename="service/FriendlyPlayerStrategy.h" />
+		<Unit filename="service/LogSettings.cpp" />
+		<Unit filename="service/LogSettings.h" />
 		<Unit filename="service/MapValidator.cpp" />
 		<Unit filename="service/MapValidator.h" />
 		<Unit filename="service/NonUserStrategy.cpp" />

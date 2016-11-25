@@ -225,7 +225,7 @@ void UserPlayerStrategy::modifyGameLogSettings() {
         << "3. Toggle Dice Logs: " << onOff(LOG::DICE) << endl
         << "4. Toggle Character Logs: " << onOff(LOG::CHAR) << endl
         << "5. Exit" << endl;
-        int choice = readIntegerInputWithRange("Your choice[1]: ", 5, 1, 5);
+        int choice = readIntegerInputWithRange("Your choice[5]: ", 5, 1, 5);
 
         switch (choice) {
             case 1:
