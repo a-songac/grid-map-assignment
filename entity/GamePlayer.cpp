@@ -36,3 +36,11 @@ bool GamePlayer::turn(Map* map) {
     this->actionStrategy->turn(this, map);
 
 }
+
+
+std::string GamePlayer::getTypeName() {
+    if (type == Cell::OCCUPANT_FRIEND) {
+        return "Friendly";
+    }
+    return "Hostile";
+}

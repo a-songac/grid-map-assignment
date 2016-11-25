@@ -21,6 +21,7 @@ class GamePlayer : public GameElement
         char getType();
 
         bool turn(Map* map);
+        std::string getTypeName();
 
 
     protected:

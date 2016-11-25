@@ -9,6 +9,7 @@
 
 class CombatService {
     public:
-        bool canAttack(GamePlayer* player, Mmap* map, bool fromDistance);
+        static bool isAdjacent(Coordinate origin, Coordinate destination);
+        static bool canRangeAttack(Coordinate origin, Coordinate destination, int range, Map* map);
 
-}
+};
