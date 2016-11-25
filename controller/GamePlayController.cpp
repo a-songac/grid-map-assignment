@@ -22,6 +22,7 @@
 #include "../controller/ItemEditor.h"
 #include "CharacterInteractionHelper.h"
 #include "MapInteractionHelper.h"
+#include "../service/LogSettings.h"
 
 using namespace std;
 
@@ -49,6 +50,8 @@ void GamePlayController::newGame() {
 
 void GamePlayController::startGame() {
 
+
+
 	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
 	bool quit = false;
@@ -57,11 +60,7 @@ void GamePlayController::startGame() {
 	character = CharacterInteractionHelper::selectCharacter();
 
 
-    cout << endl << endl << "********** GET READY **********" << endl;
-	cout << "The game is ready to be played, here are some advice before you start: " << endl;
-	cout << "    - To move on the map, enter a location eg: a2" << endl;
-	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
-	cout << "    - To quit the game, type: 'q'" << endl;
+    cout << endl << endl << "********** GAME READY TO BE PLAYED**********" << endl;
 
     bool startGame = readYesNoInput("Ready to start the game " + character->getName() + "?[Y/n]", 1);
     if (!startGame) {

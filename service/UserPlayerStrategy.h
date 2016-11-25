@@ -10,6 +10,7 @@ class UserPlayerStrategy : public PlayerStrategy {
         void attack(GamePlayer* player, GamePlayer* victim);
         void freeAction(GamePlayer* player);
         bool turn(GamePlayer* player, Map* map);
+        void modifyGameLogSettings();
     private:
         void backpackOption(Character* character);
         bool postAttack(Character* character, Map* map);

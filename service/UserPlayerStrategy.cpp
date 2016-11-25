@@ -16,6 +16,7 @@
 #include "../controller/CharacterInteractionHelper.h"
 #include "../controller/MapInteractionHelper.h"
 #include "CombatService.h"
+#include "LogSettings.h"
 
 #include <sstream>
 
@@ -46,6 +47,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map){
                << "\n    Press 'a' for attack"
                << "\n    Press 'bp' for backpack"
                << "\n    Press 'i' to see game info"
+               << "\n    Press 's' for settings"
                << "\n    Press 'q' to quit"
                << "\nYour choice[i]: ";
     do {
@@ -63,14 +65,21 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map){
         else if (goTo == "a") {
 
             turnDone = postAttack(character, map);
+            map->render();
 
         }
         else if (goTo == "i") {
             turnDone = false;
+            // TODO Display detailed info about the game
+            map->render();
 
         }
+        else if (goTo == "s") {
+            turnDone = false;
+            this->modifyGameLogSettings();
+            map->render();
+        }
         else {
-//            character->printAbilityScores();
 
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
@@ -199,6 +208,41 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
         cout << "No one to attack!" << endl;
         return false;
     }
+}
 
+
+string onOff(bool value) {
+    if(value)
+        return "ON";
+    return "OFF";
+}
+void UserPlayerStrategy::modifyGameLogSettings() {
+    bool done = false;
+    do {
+        cout << "Settings: " << endl
+        << "1. Toggle Game Logs: " << onOff(LOG::GAME) << endl
+        << "2. Toggle Map Log: " << onOff(LOG::MAP) << endl
+        << "3. Toggle Dice Logs: " << onOff(LOG::DICE) << endl
+        << "4. Toggle Character Logs: " << onOff(LOG::CHAR) << endl
+        << "5. Exit" << endl;
+        int choice = readIntegerInputWithRange("Your choice[1]: ", 5, 1, 5);
+
+        switch (choice) {
+            case 1:
+                LOG::GAME = !LOG::GAME;
+                break;
+            case 2:
+                LOG::MAP = !LOG::MAP;
+                break;
+            case 3:
+                LOG::DICE = !LOG::DICE;
+                break;
+            case 4:
+                LOG::CHAR = !LOG::CHAR;
+                break;
+            case 5:
+                done = true;
+        }
+    }while (!done);
 
 }
