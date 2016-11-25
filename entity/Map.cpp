@@ -95,6 +95,7 @@ Map::Map(Map* toCopy) {
         for (int j = 0; j < this->width; j++){
             this->grid.at(i).at(j).setType(toCopy->getCellType(i, j));
             this->grid.at(i).at(j).setOccupant(toCopy->getOccupant(i, j));
+            this->grid.at(i).at(j).setOriginalOccupant(toCopy->getOriginalOccupant(Coordinate(i,j)));
         }
     }
 
@@ -152,7 +153,18 @@ bool Map::fillCell(int row, int column, char occupant) {
 }
 
 bool Map::isOccupied(int row, int column) {
-    return getOccupant(row, column) != ' ';
+    return getOccupant(row, column) != Cell::OCCUPANT_EMPTY;
+}
+
+bool Map::isOccupiedByChest(int row, int column) {
+    return getOccupant(row, column) != Cell::OCCUPANT_CHEST;
+}
+
+bool Map::isOccupiedByCharacter(int row, int column) {
+
+    char occupant = getOccupant(row, column);
+    return occupant == Cell::OCCUPANT_OPPONENT
+        || occupant == Cell::OCCUPANT_FRIEND;
 }
 
 bool Map::validate() {
@@ -188,4 +200,11 @@ bool Map::removeGamePlayer(Coordinate location) {
     return false;
 }
 
+void Map::setOriginalOccupant(Coordinate location, char occupant) {
+    grid.at(location.row).at(location.column).setOriginalOccupant(occupant);
+}
+
+char Map::getOriginalOccupant(Coordinate location) {
+    return grid.at(location.row).at(location.column).getOriginalOccupant();
+}
 

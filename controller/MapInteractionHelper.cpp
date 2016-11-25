@@ -81,6 +81,12 @@ string MapInteractionHelper::readMapLocationWhileInGame(Map* map, string message
             return input;
         } else if (input == "q") {
             return input;
+        } else if (input == "i") {
+            return input;
+        } else if (input == "a") {
+            return input;
+        } else if (input == "s") {
+            return input;
         }
         else {
             error = true;
@@ -154,7 +160,7 @@ Map* MapInteractionHelper::selectMap() {
         do {
             cout << "Please select a map: " << endl;
             for (size_t i = 0; i < mapReferences->size(); i++) {
-                cout << i+1 << ":" << mapReferences->at(i) << endl;
+                cout << i+1 << ". " << mapReferences->at(i) << endl;
             }
             int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
 

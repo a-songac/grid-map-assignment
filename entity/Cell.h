@@ -33,9 +33,12 @@ class Cell {
         void setOccupant(char occupant);
         bool hasPlayer();
         void setPlayer(bool player);
+        void setOriginalOccupant(char originalOccupant);
+        char getOriginalOccupant();
 
     private:
         char type;
+        char originalOccupant;
         char occupant;
         bool player;
 
@@ -45,6 +48,7 @@ class Cell {
         {
             ar & type;
             ar & occupant;
+            ar & originalOccupant;
 
         }
 };
@@ -75,6 +79,13 @@ inline void Cell::setPlayer(bool player) {
 
 inline bool Cell::hasPlayer() {
     return this->player;
+}
+
+inline void Cell::setOriginalOccupant(char originalOccupant) {
+    this->originalOccupant = originalOccupant;
+}
+inline char Cell::getOriginalOccupant() {
+    return this->originalOccupant;
 }
 
 

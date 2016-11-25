@@ -21,7 +21,7 @@ Character* CharacterInteractionHelper::selectCharacter() {
 		else {
 			cout << "Please select the character you want to load and view: " << endl;
 			for (size_t i = 0; i < characterReferences->size(); i++) {
-				cout << (i + 1) << ":" << characterReferences->at(i) << endl;
+				cout << (i + 1) << ". " << characterReferences->at(i) << endl;
 			}
 
 			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());

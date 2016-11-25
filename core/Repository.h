@@ -315,7 +315,7 @@ T* Repository<T>::clearEntity(size_t index) {
 
 template <class T>
 Map* Repository<T>::loadMap(string fileName) {
-    boost::filesystem::path myfile(fileName);
+    boost::filesystem::path myfile("maps/" + fileName);
 
     if( !boost::filesystem::exists(myfile))
     {
@@ -323,7 +323,7 @@ Map* Repository<T>::loadMap(string fileName) {
     }
 
     Map* lMap;
-    std::ifstream ifs(fileName, std::ios::binary);
+    std::ifstream ifs("maps/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     ia >> lMap;
     ifs.close();
@@ -339,7 +339,7 @@ Map* Repository<T>::loadMap(string fileName) {
 template <class T>
 bool Repository<T>::persistMap(Map* map, std::string name) {
 
-    std::ofstream ofs(name);
+    std::ofstream ofs("maps/" + name);
     boost::archive::text_oarchive oa(ofs);
     oa << map;
     ofs.close();
@@ -353,7 +353,7 @@ bool Repository<T>::persistMap(Map* map, std::string name) {
 template <class T>
 Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
-    character->loadCharacter(fileName);
+    character->loadCharacter("characters/" + fileName);
     character->setName(fileName);
 	CharacterView* charView = new CharacterView(character);
     return character;
@@ -362,7 +362,7 @@ Character* Repository<T>::loadCharacter(string fileName) {
 
 template <class T>
 bool Repository<T>::persistCharacter(Character* character, std::string name) {
-    character->saveCharacter(name);
+    character->saveCharacter("characters/" + name);
     return true;
 }
 
@@ -377,7 +377,7 @@ Item* Repository<T>::loadItem(string fileName) {
     string itemType, itemName, enhancementType;
 
     vector <Enhancement> Enhancements;
-	std::ifstream f(fileName, std::ios::in);
+	std::ifstream f("items/" + fileName, std::ios::in);
 
 	if (f.is_open())
 	{
@@ -413,7 +413,7 @@ Item* Repository<T>::loadItem(string fileName) {
 template <class T>
 bool Repository<T>::persistItem(Item* item, std::string name) {
 
-    ofstream saveFile(name, std::ios::trunc);
+    ofstream saveFile("items/" + name, std::ios::trunc);
 	vector<Enhancement> eVec;
 
     if (saveFile.is_open()) {

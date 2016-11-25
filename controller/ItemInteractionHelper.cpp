@@ -20,7 +20,7 @@ Item* ItemInteractionHelper::selectItem() {
 		else {
 			cout << "Please select the item you want to load and view: " << endl;
 			for (size_t i = 0; i < itemReferences->size(); i++) {
-				cout << (i + 1) << ":" << itemReferences->at(i) << endl;
+				cout << (i + 1) << ". " << itemReferences->at(i) << endl;
 			}
 
 			int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, itemReferences->size());

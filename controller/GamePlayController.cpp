@@ -8,13 +8,14 @@
 
 #include "../entity/Map.h"
 #include "../entity/Cell.h"
-#include "../utils/IOUtils.h"
-#include "MapInteractionHelper.h"
-#include "../entity/repo/MapRepository.h"
-#include "../core/Repository.h"
-#include "../utils/LogUtils.h"
-#include "../controller/CharacterEditorController.h"
 #include "../entity/Character.h"
+#include "../entity/GamePlayer.h"
+#include "../entity/repo/MapRepository.h"
+#include "../utils/IOUtils.h"
+#include "../utils/LogUtils.h"
+#include "MapInteractionHelper.h"
+#include "../core/Repository.h"
+#include "../controller/CharacterEditorController.h"
 #include "../entity/repo/CharacterRepository.h"
 #include "../view/CharacterView.h"
 #include "../controller/CharacterEditorController.h"
@@ -23,6 +24,7 @@
 #include "MapInteractionHelper.h"
 #include "../Combat.h"
 #include "../entity/GamePlayer.h"
+#include "../service/LogSettings.h"
 
 using namespace std;
 
@@ -50,6 +52,8 @@ void GamePlayController::newGame() {
 
 void GamePlayController::startGame() {
 
+
+
 	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
 	int input1 = 0;
@@ -62,20 +66,9 @@ void GamePlayController::startGame() {
 	character = CharacterInteractionHelper::selectCharacter();
 
 
-	// //////////////////////////////
-	// TMEPORARY
-	// ////////////////////////////////
-    CharacterEditorController::initializeBackpack(character);
-    // END TEMPORARY
+    cout << endl << endl << "********** GAME READY TO BE PLAYED**********" << endl;
 
-
-    cout << endl << endl << "********** GET READY **********" << endl;
-	cout << "The game is ready to be played, here are some advice before you start: " << endl;
-	cout << "    - To move on the map, enter a location eg: a2" << endl;
-	cout << "    - To view your back pack and equip yourself, type: 'bp'" << endl;
-	cout << "    - To quit the game, type: 'q'" << endl;
-
-    bool startGame = readYesNoInput("Ready to start the game?[Y/n]", 1);
+    bool startGame = readYesNoInput("Ready to start the game " + character->getName() + "?[Y/n]", 1);
     if (!startGame) {
         return;
     }
@@ -90,24 +83,16 @@ void GamePlayController::startGame() {
 		Coordinate nextPosition;
 		int col = exitDoor.column;
 		int row = exitDoor.row;
-		if (enemy->getType() == 'o')
-		{
-			;
-		}
+
+
+		vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
+		Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
+		GamePlayer userPlayer(character->getName(), userLocation, Cell::OCCUPANT_PLAYER);
 
         this->map->movePlayer(entryDoor.row, entryDoor.column);
 			do {
-				goTo = MapInteractionHelper::readMapLocationWhileInGame(this->map, "Go to [bp]: ", "bp");
 
-				if (goTo == "bp") {
-					do {
-						cout << "************* Menu *************" << endl << endl;
-						cout << "1 - View backpack" << endl;
-						cout << "2 - View worn items" << endl;
-						cout << "3 - Equip itemUnequip item" << endl;
-						cout << "4 - Unequip item" << endl;
-						cout << "5 - Exit" << endl;
-						input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
+                gameOver = userPlayer.turn(this->map);
 
 						switch (input) {
 						case 1:
@@ -243,15 +228,10 @@ void GamePlayController::startGame() {
 						{
 							name = readFileName("please provide a name for the character: ");
 
-							if (CharacterRepository::instance()->save(name, character)) {
-								cout << "Character successfully saved!" << endl;
-							}
-						}
-						gameOver = true;
-					}
-				}
 			} while (!gameOver);
 
+            // reset map to what it was
+			MapRepository::instance()->clearEntity(this->map->getName());
 
     } else {
         logError("GamePlayController", "startGame", "No map was loaded for this game");
