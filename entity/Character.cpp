@@ -13,10 +13,12 @@
  // istream_iterator, ostream_iterator, back_inserter
 #include <sstream>
 #include <fstream>
+#include <string>
 
 #include "Character.h"
 #include "../core/Subject.h"
 #include "../entity/Dice.h"
+#include "../utils/LogUtils.h"
 #include "../view/CharacterView.h"
 #include "repo/ItemRepository.h"
 #include <iterator>
@@ -26,6 +28,8 @@ using std::istream_iterator;
 
 using namespace std;
 using namespace d20Logic;
+
+Dice dice1;
 
 
 Character::Character()
@@ -64,6 +68,29 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 
 	this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
+
+	if (lvl >= 16)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+		baseAttackBonus.push_back(lvl - 10);
+		baseAttackBonus.push_back(lvl - 15);
+	}
+	else if (lvl >= 11)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+		baseAttackBonus.push_back(lvl - 10);
+	}
+	else if (lvl >= 6)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+	}
+	else
+	{
+		baseAttackBonus.push_back(lvl);
+	}
 
 
 }
@@ -104,10 +131,13 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			}
 			if (eVec[i].getType() == "Armor")
 				this->armorPoints += eVec[i].getBonus();
-			if (eVec[i].getType() == "AtkBonus")
-				this->attackB += eVec[i].getBonus();
+				this->shieldPoints += eVec[i].getBonus();
+			
+
 			if (eVec[i].getType() == "AtkDamage")
 				this->damageB += eVec[i].getBonus();
+			  
+			
 		}
 		this->hitPoints();
 
@@ -148,8 +178,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		}
 		if (eVec[i].getType() == "Armor")
 			this->armorPoints -= eVec[i].getBonus();
-		if (eVec[i].getType() == "AtkBonus")
-			this->attackB -= eVec[i].getBonus();
+		
 		if (eVec[i].getType() == "AtkDamage")
 			this->damageB -= eVec[i].getBonus();
 	}
@@ -170,7 +199,15 @@ int Character::modifier(int abilityScore)
 void Character::levelUp()
 {
 	this->lvl++;
-	this->attackB++;
+	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
+	for (size_t i = 0; i < baseAttackBonus.size(); i++)
+	{
+		baseAttackBonus[i] += 1;
+	}
+	if (lvl == 6 || lvl == 11 || lvl == 16)
+	{
+		baseAttackBonus.push_back(1);
+	}
 	Notify();
 
 
@@ -278,10 +315,8 @@ void Character::resetHitPoints() {
 }
 void Character::hitPoints()
 {
-	Dice d;
-	int d10 = d.roll_d10();
-	//roll a d10 dice
-	this->currentHitPoints = this->currentHitPoints + this->getModConstitution() + d10;
+	
+	this->currentHitPoints = this->getModConstitution() + dice1.roll_d10();
 }
 //! Implementation of a getter method for currentHitPoints
 //! @return int: value of currentHitPoints
@@ -304,7 +339,8 @@ int Character::getArmor()
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
-	this->attackB = this->lvl + modifiers[0] + modifiers[1];
+	
+	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
 
 }
 //! Implementation of a getter method for attack bonus
@@ -312,6 +348,29 @@ void Character::attackBonus()
 int Character::getAttackBonus()
 {
 	return this->attackB;
+}
+
+void Character::ArmorClass()
+{
+	if (armorPoints > 0)
+	{
+
+		this->armorClass = 10 + modifiers[1] + armorPoints;
+	}
+	else if (shieldPoints > 0)
+	{
+		this->armorClass = 10 + modifiers[1] + armorPoints;
+	}
+	else if (shieldPoints > 0 && armorPoints > 0)
+	{
+		this->armorClass = 10 + modifiers[1] + armorPoints + shieldPoints;
+	}
+
+}
+
+int Character::getArmorClass()
+{
+	return this->armorClass;
 }
 //! implementation of a setter method for attack damage
 void Character::damageBonus()
@@ -360,6 +419,8 @@ void Character::hit(int damage)
 	currentHitPoints = currentHitPoints - damage;
 }
 
+
+
 void Character::printAbilityScores() {
 
 	Notify();
@@ -399,6 +460,43 @@ bool Character::saveCharacter(string name)
 	{
 		return false;
 	}
+}
+void Character::attack(Character *enemy)
+
+{
+	int turn = 1;
+
+
+	while (attackB > 0)
+	{
+		string name = this->getName();
+		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+
+		int attackRoll = dice1.roll_d20();
+		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+
+		int rollAndBonus = attackRoll + attackB;
+		logInfo("Character", "attack", this->getName()+"just rolled" );
+
+		if (rollAndBonus > enemy->armorClass)
+		{
+			int damageRollValue = dice1.roll_d8();
+			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
+			int DamageinCombat;
+			DamageinCombat = damageRollValue + damageB +modifiers[0];
+			
+			enemy->currentHitPoints -= DamageinCombat;
+			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
+		}
+
+		else
+		{
+			logInfo("Character", "attack", "Attack missed");
+		}
+	}
+
+
+
 }
 
 // Load a Character from file
