@@ -251,7 +251,7 @@ void UserPlayerStrategy::modifyGameLogSettings() {
 }
 
 
-bool UserPlayerStrategy::endGameLevelUp(Character* character) {
+void UserPlayerStrategy::endGameLevelUp(Character* character) {
 
     int input1, input2, input3;
 

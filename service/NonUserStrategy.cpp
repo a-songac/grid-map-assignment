@@ -76,5 +76,5 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
         this->attack(player, nullptr);
     }
 
-    return true;
+    return true; // no importance when non user character
 }

@@ -40,8 +40,7 @@ GamePlayer::GamePlayer() : type(Cell::OCCUPANT_EMPTY) {}
 
 bool GamePlayer::turn(Map* map) {
 	if (LOG::GAME) logInfo("GamePlayer", "turn", "Turn switching: " + getElementReference() + " - " + MapInteractionHelper::coordinateToString(getLocation()));
-	this->actionStrategy->turn(this, map);
-	return true;
+	return this->actionStrategy->turn(this, map);
 
 }
 
