@@ -93,6 +93,62 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 
 
 }
+
+
+Character::Character(Character* character) {
+
+    this->name = character->getName();
+    //modifiers
+	modifiers[0] = modifier(character->getStrength());
+	modifiers[1] = modifier(character->getDexterity());
+	modifiers[2] = modifier(character->getIntelligence());
+	modifiers[3] = modifier(character->getCharisma());
+	modifiers[4] = modifier(character->getWisdom());
+	modifiers[5] = modifier(character->getConstitution());
+
+	//ability scores
+	abilityScores[0] = character->getStrength();
+	abilityScores[1] = character->getDexterity();
+	abilityScores[2] = character->getIntelligence();
+	abilityScores[3] = character->getCharisma();
+	abilityScores[4] = character->getWisdom();
+	abilityScores[5] = character->getConstitution();
+
+	currentHitPoints = 10;
+
+	this->backpack = new vector<string>(*(character->backpack));
+    this->wornItems = new vector<string>(*(character->wornItems));
+
+	if (lvl >= 16)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+		baseAttackBonus.push_back(lvl - 10);
+		baseAttackBonus.push_back(lvl - 15);
+	}
+	else if (lvl >= 11)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+		baseAttackBonus.push_back(lvl - 10);
+	}
+	else if (lvl >= 6)
+	{
+		baseAttackBonus.push_back(lvl);
+		baseAttackBonus.push_back(lvl - 5);
+	}
+	else
+	{
+		baseAttackBonus.push_back(lvl);
+	}
+
+
+}
+
+
+
+
+
 void Character::updateStatsAtEquip(Item* equipment) {
 
 	vector<Enhancement> eVec = equipment->getInfluences();

@@ -50,55 +50,76 @@ void GamePlayController::newGame() {
 
 
 void GamePlayController::startGame() {
-    SETTINGS::IN_GAME = true;
+
+    // TODO Change: select character before, probably selecting it from the saved game
+	Character* referenceCharacter;
+	Character* gameCharacter;
+	referenceCharacter = CharacterInteractionHelper::selectCharacter();
+    // ////////////////////////
+
+
+
+
+
 
 
 	string goTo, itemNameEquip, itemNameUnequip;
 	int input = 0;
 	bool quit = false;
-	Character* character;
 
-	character = CharacterInteractionHelper::selectCharacter();
 
 
 	cout << endl << endl << "********** GAME READY TO BE PLAYED **********" << endl;
 
-	bool startGame = readYesNoInput("Ready to start the game " + character->getName() + "?[Y/n]", 1);
+	bool startGame = readYesNoInput("Ready to start the game " + referenceCharacter->getName() + "?[Y/n]", 1);
 	if (!startGame) {
 		return;
 	}
 
-	if (nullptr != this->map) {
+    SETTINGS::IN_GAME = true;
+    map->setInGamePlayers();
+    Coordinate entryDoor = this->map->getEntryDoorCoordinate();
+	gameCharacter = new Character(referenceCharacter);
+    Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
+    GamePlayer userPlayer(gameCharacter->getName(), userLocation, Cell::OCCUPANT_PLAYER);
+    userPlayer.setInGameCharacter(gameCharacter);
+    map->setUserGamePlayer(&userPlayer);
 
-		bool gameOver = false;
 
-		cout << "\n************* Start Game *************" << endl << endl;
-		Coordinate entryDoor = this->map->getEntryDoorCoordinate();
+    bool gameOver = false;
+
+    cout << "\n************* Start Game *************" << endl << endl;
 
 
-		vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
-		Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
-		GamePlayer userPlayer(character->getName(), userLocation, Cell::OCCUPANT_PLAYER);
+    vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
-		this->map->movePlayer(entryDoor.row, entryDoor.column);
-		do {
+    this->map->movePlayer(entryDoor.row, entryDoor.column);
+    do {
 
-			gameOver = userPlayer.turn(this->map);
+        gameOver = userPlayer.turn(this->map);
 
-			if (!gameOver) {
-				for (size_t i = 0; i < gamePlayers->size(); i++) {
-					gamePlayers->at(i)->turn(this->map);
-				}
-			}
+        if (!gameOver) {
+            for (size_t i = 0; i < gamePlayers->size(); i++) {
+                gamePlayers->at(i)->turn(this->map);
+            }
+        }
 
-		} while (!gameOver);
+    } while (!gameOver);
 
-		// reset map to what it was
-		MapRepository::instance()->clearEntity(this->map->getName());
 
-	}
-	else {
-		logError("GamePlayController", "startGame", "No map was loaded for this game");
-	}
+
+    // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
+    if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
+    {
+
+        // TODO
+    }
+
+
+    // reset map to what it was
+
+
     SETTINGS::IN_GAME = false;
+    map->unsetInGamePlayers();
+    MapRepository::instance()->clearEntity(this->map->getName());
 }
