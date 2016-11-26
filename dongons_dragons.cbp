@@ -46,6 +46,8 @@
 			<Add library="/home/arno/boost_install/lib/libboost_system.so" />
 			<Add library="/home/arno/boost_install/lib/libboost_wserialization.a" />
 			<Add library="/home/arno/boost_install/lib/libboost_wserialization.so" />
+			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.so" />
+			<Add library="/usr/lib/x86_64-linux-gnu/libcppunit.a" />
 		</Linker>
 		<Unit filename="controller/CampaignEditorController.cpp" />
 		<Unit filename="controller/CampaignEditorController.h" />
@@ -105,22 +107,12 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="service/AggressivePlayerStrategy.cpp" />
 		<Unit filename="service/AggressivePlayerStrategy.h" />
-		<Unit filename="service/CombatService.cpp" />
-		<Unit filename="service/CombatService.h" />
-		<Unit filename="service/FriendlyPlayerStrategy.cpp" />
-		<Unit filename="service/FriendlyPlayerStrategy.h" />
-		<Unit filename="service/LogSettings.cpp" />
-		<Unit filename="service/LogSettings.h" />
 		<Unit filename="service/MapValidator.cpp" />
 		<Unit filename="service/MapValidator.h" />
-		<Unit filename="service/NonUserStrategy.cpp" />
-		<Unit filename="service/NonUserStrategy.h" />
 		<Unit filename="service/PlayerStrategy.cpp" />
 		<Unit filename="service/PlayerStrategy.h" />
 		<Unit filename="service/ShortestPath.cpp" />
 		<Unit filename="service/ShortestPath.h" />
-		<Unit filename="service/UserPlayerStrategy.cpp" />
-		<Unit filename="service/UserPlayerStrategy.h" />
 		<Unit filename="test/ShortestPathTest.cpp" />
 		<Unit filename="test/ShortestPathTest.h" />
 		<Unit filename="utils/ArrayUtils.cpp" />
