@@ -32,6 +32,7 @@
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
 #include "../entity_generator/MapGenerator.h"
+#include "../entity/Campaign.h"
 
 
 
@@ -66,6 +67,8 @@ template <class T> class Repository {
         bool persistCharacter(Character* entity, std::string name);
         Item* loadItem(std::string name);
         bool persistItem(Item* entity, std::string name);
+        Campaign* loadCampaign(std::string name);
+        bool persistCampaign(Campaign* entity, std::string name);
 
     protected:
         std::string referenceFile;
@@ -433,5 +436,35 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
         throw std::invalid_argument( "Could not save item to file" );
         return false;
 	}
+    return true;
+}
+
+template <class T>
+Campaign* Repository<T>::loadCampaign(string fileName) {
+    boost::filesystem::path myfile(fileName);
+    
+    if( !boost::filesystem::exists(myfile))
+    {
+        return nullptr;
+    }
+    
+    Campaign* lCampaign;
+    std::ifstream ifs(fileName, std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    ia >> lCampaign;
+    ifs.close();
+    Campaign* loadedCampaign = new Campaign(lCampaign);
+
+    return loadedCampaign;
+}
+
+
+template <class T>
+bool Repository<T>::persistCampaign(Campaign* c, std::string name) {
+    
+    std::ofstream ofs(name);
+    boost::archive::text_oarchive oa(ofs);
+    oa << c;
+    ofs.close();
     return true;
 }

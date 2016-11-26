@@ -15,12 +15,13 @@ class CampaignEditorController{
         CampaignEditorController();
         CampaignEditorController(Campaign* c);
     
-        Campaign* createCampaign();
+        void createCampaign();
         void saveCampaign(string filename);
-        static Campaign loadCampaign(string filename);
+        Campaign* loadCampaign();
         void addMap(Map map);
         void removeMap();
         void setCampaign(Campaign* c);
+        void editCampaign(Campaign* c);
     
     
     private:
