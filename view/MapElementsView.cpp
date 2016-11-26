@@ -7,6 +7,7 @@
 #include "../entity/repo/ItemRepository.h"
 #include "../controller/CharacterInteractionHelper.h"
 #include "../controller/MapInteractionHelper.h"
+#include "../service/Settings.h"
 
 #include <vector>
 
@@ -19,6 +20,8 @@ void MapElementsView::update() {
 }
 
 void MapElementsView::summary() {
+    if (!SETTINGS::MAP_ELEMENTS_VIEW && SETTINGS::IN_GAME) return;
+
 
     GamePlayer* gamePlayer;
     GameItem* gameItem;
@@ -30,6 +33,7 @@ void MapElementsView::summary() {
     string itemCollected;
 
     cout << "************ Map Elements Summary ************" << endl;
+    cout << "ME: " << "TODO" << endl;
     cout << "PLAYERS:" << endl;
     for(size_t i = 0; i < this->map->getGamePlayers()->size(); i++) {
 
@@ -40,7 +44,7 @@ void MapElementsView::summary() {
         locationString = MapInteractionHelper::coordinateToString(gamePlayer->getLocation());
 
         cout << "    " << (i+1) << ". " << gamePlayer->getElementReference() << " - " << strategyName
-            << " - " << locationString << endl;
+            << " - " << locationString << " - HP: " <<  character->getHitPoints() << endl;
     }
 
 

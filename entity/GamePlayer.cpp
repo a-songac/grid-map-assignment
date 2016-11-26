@@ -2,7 +2,7 @@
 #include "../service/FriendlyPlayerStrategy.h"
 #include "../service/AggressivePlayerStrategy.h"
 #include "../service/UserPlayerStrategy.h"
-#include "../service/LogSettings.h"
+#include "../service/Settings.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
 
@@ -39,7 +39,7 @@ GamePlayer::GamePlayer() : type(Cell::OCCUPANT_EMPTY) {}
 
 
 bool GamePlayer::turn(Map* map) {
-	if (LOG::GAME) logInfo("GamePlayer", "turn", "Turn switching: " + getElementReference() + " - " + MapInteractionHelper::coordinateToString(getLocation()));
+	if (SETTINGS::LOG_GAME) logInfo("GamePlayer", "turn", "Turn switching: " + getElementReference() + " - " + MapInteractionHelper::coordinateToString(getLocation()));
 	return this->actionStrategy->turn(this, map);
 
 }

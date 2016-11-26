@@ -16,7 +16,7 @@
 #include "../controller/CharacterInteractionHelper.h"
 #include "../controller/MapInteractionHelper.h"
 #include "CombatService.h"
-#include "LogSettings.h"
+#include "Settings.h"
 
 #include <sstream>
 
@@ -76,7 +76,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         }
         else if (goTo == "s") {
             turnDone = false;
-            this->modifyGameLogSettings();
+            this->modifyGameSettings();
             map->render();
         }
         else {
@@ -219,32 +219,37 @@ string onOff(bool value) {
         return "ON";
     return "OFF";
 }
-void UserPlayerStrategy::modifyGameLogSettings() {
+void UserPlayerStrategy::modifyGameSettings() {
     bool done = false;
     do {
         cout << "Settings: " << endl
-        << "1. Toggle Game Logs: " << onOff(LOG::GAME) << endl
-        << "2. Toggle Map Log: " << onOff(LOG::MAP) << endl
-        << "3. Toggle Dice Logs: " << onOff(LOG::DICE) << endl
-        << "4. Toggle Character Logs: " << onOff(LOG::CHAR) << endl
-        << "5. Exit" << endl;
-        int choice = readIntegerInputWithRange("Your choice[5]: ", 5, 1, 5);
+        << "1. Toggle Game Logs: " << onOff(SETTINGS::LOG_GAME) << endl
+        << "2. Toggle Map Logs: " << onOff(SETTINGS::LOG_MAP) << endl
+        << "3. Toggle Dice Logs: " << onOff(SETTINGS::LOG_DICE) << endl
+        << "4. Toggle Character Logs: " << onOff(SETTINGS::LOG_CHAR) << endl
+        << "5. Toggle Map Elements View: " << onOff(SETTINGS::MAP_ELEMENTS_VIEW) << endl
+        << "6. Exit" << endl;
+        int choice = readIntegerInputWithRange("Your choice[6]: ", 6, 1, 6);
 
         switch (choice) {
             case 1:
-                LOG::GAME = !LOG::GAME;
+                SETTINGS::LOG_GAME = !SETTINGS::LOG_GAME;
                 break;
             case 2:
-                LOG::MAP = !LOG::MAP;
+                SETTINGS::LOG_MAP = !SETTINGS::LOG_MAP;
                 break;
             case 3:
-                LOG::DICE = !LOG::DICE;
+                SETTINGS::LOG_DICE = !SETTINGS::LOG_DICE;
                 break;
             case 4:
-                LOG::CHAR = !LOG::CHAR;
+                SETTINGS::LOG_CHAR = !SETTINGS::LOG_CHAR;
                 break;
             case 5:
+                SETTINGS::MAP_ELEMENTS_VIEW = !SETTINGS::MAP_ELEMENTS_VIEW;
+                break;
+            case 6:
                 done = true;
+                break;
         }
     }while (!done);
 

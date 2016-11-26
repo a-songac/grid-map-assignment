@@ -1,13 +1,13 @@
 #include "NonUserStrategy.h"
 
 #include "ShortestPath.h"
-#include "../service/LogSettings.h"
+#include "../service/Settings.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
 
 
 void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
-    if (LOG::GAME) logInfo("NonUserStrategy", "move", "Moving attempt from: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+    if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Moving attempt from: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
     this->distanceFromUser = -1;
 
     Coordinate* currentLocation = player->getLocation();
@@ -25,7 +25,7 @@ void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
         // Check for a path that avoids game characters.  If any, use this one instead, otherwise stay
         pathToUser =  shortestPath.computeShortestPath((*currentLocation), playerPosition, true);
         if (pathToUser.size() == 0) {
-            if (LOG::GAME) logInfo("NonUserStrategy", "move", "Cannot move: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+            if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Cannot move: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
             return;
         }
 
@@ -49,7 +49,7 @@ void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
     currentLocation->column = nextLocation.column;
 
     gameMap->fillCell(nextLocation.row, nextLocation.column, player->getType());
-    if (LOG::GAME) logInfo("NonUserStrategy", "move", "Moved to new location: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+    if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Moved to new location: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
 
 }
 

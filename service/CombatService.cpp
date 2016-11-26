@@ -1,6 +1,6 @@
 #include "CombatService.h"
 #include "ShortestPath.h"
-#include "LogSettings.h"
+#include "Settings.h"
 #include "../entity/Dice.h"
 #include "../utils/LogUtils.h"
 
@@ -35,7 +35,7 @@ bool CombatService::attack(Character* attacker, Character* victim) {
 	{
 		attackerRoll = dice1.roll_d20();
 		sStream << "Attacker rolled a d20 dice for initiative resulting: [" << attackerRoll << "]";
-		if(LOG::CHAR)logInfo("CombatService", "attack", sStream.str());
+		if(SETTINGS::LOG_CHAR)logInfo("CombatService", "attack", sStream.str());
 		sStream.str("");
 
 		attackerInitiative = attackerRoll + attacker->getModDexterity();

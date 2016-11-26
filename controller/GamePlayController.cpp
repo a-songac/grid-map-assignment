@@ -23,7 +23,7 @@
 #include "../controller/ItemEditor.h"
 #include "CharacterInteractionHelper.h"
 #include "MapInteractionHelper.h"
-#include "../service/LogSettings.h"
+#include "../service/Settings.h"
 
 using namespace std;
 
@@ -50,7 +50,7 @@ void GamePlayController::newGame() {
 
 
 void GamePlayController::startGame() {
-
+    SETTINGS::IN_GAME = true;
 
 
 	string goTo, itemNameEquip, itemNameUnequip;
@@ -100,5 +100,5 @@ void GamePlayController::startGame() {
 	else {
 		logError("GamePlayController", "startGame", "No map was loaded for this game");
 	}
-
+    SETTINGS::IN_GAME = false;
 }
