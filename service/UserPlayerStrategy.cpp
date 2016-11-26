@@ -29,7 +29,7 @@ void UserPlayerStrategy::freeAction(GamePlayer* player) {
 
 
 
-bool UserPlayerStrategy::turn(GamePlayer* player, Map* map){
+bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
     bool turnDone = true;
     bool quit = false;
@@ -83,25 +83,27 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map){
 
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
+            int input1, input2, input3;
 
             // CHECK ALL ITEMS WERE COLLECTED
-            if (nextPosition.row == row && nextPosition.column == col)
+            if (nextPosition.row == row && nextPosition.column == col
+                    && readYesNoInput("You have reached the exit door, do you want to finish the game?[Y/n] ", true))
             {
-                cout << "you have reached the end of the map " << endl;
-                cout << "You will now be returned to the main menu" << endl;
                 character->levelUp();
                 cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
                 string name;
 
+                endGameLevelUp(character);
+
                 if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
                 {
-                    name = readFileName("please provide a name for the character: ");
 
-                    if (CharacterRepository::instance()->save(name, character)) {
+                    if (CharacterRepository::instance()->save(character->getName(), character)) {
                         cout << "Character successfully saved!" << endl;
                     }
                 }
                 gameOver = true;
+                cout << "You will now be returned to the main menu" << endl;
             }
         }
     } while (!turnDone);
@@ -198,6 +200,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
             victim = rangeAttackable.at(index-1-directSize);
         }
 
+        // TODO:
         // PROCESS ATTACK
 
 
@@ -244,5 +247,99 @@ void UserPlayerStrategy::modifyGameLogSettings() {
                 done = true;
         }
     }while (!done);
+
+}
+
+
+bool UserPlayerStrategy::endGameLevelUp(Character* character) {
+
+    int input1, input2, input3;
+
+    if (character->getLevel() == 4 || character->getLevel() == 6 || character->getLevel() == 8 || character->getLevel() == 12
+            || character->getLevel() == 14 || character->getLevel() ==16 || character->getLevel() == 19 )
+    {
+                cout << "You have the possibility to increase your ability scores !! " << endl;
+                cout << "Press 1 - to increase one ability score 2 " << endl;
+                cout << "Press 2 - to increase two ability scores by 1" << endl;
+                input1 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 2);
+
+                switch (input1)
+                {
+                case 1:
+                    cout << "1-Strength" << endl;
+                    cout << "2-Dexterity" << endl;
+                    cout << "3-Intelligence " << endl;
+                    cout << "4-Charisma" << endl;
+                    cout << "5-Constitution" << endl;
+                    input2 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
+                    switch (input2)
+                    {
+
+                    case 1:
+                        character->setStrength(character->getStrength() + 2);
+                        break;
+                    case 2:
+                        character->setDexterity(character->getDexterity() + 2);
+                        break;
+                    case 3:
+                        character->setIntelligence(character->getIntelligence() + 2);
+                        break;
+                    case 4:
+                        character->setCharisma(character->getCharisma() + 2);
+                        break;
+                    case 5:
+                        character->setConstitution(character->getConstitution() + 2);
+                        break;
+
+                    }break;
+
+                case 2:
+                    int i = 0;
+
+
+                    while (i <=1 )
+                    {
+                        cout << "Please chose the first ability that you want to increase by 1 " << endl;
+                        cout << "1-Strength" << endl;
+                        cout << "2-Dexterity" << endl;
+                        cout << "3-Intelligence " << endl;
+                        cout << "4-Charisma" << endl;
+                        cout << "5-Constitution" << endl;
+                        input3 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
+                        switch (input3)
+                        {
+                        case 1:
+                            character->setStrength(character->getStrength() + 1);
+                            i++;
+                            break;
+                        case 2:
+                            character->setDexterity(character->getDexterity() + 1);
+                            i++;
+                            break;
+                        case 3:
+                            character->setIntelligence(character->getIntelligence() + 1);
+                            i++;
+                            break;
+                        case 4:
+                            character->setCharisma(character->getCharisma() + 1);
+                            i++;
+                            break;
+                        case 5:
+                            character->setConstitution(character->getConstitution() + 1);
+                            i++;
+                            break;
+                        }
+                    }
+
+                    i = 0;
+                    break;
+
+                }
+
+            }
+            else
+            {
+                // true; WHAT IS THAT CONDITION FOR?
+            }
 
 }

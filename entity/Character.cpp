@@ -27,7 +27,6 @@ using std::istream_iterator;
 
 
 using namespace std;
-using namespace d20Logic;
 
 Dice dice1;
 
@@ -132,12 +131,12 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			if (eVec[i].getType() == "Armor")
 				this->armorPoints += eVec[i].getBonus();
 				this->shieldPoints += eVec[i].getBonus();
-			
+
 
 			if (eVec[i].getType() == "AtkDamage")
 				this->damageB += eVec[i].getBonus();
-			  
-			
+
+
 		}
 		this->hitPoints();
 
@@ -178,7 +177,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		}
 		if (eVec[i].getType() == "Armor")
 			this->armorPoints -= eVec[i].getBonus();
-		
+
 		if (eVec[i].getType() == "AtkDamage")
 			this->damageB -= eVec[i].getBonus();
 	}
@@ -315,7 +314,7 @@ void Character::resetHitPoints() {
 }
 void Character::hitPoints()
 {
-	
+
 	this->currentHitPoints = this->getModConstitution() + dice1.roll_d10();
 }
 //! Implementation of a getter method for currentHitPoints
@@ -339,7 +338,7 @@ int Character::getArmor()
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
-	
+
 	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
 
 }
@@ -484,7 +483,7 @@ void Character::attack(Character *enemy)
 			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
 			int DamageinCombat;
 			DamageinCombat = damageRollValue + damageB +modifiers[0];
-			
+
 			enemy->currentHitPoints -= DamageinCombat;
 			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
 		}

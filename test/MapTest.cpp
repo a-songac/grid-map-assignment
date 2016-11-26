@@ -12,8 +12,8 @@
 #include <cppunit/BriefTestProgressListener.h>
 #include <cppunit/CompilerOutputter.h>
 #include <cppunit/XmlOutputter.h>
-#include "../src/entity/Map.h"
-#include "../src/view/MapView.h"
+#include "../entity/Map.h"
+#include "../view/MapView.h"
 
 using namespace CppUnit;
 

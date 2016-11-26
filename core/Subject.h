@@ -10,6 +10,9 @@ public:
 	virtual void Detach(Observer* removeObserver);
 	virtual void Notify();
 	Subject();
+	int getNbObservers() {
+        return _observers->size();
+	}
 private:
 	list<Observer*> *_observers;
 

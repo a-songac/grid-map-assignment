@@ -11,5 +11,6 @@ class CombatService {
     public:
         static bool isAdjacent(Coordinate origin, Coordinate destination);
         static bool canRangeAttack(Coordinate origin, Coordinate destination, int range, Map* map);
+        static bool attack(Character* attacker, Character* victim);
 
 };

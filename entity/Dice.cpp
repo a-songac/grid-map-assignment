@@ -2,9 +2,7 @@
 #include <ctime>
 
 #include "Dice.h"
-#include "Dice.h"
 
-using namespace d20Logic;
 //Default constructor
 Dice::Dice()
 {
