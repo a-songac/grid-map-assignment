@@ -12,9 +12,17 @@ class Game {
 
     public:
         Game(std::string gameName, Character* character);
+        Game(Game* toCopy);
+        Game();
 
-        save(std::string saveName);
-        load(std::string saveName);
+        void save(std::string saveName);
+        Game* load(std::string saveName);
+
+        void setGameSaveName(std::string name);
+        std::string getGameSaveName();
+
+        void setUserCharacter(Character* charac);
+        Character* getUserCharacter();
 
     private:
         Character* userCharacter;
@@ -29,5 +37,21 @@ class Game {
             ar & gameSaveName;
         }
 
+};
+
+
+inline void Game::setGameSaveName(std::string name) {
+    this->gameSaveName = name;
 }
+inline std::string Game::getGameSaveName() {
+    return this->gameSaveName;
+}
+
+inline void Game::setUserCharacter(Character* charac) {
+    this->userCharacter = charac;
+}
+inline Character* Game::getUserCharacter() {
+    return this->userCharacter;
+}
+
 
