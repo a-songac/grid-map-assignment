@@ -7,7 +7,7 @@ using namespace std;
 
 CampaignRepository* CampaignRepository::_instance;
 
-CampaignRepository::CampaignRepository(): Repository<Campaign>("_campaign_references"){
+CampaignRepository::CampaignRepository(): Repository<Campaign>("_campaign_references", "campaigns"){
     loadEntity = &Repository<Campaign>::loadCampaign;
     persistEntity = &Repository<Campaign>::persistCampaign;
 }

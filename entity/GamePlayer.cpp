@@ -9,7 +9,7 @@
 #include "Cell.h"
 
 GamePlayer::GamePlayer(std::string elementReference, Coordinate* location, char type)
-	: GameElement(elementReference, location), type(type)
+	: GameElement(elementReference, location), type(type), inGameCharacter(nullptr)
 {
 	if (type == Cell::OCCUPANT_FRIEND) {
 		actionStrategy = new FriendlyPlayerStrategy();
@@ -23,7 +23,7 @@ GamePlayer::GamePlayer(std::string elementReference, Coordinate* location, char 
 }
 
 GamePlayer::GamePlayer(GamePlayer* gamePlayer)
-	: GameElement(gamePlayer), type(gamePlayer->getType()) {
+	: GameElement(gamePlayer), type(gamePlayer->getType()), inGameCharacter(nullptr) {
 	if (type == Cell::OCCUPANT_FRIEND) {
 		actionStrategy = new FriendlyPlayerStrategy();
 	}

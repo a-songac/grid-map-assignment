@@ -95,13 +95,6 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
                 endGameLevelUp(character);
 
-                if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
-                {
-
-                    if (CharacterRepository::instance()->save(character->getName(), character)) {
-                        cout << "Character successfully saved!" << endl;
-                    }
-                }
                 gameOver = true;
                 cout << "You will now be returned to the main menu" << endl;
             }
@@ -161,7 +154,8 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
     Coordinate* enemyLocation;
     vector<GamePlayer*> directAttackable = vector<GamePlayer*>();
     vector<GamePlayer*> rangeAttackable = vector<GamePlayer*>();
-    GamePlayer* player, victim;
+    GamePlayer* player;
+    GamePlayer* victim;
     bool isDirectAttack;
 
 
@@ -202,6 +196,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
 
         // TODO:
         // PROCESS ATTACK
+        victim->getInGameCharacter();
 
 
 

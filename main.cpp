@@ -12,6 +12,7 @@
 #include "entity/repo/MapRepository.h"
 #include "entity/repo/CharacterRepository.h"
 #include "entity/repo/ItemRepository.h"
+#include "entity/repo/GameRepository.h"
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
@@ -29,6 +30,7 @@ int main()
     MapRepository::instance();
     CharacterRepository::instance();
     ItemRepository::instance();
+    GameRepository::instance();
 
     #ifdef RUN_TEST_MANUAL
         if (readYesNoInput("Test Shortest path algorithm?[Y/n]: ", true)) {

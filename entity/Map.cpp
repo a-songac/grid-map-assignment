@@ -4,6 +4,7 @@
 #include "../service/MapValidator.h"
 #include "../utils/ArrayUtils.h"
 #include "../view/MapView.h"
+#include "../entity/repo/CharacterRepository.h"
 
 using namespace std;
 Map::Map() {
@@ -206,5 +207,31 @@ void Map::setOriginalOccupant(Coordinate location, char occupant) {
 
 char Map::getOriginalOccupant(Coordinate location) {
     return grid.at(location.row).at(location.column).getOriginalOccupant();
+}
+
+void Map::setInGamePlayers() {
+    Character* realCharacter;
+    Character* inGameCharacterCopy;
+    GamePlayer* gamePlayer;
+
+    for (size_t i = 0; i < this->gamePlayers->size(); i++) {
+
+        gamePlayer = this->gamePlayers->at(i);
+        realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
+        inGameCharacterCopy = new Character(realCharacter);
+        gamePlayer->setInGameCharacter(inGameCharacterCopy);
+
+    }
+}
+void Map::unsetInGamePlayers() {
+
+    GamePlayer* gamePlayer;
+    Character* character;
+    for (size_t i = 0; i < this->gamePlayers->size(); i++) {
+        gamePlayer = this->gamePlayers->at(i);
+        character = gamePlayer->getInGameCharacter();
+        delete character;
+        gamePlayer->setInGameCharacter(nullptr);
+    }
 }
 

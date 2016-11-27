@@ -39,6 +39,7 @@ public:
 	Character();
 	~Character();
 	Character(int, int, int, int, int, int);
+	Character(Character* character);
 	//hit points
 	void hit(int);
 	void hitPoints();

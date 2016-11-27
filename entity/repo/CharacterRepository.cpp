@@ -8,7 +8,7 @@ using namespace std;
 
 CharacterRepository* CharacterRepository::_instance;
 
-CharacterRepository::CharacterRepository(): Repository<Character>("_character_references") {
+CharacterRepository::CharacterRepository(): Repository<Character>("_character_references", "characters") {
     loadEntity = &Repository<Character>::loadCharacter;
     persistEntity = &Repository<Character>::persistCharacter;
 }

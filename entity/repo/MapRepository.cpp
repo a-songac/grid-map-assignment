@@ -8,7 +8,7 @@ using namespace std;
 
 MapRepository* MapRepository::_instance;
 
-MapRepository::MapRepository(): Repository<Map>("_map_references"){
+MapRepository::MapRepository(): Repository<Map>("_map_references", "maps"){
     loadEntity = &Repository<Map>::loadMap;
     persistEntity = &Repository<Map>::persistMap;
 }

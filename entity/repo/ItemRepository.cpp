@@ -7,7 +7,7 @@ using namespace std;
 
 ItemRepository* ItemRepository::_instance;
 
-ItemRepository::ItemRepository(): Repository<Item>("_item_references"){
+ItemRepository::ItemRepository(): Repository<Item>("_item_references", "items"){
     loadEntity = &Repository<Item>::loadItem;
     persistEntity = &Repository<Item>::persistItem;
 }

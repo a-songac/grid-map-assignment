@@ -69,6 +69,10 @@ class Map : public Subject{
         std::vector<GameItem*>* getGameItems();
         std::vector<GamePlayer*>* getGamePlayers();
 
+        void setUserGamePlayer(GamePlayer* userGamePlayer);
+        GamePlayer* getUserGamePlayer();
+
+
         // Wanted to use a helperfor the following 2 methods since
         // all that changes is the subtype of the collection.  Issues of casting
         // and object slicing tho.
@@ -76,6 +80,9 @@ class Map : public Subject{
         bool removeGamePlayer(Coordinate location);
 
         Coordinate getPlayerPosition();
+
+        void setInGamePlayers();
+        void unsetInGamePlayers();
 
     private:
         std::vector<std::vector <Cell> > grid;
@@ -87,6 +94,7 @@ class Map : public Subject{
         std::string name;
         std::vector<GameItem*>* gameItems;
         std::vector<GamePlayer*>* gamePlayers;
+        GamePlayer* userGamePlayer;
 
         friend class boost::serialization::access;
         template<class Archive>
@@ -240,6 +248,14 @@ inline std::vector<GamePlayer*>* Map::getGamePlayers() {
 
 inline Coordinate Map::getPlayerPosition() {
     return this->playerPosition;
+}
+
+inline void Map::setUserGamePlayer(GamePlayer* userGamePlayer) {
+    this->userGamePlayer = userGamePlayer;
+}
+
+inline GamePlayer* Map::getUserGamePlayer() {
+    return this->userGamePlayer;
 }
 
 

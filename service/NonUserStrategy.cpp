@@ -71,9 +71,7 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
     // attack if next or at 1 cell from user
     if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
 
-        // pass nullptr because they attack the user player, who is accessible through the repo
-        // this is why we don't need the GamePlayer instance of the
-        this->attack(player, nullptr);
+        this->attack(player, gameMap->getUserGamePlayer());
     }
 
     return true; // no importance when non user character

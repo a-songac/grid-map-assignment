@@ -20,11 +20,13 @@
 #include <iostream>
 #include <stdio.h>
 #include <boost/filesystem.hpp>
+#include <boost/filesystem/convenience.hpp>
 #include <sstream>
 #include <stdexcept>
 
 #include "Repository.h"
 #include "../entity/Map.h"
+#include "../entity/Game.h"
 #include "../view/MapView.h"
 #include "../view/MapElementsView.h"
 #include "../view/CharacterView.h"
@@ -69,10 +71,13 @@ template <class T> class Repository {
         bool persistItem(Item* entity, std::string name);
         Campaign* loadCampaign(std::string name);
         bool persistCampaign(Campaign* entity, std::string name);
+        Game* loadGame(std::string name);
+        bool persistGame(Game* entity, std::string name);
+
 
     protected:
         std::string referenceFile;
-        Repository(std::string fileReference);
+        Repository(std::string fileReference, std::string folderName);
 
         // Function pointers that are defined in the constructor of the subtype
         // For instance the MapRepository will instantiate it with its persistMap and loadMap
@@ -96,8 +101,19 @@ template <class T> class Repository {
 // ////////////////////////////////////////////////////////////////////
 
 template <class T>
-Repository<T>::Repository(std::string fileReference): referenceFile(fileReference){
+Repository<T>::Repository(std::string fileReference, std::string folderName): referenceFile(folderName + "/" + fileReference){
 //    this->_entities = new T[20]();
+
+    boost::filesystem::path rootPath (folderName);
+    boost::system::error_code returnedError;
+
+    boost::filesystem::create_directories( rootPath, returnedError );
+
+    if ( returnedError )
+        throw std::runtime_error( "Cannot create folder for persistence" );
+    else
+
+
     this->construct();
 }
 
@@ -134,6 +150,7 @@ void Repository<T>::construct() {
     ifstream in(this->referenceFile);
     if (!in) {
         ofstream out;
+        // allows to create if does not exist
         out.open(referenceFile, ios::trunc);
         out.close();
         in.open(referenceFile);
@@ -444,7 +461,7 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
 
 template <class T>
 Campaign* Repository<T>::loadCampaign(string fileName) {
-    boost::filesystem::path myfile(fileName);
+    boost::filesystem::path myfile("campaigns/"+fileName);
     
     if( !boost::filesystem::exists(myfile))
     {
@@ -452,22 +469,55 @@ Campaign* Repository<T>::loadCampaign(string fileName) {
     }
     
     Campaign* lCampaign;
-    std::ifstream ifs(fileName, std::ios::binary);
+    std::ifstream ifs("campaigns/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     ia >> lCampaign;
     ifs.close();
     Campaign* loadedCampaign = new Campaign(lCampaign);
-
+    
     return loadedCampaign;
 }
 
-
+    
 template <class T>
 bool Repository<T>::persistCampaign(Campaign* c, std::string name) {
-    
-    std::ofstream ofs(name);
+        
+    std::ofstream ofs("campaigns/"+name);
     boost::archive::text_oarchive oa(ofs);
     oa << c;
     ofs.close();
     return true;
 }
+
+
+
+//////////// GAME //////////////
+
+template <class T>
+Game* Repository<T>::loadGame(string fileName) {
+    boost::filesystem::path myfile("games/" + fileName);
+
+    if( !boost::filesystem::exists(myfile))
+    {
+        return nullptr;
+    }
+
+    Game* lGame;
+    std::ifstream ifs("games/" + fileName, std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    ia >> lGame;
+    ifs.close();
+    Game* loadedGame = new Game(lGame);
+    return loadedGame;
+}
+
+template <class T>
+bool Repository<T>::persistGame(Game* game, std::string name) {
+
+    std::ofstream ofs("games/" + name);
+    boost::archive::text_oarchive oa(ofs);
+    oa << game;
+    ofs.close();
+    return true;
+}
+
