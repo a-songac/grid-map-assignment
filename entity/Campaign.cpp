@@ -13,6 +13,7 @@ Campaign::Campaign(vector<string>* m){
 
 Campaign::Campaign(Campaign* c){
     this->setMaps(c->getMaps());
+    this->setName(c->getName());
 }
 
 

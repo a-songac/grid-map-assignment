@@ -495,10 +495,6 @@ bool Repository<T>::persistGame(Game* game, std::string name) {
 }
 
 
-
-
-//////////// CAMPAIGN //////////////
-
 template <class T>
 Campaign* Repository<T>::loadCampaign(string fileName) {
     boost::filesystem::path myfile("campaigns/" + fileName);
