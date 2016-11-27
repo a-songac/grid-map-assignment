@@ -24,6 +24,8 @@ class Campaign {
         std::string getName();
         void setName(std::string n);
 
+        void display();
+
 
     private:
 

@@ -374,30 +374,3 @@ void MapEditorController::editMap(Map *map) {
 }
 
 
-Map* MapEditorController::loadMap(){
-    
-    Map* map;
-    string filename;
-    vector<string>* mapReferences = MapRepository::instance()->listAll();
-    if(mapReferences->empty()){
-        cout << "No maps currently saved. Redirecting to editor menu." << endl;
-    }
-    else{
-        for (size_t i = 0; i < mapReferences->size(); i++) {
-            cout << (i+1) << ":" << mapReferences->at(i) << endl;
-        }
-        
-        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, mapReferences->size());
-        
-      
-        map = MapRepository::instance()->loadMap(mapReferences->at(index-1));
-        
-        
-    }
-
-    
-    return map;
-    
-}
-
-

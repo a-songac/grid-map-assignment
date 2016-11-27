@@ -503,7 +503,7 @@ Campaign* Repository<T>::loadCampaign(string fileName) {
         return nullptr;
     }
     Campaign* lCampaign;
-    std::ifstream ifs(fileName, std::ios::binary);
+    std::ifstream ifs("campaigns/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     ia >> lCampaign;
     ifs.close();

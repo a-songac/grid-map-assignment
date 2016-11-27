@@ -21,6 +21,7 @@ CampaignEditorController::CampaignEditorController() {
 void CampaignEditorController::createCampaign(){
     cout << "In order to create a campaign you must first add maps." << endl;
 
+    Map* map;
     bool done = false;
     vector<string>* m;
     this->setCampaign(new Campaign(m));
@@ -30,27 +31,26 @@ void CampaignEditorController::createCampaign(){
         vector<string> vs;
         //Add Maps
         do{
-            MapEditorController mapEditor;
-            Map* map = mapEditor.loadMap();
+            map = MapInteractionHelper::selectMap();
             string mapName = map->getName();
 
             if(map->validate()){
                 vs.push_back(mapName);
-                done = !(readYesNoInput("Would you like to add another map to add to your campaign? (Y/n)", false));
+                done = !(readYesNoInput("Would you like to add another map to add to your campaign? [Y/n]", true));
             }
             else{
                 cout << "Invalid map, please try again!" << endl;
             }
 
-            delete map;
-        }while(done != true);
+//            delete map;
+        }while(!done);
 
         //Add vector of map names to campaign
         vector<string>* vsp = &vs;
         this->campaign->setMaps(vsp);
 
         //Save Campaign
-        bool save = readYesNoInput("Would you like to save this campaign? (Y/n)", true);
+        bool save = readYesNoInput("Would you like to save this campaign? [Y/n]", true);
 
         if(save){
             string filename = readStringInput("Enter a Name for the File: ", "userCampaign");
@@ -74,7 +74,7 @@ void CampaignEditorController::editCampaign(Campaign* c){
         bool done = false;
 
         do{
-
+            c->display();
             cout << "What changes do you want to make to this campaign?:" << endl;
             cout << "Add map: 1" << endl;
             cout << "Remove last map: 2" << endl;
@@ -108,11 +108,11 @@ void CampaignEditorController::editCampaign(Campaign* c){
                 }
             }
 
-            done = !(readYesNoInput("Do you wish to further edit this campaign?(Y/n)", true));
+            done = !(readYesNoInput("Do you wish to further edit this campaign?[Y/n]", true));
         }while(done!=true);
 
 
-        bool save = readYesNoInput("Do you wish to save these changes?(Y/n)", true);
+        bool save = readYesNoInput("Do you wish to save these changes?[Y/n]", true);
 
         if(save){
             if(c->validate()){
@@ -152,7 +152,7 @@ Campaign* CampaignEditorController::loadCampaign() {
     }
     else {
         for (size_t i = 0; i < campaignReferences->size(); i++) {
-            cout << (i+1) << ":" << campaignReferences->at(i) << endl;
+            cout << (i+1) << ". " << campaignReferences->at(i) << endl;
         }
 
         int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, campaignReferences->size());
