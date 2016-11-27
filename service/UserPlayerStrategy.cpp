@@ -22,7 +22,13 @@
 
 void UserPlayerStrategy::move(GamePlayer* player, Map* map) {
 }
-void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim) {
+void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim, bool melee) {
+
+    CombatService::attack(
+            player->getInGameCharacter(),
+            victim->getInGameCharacter(),
+            melee);
+
 }
 void UserPlayerStrategy::freeAction(GamePlayer* player) {
 }
@@ -65,6 +71,9 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         else if (goTo == "a") {
 
             turnDone = postAttack(character, map);
+            if (character->getHitPoints() <= 0) {
+                gameOver = true;
+            }
             map->render();
 
         }
@@ -194,11 +203,15 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
             victim = rangeAttackable.at(index-1-directSize);
         }
 
-        // TODO:
-        // PROCESS ATTACK
-        victim->getInGameCharacter();
 
+        this->attack(map->getUserGamePlayer(), victim, isDirectAttack);
 
+        // CHECK IF VICTIM DIED
+        if (character->getHitPoints() <= 0) {
+            return false;
+        }
+
+        CombatService::eliminateDeadBodies(map);
 
         return true;
 

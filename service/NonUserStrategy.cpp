@@ -2,6 +2,7 @@
 
 #include "ShortestPath.h"
 #include "../service/Settings.h"
+#include "../service/CombatService.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
 
@@ -57,6 +58,7 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
 
     bool distanceAttack = false;
     bool nextToPlayer = false;
+    bool gameOver = false;
 
     Coordinate* currentLocation = player->getLocation();
     Coordinate playerPosition = gameMap->getPlayerPosition();
@@ -69,10 +71,17 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
     }
 
     // attack if next or at 1 cell from user
-    if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
+    else if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
 
-        this->attack(player, gameMap->getUserGamePlayer());
+        this->attack(player, gameMap->getUserGamePlayer(), this->distanceFromUser == 1);
+
+        if (gameMap->getUserGamePlayer()->getInGameCharacter()->getHitPoints() <= 0) {
+            gameOver = true;
+        } else {
+            CombatService::eliminateDeadBodies(gameMap);
+        }
+
     }
 
-    return true; // no importance when non user character
+    return gameOver;
 }

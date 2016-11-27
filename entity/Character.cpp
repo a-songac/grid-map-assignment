@@ -14,6 +14,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <iterator>
 
 #include "Character.h"
 #include "../core/Subject.h"
@@ -21,7 +22,7 @@
 #include "../utils/LogUtils.h"
 #include "../view/CharacterView.h"
 #include "repo/ItemRepository.h"
-#include <iterator>
+#include "../service/Settings.h"
 using std::istream_iterator;
 
 
@@ -400,6 +401,15 @@ void Character::attackBonus()
 	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
 
 }
+
+int Character::computeAttackBonus()
+{
+	//depends on the weapon of choice
+
+	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
+
+}
+
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB
 int Character::getAttackBonus()
@@ -518,43 +528,133 @@ bool Character::saveCharacter(string name)
 		return false;
 	}
 }
-void Character::attack(Character *enemy)
+//void Character::attack(Character *enemy)
+//
+//{
+//	int turn = 1;
+//
+//
+//	while (attackB > 0)
+//	{
+//		string name = this->getName();
+//		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+//
+//		int attackRoll = dice1.roll_d20();
+//		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+//
+//		int rollAndBonus = attackRoll + attackB;
+//		logInfo("Character", "attack", this->getName()+"just rolled" );
+//
+//		if (rollAndBonus > enemy->armorClass)
+//		{
+//			int damageRollValue = dice1.roll_d8();
+//			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
+//			int DamageinCombat;
+//			DamageinCombat = damageRollValue + damageB +modifiers[0];
+//
+//			enemy->currentHitPoints -= DamageinCombat;
+//			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
+//		}
+//
+//		else
+//		{
+//			logInfo("Character", "attack", "Attack missed");
+//		}
+//	}
+//
+//
+//
+//}
 
+
+
+void Character::attack(Character* enemy, bool melee)
 {
-	int turn = 1;
+    bool range = !melee;
+    stringstream sstream;
+    string attackTypeName = range? "Range" : "Melee";
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", attackTypeName + " attack start: " + this->getName() + " on " + enemy->getName());
+
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", "Compute attack attempt score...");
 
 
-	while (attackB > 0)
-	{
-		string name = this->getName();
-		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+    int attackRoll = dice1.roll_d20();
 
-		int attackRoll = dice1.roll_d20();
-		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+    sstream << "d20 dice roll result: " << attackRoll;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
 
-		int rollAndBonus = attackRoll + attackB;
-		logInfo("Character", "attack", this->getName()+"just rolled" );
+    // TODO: compute attack modifier based on level
+    // IS THIS OK:
+    int attackModifier = this->computeAttackBonus();
+    sstream << "Attack modifier value: " << attackModifier;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
 
-		if (rollAndBonus > enemy->armorClass)
-		{
-			int damageRollValue = dice1.roll_d8();
-			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
-			int DamageinCombat;
-			DamageinCombat = damageRollValue + damageB +modifiers[0];
+    // TODO compute the attack modifier based on the weapon he is using atm
+    // will have to reger to the worn items I think
+    // IS THAT OK
+    int weaponModifier;
+    if (range) {
+        weaponModifier = this->modifiers[1];
+        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
+    } else {
+        weaponModifier = this->modifiers[0];
+        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
+    }
 
-			enemy->currentHitPoints -= DamageinCombat;
-			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
-		}
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
 
-		else
-		{
-			logInfo("Character", "attack", "Attack missed");
-		}
-	}
+    // How is the attackB
+
+    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
+    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->armorClass;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", sstream.str());
+    sstream.str("");
+
+    if (rollAndBonus > enemy->armorClass)
+    {
+        int damageRollValue = dice1.roll_d8();
+        sstream << "d8 dice damage roll result: " << damageRollValue;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        sstream << "Damage modifier value: " << weaponModifier;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        int DamageinCombat;
+
+        //TODO How do i compute the damage modifier?
+        DamageinCombat = damageRollValue + weaponModifier;
 
 
+        sstream << "Damage inflicted on victim's current HP: " << DamageinCombat << "/" << enemy->currentHitPoints;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        enemy->currentHitPoints -= DamageinCombat;
+    }
+
+    else
+    {
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack", "Attack missed");
+    }
 
 }
+
+
 
 // Load a Character from file
 bool Character::loadCharacter(string name1)

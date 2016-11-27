@@ -141,6 +141,9 @@ public:
 	void ArmorClass();
 	int getArmorClass();
 
+	int computeAttackBonus();
+	void attack(Character* enemy, bool range);
+
 
 
 	//void Character::unEquipItem(ItemContainer*,string);

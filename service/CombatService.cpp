@@ -2,6 +2,7 @@
 #include "ShortestPath.h"
 #include "Settings.h"
 #include "../entity/Dice.h"
+#include "../entity/Cell.h"
 #include "../utils/LogUtils.h"
 
 #include <sstream>
@@ -25,7 +26,7 @@ bool CombatService::canRangeAttack(Coordinate origin, Coordinate destination, in
 
 }
 
-bool CombatService::attack(Character* attacker, Character* victim) {
+bool CombatService::attack(Character* attacker, Character* victim, bool melee) {
 
     Dice dice1;
 	int attackerRoll, attackerInitiative, victimRoll, victimInitiative;
@@ -42,18 +43,20 @@ bool CombatService::attack(Character* attacker, Character* victim) {
 
 		victimRoll = dice1.roll_d20();
 
-		logInfo("CombatService", "attack", " Enemy rolled a d20 dice for initiative  ");
 		victimInitiative = victimRoll + victim->getModDexterity();
+		sStream << "Victim rolled a d20 dice for initiative resulting: [" << victimRoll << "]";
+		logInfo("CombatService", "attack", sStream.str());
+		sStream.str("");
 
 		if (attackerInitiative > victimInitiative)
 		{
 			logInfo("CombatService", "attack", " Attacker won the initiative and will attack");
-			attacker->attack(victim);//player will attack because he has a higher initative
+			attacker->attack(victim, melee);//player will attack because he has a higher initative
 
 			logInfo("CombatService", "attack", "Attacker just attacked the victim");
 			if (victim->getHitPoints() > 0)
 			{
-				victim->attack(attacker);
+				victim->attack(attacker, melee);
 				logInfo("CombatService", "attack", "Vicim executed a counter-attack");
 			}
 			else
@@ -67,13 +70,13 @@ bool CombatService::attack(Character* attacker, Character* victim) {
 		else if (victimInitiative > attackerInitiative)
 		{
 			logInfo("CombatService", "attack", "Victim won the iniative and will execute the attack");
-			victim->attack(attacker);
+			victim->attack(attacker, melee);
 
 			logInfo("CombatService", "attack", "Vicim executed attack after wining initiative");
 
 			if (attacker->getHitPoints() > 0)
 			{
-				attacker->attack(victim);
+				attacker->attack(victim, melee);
 				logInfo("CombatService", "attack", "Player executed counter-attack");
 			}
 			else
@@ -86,3 +89,21 @@ bool CombatService::attack(Character* attacker, Character* victim) {
     return true;
 
 }
+
+
+void CombatService::eliminateDeadBodies(Map* map) {
+
+    GamePlayer* playerAt;
+    for (size_t i = 0; i < map->getGamePlayers()->size(); i++) {
+        playerAt = map->getGamePlayers()->at(i);
+        if (playerAt->getInGameCharacter()->getHitPoints() <= 0)
+        {
+            map->getGamePlayers()->erase(map->getGamePlayers()->begin()+i);
+            map->fillCell(
+                    playerAt->getLocation()->row,
+                    playerAt->getLocation()->column,
+                     Cell::OCCUPANT_EMPTY);
+        }
+    }
+}
+

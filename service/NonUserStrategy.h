@@ -15,9 +15,6 @@ class NonUserStrategy : public PlayerStrategy {
         void move(GamePlayer* player, Map* map);
         bool turn(GamePlayer* player, Map* map);
 
-        virtual void attack(GamePlayer* player, GamePlayer* victim) = 0;
-        virtual void freeAction(GamePlayer* player) = 0;
-
     protected:
         int distanceFromUser;
 

@@ -6,7 +6,7 @@
 
 class AggressivePlayerStrategy : public NonUserStrategy {
     public:
-        void attack(GamePlayer* player, GamePlayer* victim);
+        void attack(GamePlayer* player, GamePlayer* victim, bool melee);
         void freeAction(GamePlayer* player);
 
 };

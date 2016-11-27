@@ -133,20 +133,23 @@ void GamePlayController::startGame(Game* game) {
         gameOver = userPlayer.turn(this->map);
 
         if (!gameOver) {
-            for (size_t i = 0; i < gamePlayers->size(); i++) {
-                gamePlayers->at(i)->turn(this->map);
+            for (size_t i = 0; i < gamePlayers->size() && !gameOver; i++) {
+                gameOver = gamePlayers->at(i)->turn(this->map);
             }
         }
 
     } while (!gameOver);
 
+    bool died = false;
+    if (gameCharacter->getHitPoints() <= 0) {
+        died = true;
+        cout << " ************ GAME OVER, YOU DIED ************" << endl;
+    }
 
 
     // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
-    if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
+    if (!died && readYesNoInput("Would you like to save your character?[Y/n]", 1))
     {
-
-
         if ("" == game->getGameSaveName()) {
             game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));
         }
