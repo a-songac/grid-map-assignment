@@ -74,12 +74,6 @@ void CharacterEditorController::createCharacter() {
 			ddMaster.constructCharacter();
 			Character* bully = ddMaster.getCharacter();
 			CharacterView* bView = new CharacterView(bully);
-			lvl = readIntegerInput("Select a starting level[1]: ", 1);
-			bully->setLevel(lvl);
-			bully->armorClass();
-			bully->setAttackBonus();
-			bully->attackBonus();
-			bully->damageBonus();
 			initializeBackpack(bully);
 			bully->display();
 			cout << "\nHere is your backpack: " << endl;
@@ -95,12 +89,6 @@ void CharacterEditorController::createCharacter() {
 			ddMaster.constructCharacter();
 			Character* nimble = ddMaster.getCharacter();
 			CharacterView* nView = new CharacterView(nimble);
-			lvl = readIntegerInput("Select a starting level[1]: ", 1);
-			nimble->setLevel(lvl);
-			nimble->armorClass();
-			nimble->setAttackBonus();
-			nimble->attackBonus();
-			nimble->damageBonus();
 			initializeBackpack(nimble);
 			nimble->display();
 			cout << "\nHere is your backpack: " << endl;
@@ -116,12 +104,6 @@ void CharacterEditorController::createCharacter() {
 			ddMaster.constructCharacter();
 			Character* tank = ddMaster.getCharacter();
 			CharacterView* tView = new CharacterView(tank);
-			lvl = readIntegerInput("Select a starting level[1]: ", 1);
-			tank->setLevel(lvl);
-			tank->armorClass();
-			tank->setAttackBonus();
-			tank->attackBonus();
-			tank->damageBonus();
 			initializeBackpack(tank);
 			tank->display();
 			cout << "\nHere is your backpack: " << endl;

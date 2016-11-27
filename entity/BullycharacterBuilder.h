@@ -13,4 +13,8 @@ public:
 	virtual void buildCharisma(int wis);
 	virtual void buildHitPoints();
 	virtual void buildFighter();
+	virtual void buildLevel();
+	virtual void buildArmorClass();
+	virtual void buildAttackBonus();
+	virtual void buildDamageBonus();
 };

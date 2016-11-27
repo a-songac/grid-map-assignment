@@ -11,7 +11,6 @@ CampaignRepository::CampaignRepository(): Repository<Campaign>("_campaign_refere
     loadEntity = &Repository<Campaign>::loadCampaign;
     persistEntity = &Repository<Campaign>::persistCampaign;
 }
-
 CampaignRepository* CampaignRepository::instance() {
     if (!_instance) {
         _instance = new CampaignRepository();

@@ -41,6 +41,7 @@ void CharacterView::display() {
 		cout << "Armor: " << _subject->getArmorClass() << endl;
 		cout << "Attack Damage: " << _subject->getDamageBonus() << endl;
 		cout << "Attack Bonus: " << _subject->getAttackBonus() << endl;
+		cout << "Attack per Round: " << _subject->getNumberOfattack() << endl;
 		cout << "Current HP: " << _subject->getHitPoints() << endl;
 		cout << "================================================================================" << endl;
 

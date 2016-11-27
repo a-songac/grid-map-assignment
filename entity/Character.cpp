@@ -115,6 +115,7 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			{
 				this->setStrength(this->getStrength() + eVec[i].getBonus());
 				this->setModStrength(modifier(this->getStrength()));
+				this->attackBonus();
 			}
 			if (eVec[i].getType() == "Dexterity")
 			{
@@ -164,6 +165,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		{
 			this->setStrength(this->getStrength() - eVec[i].getBonus());
 			this->setModStrength(modifier(this->getStrength()));
+			this->attackBonus();
 		}
 		if (eVec[i].getType() == "Dexterity")
 		{
@@ -220,7 +222,8 @@ void Character::levelUp()
 {
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
-	this->attackBonus();
+	this->nextAttackBonus();
+	this->numberOfAttack();
 	Notify();
 }
 //! implementation of setLevel that initializes the level at the beginning of the game depending on what the user provides.
@@ -292,8 +295,9 @@ int Character::getHitPoints()
 }
 
 //implementation of a setter method for attack bonus
-void Character::setAttackBonus() {
-	this->attackB = 0;
+
+void Character::nextAttackBonus() {
+	this->attackB = this->attackB + 1;
 }
 void Character::attackBonus()
 {
@@ -413,138 +417,7 @@ bool Character::saveCharacter(string name)
 		return false;
 	}
 }
-<<<<<<< HEAD
 
-
-=======
-//void Character::attack(Character *enemy)
-//
-//{
-//	int turn = 1;
-//
-//
-//	while (attackB > 0)
-//	{
-//		string name = this->getName();
-//		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
-//
-//		int attackRoll = dice1.roll_d20();
-//		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
-//
-//		int rollAndBonus = attackRoll + attackB;
-//		logInfo("Character", "attack", this->getName()+"just rolled" );
-//
-//		if (rollAndBonus > enemy->armorClass)
-//		{
-//			int damageRollValue = dice1.roll_d8();
-//			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
-//			int DamageinCombat;
-//			DamageinCombat = damageRollValue + damageB +modifiers[0];
-//
-//			enemy->currentHitPoints -= DamageinCombat;
-//			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
-//		}
-//
-//		else
-//		{
-//			logInfo("Character", "attack", "Attack missed");
-//		}
-//	}
-//
-//
-//
-//}
-
-
-
-void Character::attack(Character* enemy, bool melee)
-{
-    bool range = !melee;
-    stringstream sstream;
-    string attackTypeName = range? "Range" : "Melee";
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack", attackTypeName + " attack start: " + this->getName() + " on " + enemy->getName());
-
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack", "Compute attack attempt score...");
-
-
-    int attackRoll = dice1.roll_d20();
-
-    sstream << "d20 dice roll result: " << attackRoll;
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
-
-    // TODO: compute attack modifier based on level
-    // IS THIS OK:
-	int attackModifier = this->attackB;
-
-    sstream << "Attack modifier value: " << attackModifier;
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
-
-    // TODO compute the attack modifier based on the weapon he is using atm
-    // will have to reger to the worn items I think
-    // IS THAT OK
-    int weaponModifier;
-    if (range) {
-        weaponModifier = this->getModDexterity();
-        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
-    } else {
-        weaponModifier = this->getModStrength();
-        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
-    }
-
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
-
-    // How is the attackB
-
-    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
-    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->getArmorClass();
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack", sstream.str());
-    sstream.str("");
-
-    if (rollAndBonus > enemy->getArmorClass())
-    {
-        int damageRollValue = dice1.roll_d8();
-        sstream << "d8 dice damage roll result: " << damageRollValue;
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
-
-        sstream << "Damage modifier value: " << weaponModifier;
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
-
-        int DamageinCombat;
-
-        //TODO How do i compute the damage modifier?
-        DamageinCombat = damageRollValue + weaponModifier;
-
-
-        sstream << "Damage inflicted on victim's current HP: " << DamageinCombat << "/" << enemy->currentHitPoints;
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
-
-        enemy->currentHitPoints -= DamageinCombat;
-    }
-
-    else
-    {
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack", "Attack missed");
-    }
-
-}
->>>>>>> Builder pattern integrated and character and ChaEditController refactor
-// Load a Character from file
 bool Character::loadCharacter(string name1)
 {
 	std::ifstream f(name1, std::ios::in);
@@ -845,7 +718,7 @@ void Character::displayWornItems() {
 }
 
 Item* Character::getItemHelper(vector<string>* items, string name) {
-
+	
     for (size_t i = 0; i < items->size(); i++) {
         if (name == items->at(i)) {
             return ItemRepository::instance()->getEntity(name);
@@ -878,3 +751,18 @@ bool Character::hasItemHelper(vector<string>* items, string name) {
     return false;
 }
 
+void Character::numberOfAttack() {
+
+	if (this->lvl > 5 && this->lvl < 11) {
+		attPerRound = 2;
+	}
+	if (this->lvl > 10 && this->lvl < 16) {
+		attPerRound = 3;
+	}
+	if (this->lvl > 15) {
+		attPerRound = 4;
+	}
+}
+int Character::getNumberOfattack() {
+	return this->attPerRound;
+}

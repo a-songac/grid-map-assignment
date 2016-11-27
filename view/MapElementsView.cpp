@@ -1,5 +1,4 @@
 #include "MapElementsView.h"
-
 #include "../entity/GameElement.h"
 #include "../entity/GamePlayer.h"
 #include "../entity/GameItem.h"

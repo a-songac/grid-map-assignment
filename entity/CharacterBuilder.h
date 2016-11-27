@@ -14,6 +14,7 @@ public:
 	virtual void buildCharisma(int wis) = 0;
 	virtual void buildHitPoints() = 0;
 	virtual void buildFighter() = 0;
+	virtual void buildLevel() = 0;
 protected:
 	Character* character;
 

@@ -12,10 +12,10 @@ class CharacterEditorController {
         static void selectAction();
 		//static Character* selectCharacter();
         static void initializeBackpack(Character* character);
-
+		static void saveCharacter(Character* character);
     private:
         static void createCharacter();
         static void editExistingcharacter();
-        static void saveCharacter(Character* character);
+        
 
 };

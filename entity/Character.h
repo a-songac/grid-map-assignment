@@ -59,7 +59,8 @@ public:
 	int getArmorClass();
 	//attack bonus
 	void attackBonus();
-	void setAttackBonus();
+	void nextAttackBonus();
+	//void setAttackBonus();
 	int getAttackBonus();
 	//attack damage
 	void damageBonus();
@@ -134,16 +135,12 @@ public:
 
 	bool hasItemInBackpack(std::string itemName);
 	bool hasItemHelper(std::vector<string>* items, std::string name);
-<<<<<<< HEAD
 	void armorClass();
 	int getArmorClass();
-
-	int computeAttackBonus();
-=======
 	bool isWearingItem(std::string itemName);
-	void attack(Character* enemy, bool range);
 	//void attack(Character *enemy);
->>>>>>> Builder pattern integrated and character and ChaEditController refactor
+	void numberOfAttack();
+	int getNumberOfattack();
 
 private:
 	vector<Item> items;
@@ -151,12 +148,13 @@ private:
 	int modifiers[6];
 	int abilityScores[6];
 	int damageB;
-	int attackB;
+	int attackB = 0;
 	int ac;
 	int armorPoints;
 	int shieldPoints;
 	vector <int> baseAttackBonus;
 	int currentHitPoints = 0;
+	int attPerRound = 1;
 	std::string name;
 
 };
