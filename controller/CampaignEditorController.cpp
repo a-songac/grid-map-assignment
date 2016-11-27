@@ -7,6 +7,7 @@
 #include <boost/archive/text_oarchive.hpp>
 #include <boost/archive/text_iarchive.hpp>
 #include "../entity/repo/MapRepository.h"
+#include "MapInteractionHelper.h"
 
 CampaignEditorController::CampaignEditorController(Campaign* c) {
     campaign = c;
@@ -29,7 +30,7 @@ void CampaignEditorController::createCampaign(){
         //Add Maps
         do{
             MapEditorController mapEditor;
-            Map* map = mapEditor.loadMap();
+            Map* map = MapInteractionHelper::selectMap();
             string mapName = map->getName();
         
             if(map->validate()){
