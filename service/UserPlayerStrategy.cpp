@@ -34,7 +34,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
     bool turnDone = true;
     bool quit = false;
     bool gameOver = false;
-    Character* character = CharacterRepository::instance()->getEntity(player->getElementReference());
+    Character* character = player->getInGameCharacter();
     string goTo;
     int input;
     Coordinate exitDoor = map->getExitDoorCoordinate();

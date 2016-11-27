@@ -471,6 +471,13 @@ Game* Repository<T>::loadGame(string fileName) {
     ia >> lGame;
     ifs.close();
     Game* loadedGame = new Game(lGame);
+
+    Character* character = new Character();
+    character->loadCharacter("games/game_charac_" + fileName);
+    character->setName(loadedGame->getCharacterName());
+    CharacterView* charView = new CharacterView(character);
+    loadedGame->setUserCharacter(character);
+
     return loadedGame;
 }
 
@@ -481,6 +488,9 @@ bool Repository<T>::persistGame(Game* game, std::string name) {
     boost::archive::text_oarchive oa(ofs);
     oa << game;
     ofs.close();
+
+    game->getUserCharacter()->saveCharacter("games/game_charac_" + name);
+
     return true;
 }
 

@@ -57,7 +57,14 @@ int main()
             case 1:
             {
                 GamePlayController gameController;
-                gameController.newGame();
+                cout << "********* PLAY GAME *********" << endl;
+                cout << "1. Start a new game" << endl;
+                cout << "2. Load previous game" << endl;
+                int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
+                if (1 == choice)
+                    gameController.newGame();
+                else
+                    gameController.loadGame();
                 break;
             }
             case 2:

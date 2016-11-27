@@ -24,9 +24,13 @@ class Game {
         void setUserCharacter(Character* charac);
         Character* getUserCharacter();
 
+        void setCharacterName(std::string);
+        std::string getCharacterName();
+
     private:
         Character* userCharacter;
         std::string gameSaveName; // give this name to the save file of the character too
+        std::string characterName;
 
         // add more info with regard to the game progress in the campaing
 
@@ -35,6 +39,7 @@ class Game {
         void serialize(Archive & ar, const unsigned int version)
         {
             ar & gameSaveName;
+            ar & characterName;
         }
 
 };
@@ -54,4 +59,10 @@ inline Character* Game::getUserCharacter() {
     return this->userCharacter;
 }
 
+inline void Game::setCharacterName(std::string name){
+    this->characterName = name;
+}
+inline std::string Game::getCharacterName() {
+    return this->characterName;
+}
 
