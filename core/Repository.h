@@ -34,6 +34,7 @@
 #include "../utils/FileUtils.h"
 #include"../utils/LogUtils.h"
 #include "../entity_generator/MapGenerator.h"
+#include "../entity/Campaign.h"
 
 
 
@@ -68,8 +69,11 @@ template <class T> class Repository {
         bool persistCharacter(Character* entity, std::string name);
         Item* loadItem(std::string name);
         bool persistItem(Item* entity, std::string name);
+        Campaign* loadCampaign(std::string name);
+        bool persistCampaign(Campaign* entity, std::string name);
         Game* loadGame(std::string name);
         bool persistGame(Game* entity, std::string name);
+
 
     protected:
         std::string referenceFile;
@@ -454,17 +458,49 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
 
 
 
+////////// CAMPAIGN ///////////
+
+template <class T>
+Campaign* Repository<T>::loadCampaign(string fileName) {
+    boost::filesystem::path myfile("campaigns/"+fileName);
+    
+    if( !boost::filesystem::exists(myfile))
+    {
+        return nullptr;
+    }
+    
+    Campaign* lCampaign;
+    std::ifstream ifs("campaigns/" + fileName, std::ios::binary);
+    boost::archive::text_iarchive ia(ifs);
+    ia >> lCampaign;
+    ifs.close();
+    Campaign* loadedCampaign = new Campaign(lCampaign);
+    
+    return loadedCampaign;
+}
+
+    
+template <class T>
+bool Repository<T>::persistCampaign(Campaign* c, std::string name) {
+        
+    std::ofstream ofs("campaigns/"+name);
+    boost::archive::text_oarchive oa(ofs);
+    oa << c;
+    ofs.close();
+    return true;
+}
+
+
+
 //////////// GAME //////////////
 
 template <class T>
 Game* Repository<T>::loadGame(string fileName) {
     boost::filesystem::path myfile("games/" + fileName);
-
     if( !boost::filesystem::exists(myfile))
     {
         return nullptr;
     }
-
     Game* lGame;
     std::ifstream ifs("games/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
@@ -493,4 +529,6 @@ bool Repository<T>::persistGame(Game* game, std::string name) {
 
     return true;
 }
+
+
 

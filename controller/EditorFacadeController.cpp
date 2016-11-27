@@ -23,16 +23,17 @@ void EditorFacadeController::editorMenu() {
 
         //Return chosen editor
         if(eChoice == 1){
-            cout << "************** Map Creator **************" << endl << endl;
+            cout << "************** Map Editor **************" << endl << endl;
 
             cout << "Please select one of the following options:" << endl << "1. Create New Map"
             << endl << "2. Edit an Existing Map" << endl;
 
             int cChoice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
 
-            //Create Map
             if (cChoice == 1){
 
+
+                //Create Map
                 MapEditorController mapEditor;
                 mapEditor.createMap();
 
@@ -46,15 +47,17 @@ void EditorFacadeController::editorMenu() {
                 //Edit Options
 
                 mapEditor.editMap(map);
+
                 cout << "Redirecting to editor menu." << endl;
+                
+                
 
             }
         }
         else if(eChoice == 2){ // Campaign Editor
-            // Disable feature
-            cout << "To be implemented." << endl;
-            continue;
-            cout << "*********** Campaign Creator ************" << endl << endl;
+
+        
+            cout << "*********** Campaign Editor ************" << endl << endl;
 
             cout << "Please select one of the following options:" << endl << "Create New Campaign: 1"
                 << endl << "Edit an Existing Campaign: 2" << endl;
@@ -65,120 +68,27 @@ void EditorFacadeController::editorMenu() {
                 eChoice = readIntegerInput("Your choice[1]:", 1);
             }
 
-            //Create Campaign
+            
             if(cChoice == 1){
 
+                //Create Campaign
+
                 CampaignEditorController campaignEditor;
-                Campaign* campaign = campaignEditor.createCampaign();
-                campaignEditor.setCampaign(campaign);
+                campaignEditor.createCampaign();
 
-                bool save = readYesNoInput("Would you like to save this campaign? (Y/n)", true);
-
-                if(save){
-                    if(campaign->validate()){
-                            string filename = readStringInput("Enter a Name for the File: ", "userCampaign");
-                            campaignEditor.saveCampaign(filename);
-                            cout << "Campaign successfully saved." << endl;
-                    }
-                    else{
-                        cout << "Invalid Campaign, Please Try Again. (Campaign not Saved)" << endl;
-                    }
-
-                    delete campaign;
-                    campaign = nullptr;
-
-                }
-                else{
-                    cout << "Redirecting to editor menu." << endl;
-                }
+                cout << "Redirecting to editor menu." << endl;
 
             }
             else{
-                //Edit a Campaign
-                cout << "*********** Campaign Editor ************" << endl << endl;
-
-                string filename = readStringInput("Please enter the name of the .campaign file you want to  edit:", "userCampaign.campaign");
-
-                boost::filesystem::path myfile(filename);
-
-                if( !boost::filesystem::exists(myfile) )
-                {
-                    cout << "File not found! Redirecting to editor menu." << endl;
-                }
-
-                Campaign campaign = CampaignEditorController::loadCampaign(filename);
+                //Load Campaign for editing
+                CampaignEditorController campaignEditor;
+                Campaign* campaign = campaignEditor.loadCampaign();
 
                 //Edit Options
-                if(campaign.validate()){
-                    Campaign* c = &campaign;
-                    CampaignEditorController campaignEditor(c);
-
-                    bool done = false;
-
-                    do{
-
-                        cout << "What changes do you want to make to this campaign?:" << endl;
-                        cout << "Add map: 1" << endl;
-                        cout << "Remove last map: 2" << endl;
-
-                        int choice = readIntegerInput("Your choice[1]:", 1);
-                        while (choice != 1 && choice != 2) {
-                            cout << "This is not a choice, please retry" << endl;
-                            choice = readIntegerInput("Your choice[1]:", 1);
-                        }
-
-                        switch (choice) {
-                            case 1:
-                            {
-                                string filename = readStringInput("Please enter the name of the .map file you   want to add:", "userMap.map");
-
-                                boost::filesystem::path myfile(filename);
-
-                                if( !boost::filesystem::exists(myfile) )
-                                {
-                                    cout << "Map file not found!" << endl;
-                                }
-
-                                Map* map = MapRepository::instance()->getEntity(filename);
-
-                                if(map->validate()){
-                                    campaignEditor.addMap(map);
-                                }
-                                else{
-                                    cout << "Invalid map. Please try Again." << endl;
-                                }
-
-                                break;
-
-                            }
-                            case 2:
-                                campaignEditor.removeMap();
-                                break;
-                        }
-
-                        done = !(readYesNoInput("Do you wish to further edit this campaign?(Y/n)", true));
-                    }while(done!=true);
-
-
-                    bool save = readYesNoInput("Do you wish to save these changes?(Y/n)", true);
-
-                    if(save){
-                        if(c->validate()){
-                            campaignEditor.saveCampaign(filename);
-                            cout << "Campaign successfully saved." << endl;
-                        }
-                        else{
-                            cout << "Invalid Campaign, Please Try Again. (Campaign not Saved)" << endl;
-                        }
-                    }
-
-                    // delete c;
-                    c = nullptr;
-
+                if(campaign != nullptr){
+                    campaignEditor.editCampaign(campaign);
                 }
-                else{
-                    cout << "Invalid campaign. Redirecting to editor menu." << endl;
-                }
+
             }
 
         } // END Campaign editor
