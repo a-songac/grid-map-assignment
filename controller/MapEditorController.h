@@ -27,6 +27,7 @@ class MapEditorController {
         void addOccupant();
         void editMap(Map* map);
         void setMap(Map* map);
+        Map* loadMap();
         Map* getMap();
 
     private:

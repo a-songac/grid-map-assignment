@@ -83,6 +83,6 @@ bool CombatService::attack(Character* attacker, Character* victim) {
 			}
 		}
 	}
-
+    return true;
 
 }

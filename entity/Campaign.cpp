@@ -5,12 +5,13 @@ Campaign::Campaign(){
 
 }
 
-Campaign::Campaign(vector<Map>* m){
+Campaign::Campaign(vector<string>* m){
         maps = m;
 }
 
 Campaign::Campaign(Campaign* c){
     this->setMaps(c->getMaps());
+    this->setName(c->getName());
 }
 
 

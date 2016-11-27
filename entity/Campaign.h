@@ -41,7 +41,7 @@ class Campaign {
     
 };
 
-inline vector<string>* Campaign::getMaps(){
+inline std::vector<string>* Campaign::getMaps(){
     return maps;
 }
 

@@ -439,6 +439,9 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
     return true;
 }
 
+
+////////// CAMPAIGN ///////////
+
 template <class T>
 Campaign* Repository<T>::loadCampaign(string fileName) {
     boost::filesystem::path myfile(fileName);
