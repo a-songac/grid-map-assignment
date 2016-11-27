@@ -1,6 +1,8 @@
 
 #include "Campaign.h"
 
+using namespace std;
+
 Campaign::Campaign(){
 
 }
@@ -21,4 +23,12 @@ bool Campaign::validate(){
     }
     else
         return true;
+}
+
+void Campaign::display() {
+    cout << "Campaign maps: " << endl;
+    for(size_t i = 0; i < this->maps->size(); i++) {
+        cout << (i+1) << ". " << this->maps->at(i) << endl;
+    }
+    cout << endl;
 }

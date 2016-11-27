@@ -457,6 +457,7 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
 }
 
 
+
 ////////// CAMPAIGN ///////////
 
 template <class T>
@@ -496,18 +497,23 @@ bool Repository<T>::persistCampaign(Campaign* c, std::string name) {
 template <class T>
 Game* Repository<T>::loadGame(string fileName) {
     boost::filesystem::path myfile("games/" + fileName);
-
     if( !boost::filesystem::exists(myfile))
     {
         return nullptr;
     }
-
     Game* lGame;
     std::ifstream ifs("games/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     ia >> lGame;
     ifs.close();
     Game* loadedGame = new Game(lGame);
+
+    Character* character = new Character();
+    character->loadCharacter("games/game_charac_" + fileName);
+    character->setName(loadedGame->getCharacterName());
+    CharacterView* charView = new CharacterView(character);
+    loadedGame->setUserCharacter(character);
+
     return loadedGame;
 }
 
@@ -518,6 +524,11 @@ bool Repository<T>::persistGame(Game* game, std::string name) {
     boost::archive::text_oarchive oa(ofs);
     oa << game;
     ofs.close();
+
+    game->getUserCharacter()->saveCharacter("games/game_charac_" + name);
+
     return true;
 }
+
+
 

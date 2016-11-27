@@ -30,9 +30,9 @@ void EditorFacadeController::editorMenu() {
 
             int cChoice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
 
-            
             if (cChoice == 1){
-                
+
+
                 //Create Map
                 MapEditorController mapEditor;
                 mapEditor.createMap();
@@ -47,7 +47,7 @@ void EditorFacadeController::editorMenu() {
                 //Edit Options
 
                 mapEditor.editMap(map);
-                
+
                 cout << "Redirecting to editor menu." << endl;
                 
                 
@@ -55,6 +55,7 @@ void EditorFacadeController::editorMenu() {
             }
         }
         else if(eChoice == 2){ // Campaign Editor
+
         
             cout << "*********** Campaign Editor ************" << endl << endl;
 
@@ -69,9 +70,9 @@ void EditorFacadeController::editorMenu() {
 
             
             if(cChoice == 1){
-                
+
                 //Create Campaign
-                
+
                 CampaignEditorController campaignEditor;
                 campaignEditor.createCampaign();
 
@@ -87,7 +88,7 @@ void EditorFacadeController::editorMenu() {
                 if(campaign != nullptr){
                     campaignEditor.editCampaign(campaign);
                 }
-                
+
             }
 
         } // END Campaign editor

@@ -97,6 +97,7 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 
 Character::Character(Character* character) {
 
+    this->setLevel(character->getLevel());
     this->name = character->getName();
     //modifiers
 	modifiers[0] = modifier(character->getStrength());
@@ -107,6 +108,7 @@ Character::Character(Character* character) {
 	modifiers[5] = modifier(character->getConstitution());
 
 	//ability scores
+
 	abilityScores[0] = character->getStrength();
 	abilityScores[1] = character->getDexterity();
 	abilityScores[2] = character->getIntelligence();
