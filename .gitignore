@@ -7,6 +7,8 @@ xcuserdata
 *libboost_serialization-mt.dylib
 *libboost_system-mt.a
 *libboost_system-mt.dylib
+*.xcactivitylog
+345Project-cwhlyufnfnshmnggutgmpmlmkknd/
 
 # auto git version noise
 InfoPlist.h
