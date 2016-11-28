@@ -30,68 +30,84 @@ bool CombatService::canRangeAttack(Coordinate origin, Coordinate destination, in
 bool CombatService::attack(Character* attacker, Character* victim, bool melee) {
 
     Dice dice1;
-	int attackerRoll, attackerInitiative, victimRoll, victimInitiative;
-    stringstream sStream;
 
-    //
-    attacker->attack(victim, melee);
+    bool range = !melee;
+    stringstream sstream;
+    string attackTypeName = range? "Range" : "Melee";
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", attackTypeName + " attack start: " + attacker->getName() + " on " + victim->getName());
 
-//	while (attacker->getHitPoints() >= 0 && victim->getHitPoints() >= 0)
-//	{
-//		attackerRoll = dice1.roll_d20();
-//		sStream << "Attacker rolled a d20 dice for initiative resulting: [" << attackerRoll << "]";
-//		if(SETTINGS::LOG_CHAR)logInfo("CombatService", "attack", sStream.str());
-//		sStream.str("");
-//
-//		attackerInitiative = attackerRoll + attacker->getModDexterity();
-//
-//		victimRoll = dice1.roll_d20();
-//
-//		victimInitiative = victimRoll + victim->getModDexterity();
-//		sStream << "Victim rolled a d20 dice for initiative resulting: [" << victimRoll << "]";
-//		logInfo("CombatService", "attack", sStream.str());
-//		sStream.str("");
-//
-//		if (attackerInitiative > victimInitiative)
-//		{
-//			logInfo("CombatService", "attack", " Attacker won the initiative and will attack");
-//			attacker->attack(victim, melee);//player will attack because he has a higher initative
-//
-//			logInfo("CombatService", "attack", "Attacker just attacked the victim");
-//			if (victim->getHitPoints() > 0)
-//			{
-//				victim->attack(attacker, melee);
-//				logInfo("CombatService", "attack", "Vicim executed a counter-attack");
-//			}
-//			else
-//			{
-//				cout << "The Enemy has no more hit points , he is dead" << endl;
-//				return true;
-//
-//			}
-//		}
-//
-//		else if (victimInitiative > attackerInitiative)
-//		{
-//			logInfo("CombatService", "attack", "Victim won the iniative and will execute the attack");
-//			victim->attack(attacker, melee);
-//
-//			logInfo("CombatService", "attack", "Vicim executed attack after wining initiative");
-//
-//			if (attacker->getHitPoints() > 0)
-//			{
-//				attacker->attack(victim, melee);
-//				logInfo("CombatService", "attack", "Player executed counter-attack");
-//			}
-//			else
-//			{
-//				cout << "Player is not able to attack because he is dead !!" << endl;
-//				return false;
-//			}
-//		}
-//	}
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", "Compute attack attempt score...");
+
+
+    int attackRoll = dice1.roll_d20();
+
+    sstream << "d20 dice roll result: " << attackRoll;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+	int attackModifier = attacker->getAttackBonus();
+
+    sstream << "Attack modifier value: " << attackModifier;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    int weaponModifier;
+    if (range) {
+        weaponModifier = attacker->getModDexterity();
+        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
+    } else {
+        weaponModifier = attacker->getModStrength();
+        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
+    }
+
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    // How is the attackB
+
+    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
+    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << victim->getArmorClass();
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", sstream.str());
+    sstream.str("");
+
+    if (rollAndBonus > victim->getArmorClass())
+    {
+        int damageRollValue = dice1.roll_d8();
+        sstream << "d8 dice damage roll result: " << damageRollValue;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        sstream << "Damage modifier value: " << weaponModifier;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        int damageinCombat;
+
+        //TODO How do i compute the damage modifier?
+        damageinCombat = damageRollValue + weaponModifier;
+
+
+        sstream << "Damage inflicted on victim's current HP: " << damageinCombat << "/" << victim->getHitPoints();
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        victim->setHitPoints(victim->getHitPoints() - damageinCombat);
+    }
+    else
+    {
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack", "Attack missed");
+    }
     return true;
-
 }
 
 

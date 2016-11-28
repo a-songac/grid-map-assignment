@@ -129,7 +129,6 @@ public:
 	//display Items
 	void displayItemsHelper(std::vector<string>* items);
 	void displayBackpack();
-	void attack(Character *enemy);
 	void displayWornItems();
 	//get item
 	Item* getItemHelper(std::vector<string>* items, std::string name);
@@ -143,7 +142,6 @@ public:
 	int getArmorClass();
 
 	int computeAttackBonus();
-	void attack(Character* enemy, bool range);
 
 
 
