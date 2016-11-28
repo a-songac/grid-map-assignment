@@ -138,7 +138,7 @@ public:
 	bool hasItemInBackpack(std::string itemName);
 	bool isWearingItem(std::string itemName);
 	bool hasItemHelper(std::vector<string>* items, std::string name);
-	void ArmorClass();
+	void armorClass();
 	int getArmorClass();
 
 	int computeAttackBonus();
@@ -157,7 +157,6 @@ private:
 	int armorPoints;
 	int shieldPoints;
 	vector <int> baseAttackBonus;
-	int armorClass;
 	int currentHitPoints = 0;
 	std::string name;
 

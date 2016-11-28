@@ -69,6 +69,7 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
 
+    // TODO WHAT IS THAT FOR????
 	if (lvl >= 16)
 	{
 		baseAttackBonus.push_back(lvl);
@@ -91,9 +92,10 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	{
 		baseAttackBonus.push_back(lvl);
 	}
-	this->armor();
-	this->attackBonus();
-	this->damageBonus();
+//	this->armor();
+//	this->attackBonus();
+//	this->damageBonus();
+//	this->armorClass();
 }
 
 
@@ -146,8 +148,7 @@ Character::Character(Character* character) {
 		baseAttackBonus.push_back(lvl);
 	}
 	this->attackBonus();
-	this->armor();
-	this->attackBonus();
+	this->armorClass();
 	this->damageBonus();
 }
 
@@ -390,6 +391,7 @@ int Character::getHitPoints()
 {
 	return this->currentHitPoints;
 }
+/*
 //implementation of a setter method for armor
 void Character::armor()
 {
@@ -400,13 +402,14 @@ void Character::armor()
 int Character::getArmor()
 {
 	return this->armorPoints;
-}
+}*/
 //implementation of a setter method for attack bonus
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
 
 	this->attackB = this->lvl + this->getModStrength();
+
 
 }
 
@@ -417,8 +420,10 @@ int Character::getAttackBonus()
 	return this->attackB;
 }
 
-void Character::ArmorClass()
+void Character::armorClass()
 {
+    this->armorPoints = this->getModDexterity();
+    /*
 	if (armorPoints > 0)
 	{
 
@@ -431,13 +436,13 @@ void Character::ArmorClass()
 	else if (shieldPoints > 0 && armorPoints > 0)
 	{
 		this->armorClass = 10 + modifiers[1] + armorPoints + shieldPoints;
-	}
+	}*/
 
 }
 
 int Character::getArmorClass()
 {
-	return this->armorClass;
+	return this->armorPoints;
 }
 //! implementation of a setter method for attack damage
 void Character::damageBonus()
@@ -590,6 +595,7 @@ void Character::attack(Character* enemy, bool melee)
     // TODO: compute attack modifier based on level
     // IS THIS OK:
 	int attackModifier = this->attackB;
+
     sstream << "Attack modifier value: " << attackModifier;
     if(SETTINGS::LOG_CHAR)
         logInfo("Character", "attack",  sstream.str());
@@ -600,10 +606,10 @@ void Character::attack(Character* enemy, bool melee)
     // IS THAT OK
     int weaponModifier;
     if (range) {
-        weaponModifier = this->getModDexterity;
+        weaponModifier = this->getModDexterity();
         sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
     } else {
-        weaponModifier = this->getModStrength;
+        weaponModifier = this->getModStrength();
         sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
     }
 
@@ -614,12 +620,12 @@ void Character::attack(Character* enemy, bool melee)
     // How is the attackB
 
     int rollAndBonus = attackRoll + weaponModifier + attackModifier;
-    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->armorClass;
+    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->getArmorClass();
     if(SETTINGS::LOG_CHAR)
         logInfo("Character", "attack", sstream.str());
     sstream.str("");
 
-    if (rollAndBonus > enemy->armorClass)
+    if (rollAndBonus > enemy->getArmorClass())
     {
         int damageRollValue = dice1.roll_d8();
         sstream << "d8 dice damage roll result: " << damageRollValue;

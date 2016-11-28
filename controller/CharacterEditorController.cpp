@@ -75,7 +75,7 @@ void CharacterEditorController::createCharacter(bool pregenerated) {
     cout << "*********************************" << endl;
 
     character->setLevel(level);
-    character->armor();
+    character->armorClass();
     character->attackBonus();
     character->damageBonus();
     character->display();

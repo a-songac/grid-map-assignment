@@ -64,7 +64,7 @@ Character* DataGenerator::genCharacter() {
 	CharacterView* cView = new CharacterView(character);
 	character->preGenAbilityScores();
 	character->setLevel(2);
-    character->armor();
+    character->armorClass();
     character->attackBonus();
     character->damageBonus();
     character->display();
