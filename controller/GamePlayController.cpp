@@ -25,6 +25,8 @@
 #include "CharacterInteractionHelper.h"
 #include "MapInteractionHelper.h"
 #include "../service/Settings.h"
+#include "CampaignEditorController.h"
+#include "../entity/repo/CampaignRepository.h"
 
 using namespace std;
 
@@ -35,10 +37,13 @@ void GamePlayController::newGame() {
 
 	cout << "\n************* New Game *************" << endl << endl;
 
-    this->map = MapInteractionHelper::selectMap();
-    if (nullptr == this->map) {
+    CampaignEditorController campaignEditorController;
+    this->campaign = campaignEditorController.loadCampaign();
+    if (this->campaign->getMaps()->empty()) {
         return;
     }
+    
+    this->map = MapRepository::instance()->getEntity(this->campaign->getMaps()->at(0));
 
     Character* referenceCharacter;
 	Character* gameCharacter;
@@ -50,8 +55,8 @@ void GamePlayController::newGame() {
 	if (startGame) {
 
         gameCharacter = new Character(referenceCharacter);
-         CharacterView* charView = new CharacterView(gameCharacter);
-        Game* game = new Game("", gameCharacter);
+        CharacterView* charView = new CharacterView(gameCharacter);
+        Game* game = new Game("", gameCharacter, this->campaign->getName(), 0);
 
         this->startGame(game);
 	}
@@ -84,7 +89,7 @@ void GamePlayController::loadGame() {
 
             } else {
                 // TODO
-                cout << "Game Character:" << endl;
+                cout << "Game Character: "+ game->getCharacterName() << endl;
                 game->getUserCharacter()->display();
                 confirm = readYesNoInput("You confirm the selection of this game displayed above?[Y/n]: ", true);
             }
@@ -93,7 +98,8 @@ void GamePlayController::loadGame() {
 
 
         // LOGIC TO LOAD THE MAP AT WHICH THE O+PLAYER IS IN HIS PROGRESSION
-        this->map = MapRepository::instance()->getEntity(0);
+        this->campaign = CampaignRepository::instance()->getEntity(game->getCampaignName());
+        this->map = MapRepository::instance()->getEntity(this->campaign->getMaps()->at(game->getMapIndex()));
 
         this->startGame(game);
 
@@ -110,45 +116,100 @@ void GamePlayController::loadGame() {
 void GamePlayController::startGame(Game* game) {
 
     Character* gameCharacter = game->getUserCharacter();
-
+    game->setCharacterName(game->getUserCharacter()->getName());
+    int characterLevel = gameCharacter->getLevel();
     SETTINGS::IN_GAME = true;
-    map->setInGamePlayers();
-    Coordinate entryDoor = this->map->getEntryDoorCoordinate();
-    Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
-    GamePlayer userPlayer(gameCharacter->getName(), userLocation, Cell::OCCUPANT_PLAYER);
-    userPlayer.setInGameCharacter(gameCharacter);
-    map->setUserGamePlayer(&userPlayer);
+    int initialHp = 0;
 
-
+    bool mapOver = false;
     bool gameOver = false;
 
     cout << "\n************* Start Game *************" << endl << endl;
 
+    do{
+        
+        map->setInGamePlayers();
+        Coordinate entryDoor = this->map->getEntryDoorCoordinate();
+        Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
+        GamePlayer userPlayer(gameCharacter->getName(), userLocation, Cell::OCCUPANT_PLAYER);
+        userPlayer.setInGameCharacter(gameCharacter);
+        map->setUserGamePlayer(&userPlayer);
+        initialHp = gameCharacter->getHitPoints();
+        
+        vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
-    vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
-
-    this->map->movePlayer(entryDoor.row, entryDoor.column);
-    do {
-
-        gameOver = userPlayer.turn(this->map);
-
-        if (!gameOver) {
-            for (size_t i = 0; i < gamePlayers->size() && !gameOver; i++) {
-                gameOver = gamePlayers->at(i)->turn(this->map);
+        this->map->movePlayer(entryDoor.row, entryDoor.column);
+        do {
+            
+            mapOver = userPlayer.turn(this->map);
+            if (!mapOver) {
+                for (size_t i = 0; i < gamePlayers->size(); i++) {
+                    gamePlayers->at(i)->turn(this->map);
+                }
             }
+
+        } while (!mapOver);
+    
+        //Assuming map completion
+        if(characterLevel!=gameCharacter->getLevel()){
+            //map completed
+            
+            if(game->getMapIndex() == (this->campaign->getMaps()->size()-1)){
+                //campaign completed
+                cout << "Campaign Completed!" << endl;
+                //Reset Campaign
+                game->setMapIndex(0);
+                gameOver=true;
+
+            }
+            else{
+                MapRepository::instance()->clearEntity(this->map->getName());
+                string nextMapName = this->campaign->getMaps()->at(game->getMapIndex()+1);
+                this->map = MapRepository::instance()->getEntity(nextMapName);
+                game->setMapIndex(game->getMapIndex()+1);
+                map->unsetInGamePlayers();
+                
+                if (readYesNoInput("Would you like to save your progress?[Y/n]", 1))
+                {
+                
+                
+                    if ("" == game->getGameSaveName()) {
+                        game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));
+                    }
+                    if (GameRepository::instance()->save(game->getGameSaveName(), game)) {
+                        cout << "Game successfully saved" << endl;
+                    }
+                
+                }
+            }
+            
+        }
+        else{
+            //Quit or died
+            gameOver=true;
         }
 
+
+        
+        // reset map to what it was
+            
+            
+        //SETTINGS::IN_GAME = false;
+        map->unsetInGamePlayers();
+  
     } while (!gameOver);
 
     bool died = false;
     if (gameCharacter->getHitPoints() <= 0) {
         died = true;
         cout << " ************ GAME OVER, YOU DIED ************" << endl;
+        gameCharacter->setHitPoints(initialHp);
     }
 
-
+    
     // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
-    if (!died && readYesNoInput("Would you like to save your character?[Y/n]", 1))
+    if (!died && readYesNoInput("Would you like to save your progress?[Y/n]", 1))
+
     {
         if ("" == game->getGameSaveName()) {
             game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));

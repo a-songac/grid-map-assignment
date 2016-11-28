@@ -2,7 +2,7 @@
 //!  Character\n
 //
 //!  Created by Hyjaz Loudin on 2016-10-15.\n
-//!  Copyright © 2016 Hyjaz Loudin. All rights reserved.\n
+//!  Copyright ï¿½ 2016 Hyjaz Loudin. All rights reserved.\n
 //! //! @file \n
 //! @brief Header file for the Character class  \n
 //!
@@ -44,6 +44,7 @@ public:
 	void hit(int);
 	void hitPoints();
 	int getHitPoints();
+    void setHitPoints(int);
 	void resetHitPoints();
 	void GenerateModifiers();
 	//set modifier based on ability scores
@@ -178,6 +179,10 @@ inline void Character::setName(std::string name) {
 
 inline std::string Character::getName() {
     return this->name;
+}
+
+inline void Character::setHitPoints(int i){
+    currentHitPoints = i;
 }
 
 #endif

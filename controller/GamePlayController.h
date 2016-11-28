@@ -3,6 +3,7 @@
 #include "../entity/Map.h"
 #include "../entity/Character.h"
 #include "../entity/Game.h"
+#include "../entity/Campaign.h"
 
 
 class GamePlayController {
@@ -13,6 +14,7 @@ class GamePlayController {
 
 
     private:
+        Campaign* campaign;
         Map* map;
         int level;
         void startGame(Game*);
