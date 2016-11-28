@@ -58,6 +58,10 @@ int main()
 	Character* bully = ddMaster.getCharacter();
 	CharacterView* bView = new CharacterView(bully);
 	bully->setLevel(1);
+	bully->armor();
+	bully->setAttackBonus();
+	bully->attackBonus();
+	bully->damageBonus();
 	cout << "Bully: " << endl;
 	bully->display();
 	
@@ -66,6 +70,10 @@ int main()
 	Character* nimble = ddMaster.getCharacter();
 	CharacterView* nView = new CharacterView(nimble);
 	nimble->setLevel(1);
+	nimble->armor();
+	nimble->setAttackBonus();
+	nimble->attackBonus();
+	nimble->damageBonus();
 	cout << "Nimble: " << endl;
 	nimble->display();
 
@@ -73,10 +81,19 @@ int main()
 	ddMaster.constructCharacter();
 	Character* tank = ddMaster.getCharacter();
 	CharacterView* tView = new CharacterView(tank);
-	nimble->setLevel(1);
+	tank->setLevel(1);
+	tank->armor();
+	tank->setAttackBonus();
+	tank->attackBonus();
+	tank->damageBonus();
 	cout << "tank: " << endl;
-	nimble->display();
+	tank->display();
 	cin >> number;
+
+	bully->levelUp();
+	bully->display();
+	
+	system("PAUSE");
    /* MapRepository::instance();
 >>>>>>> ability score generation method completed for various type of fighter
     CharacterRepository::instance();

@@ -147,7 +147,7 @@ void Character::updateStatsAtEquip(Item* equipment) {
 				this->shieldPoints += eVec[i].getBonus();
 				this->armorClass();
 			}
-			if (eVec[i].getType() == "AtkDamage") {
+			if (eVec[i].getType() == "AtkDamage"){
 				this->damageB += eVec[i].getBonus();
 			}
 			if (eVec[i].getType() == "AtkBonus") {
@@ -157,6 +157,7 @@ void Character::updateStatsAtEquip(Item* equipment) {
 		//TODO: if constitution increases add the difference of the old constitution and new cons to HP
 
 }
+
 void Character::updateStatsAtUnequip(Item* equipment) {
 
 	vector<Enhancement> eVec = equipment->getInfluences();
@@ -204,11 +205,6 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 			this->attackB -= eVec[i].getBonus();
 		}
 	}
-<<<<<<< HEAD
-	//TODO: if constitution decreases then substract the difference of the old constitution and new cons to HP
-=======
-	this->previousHitPoints();
->>>>>>> ability score generation method completed for various type of fighter
 
 }
 //! Implementation of a modifier method, that calculates the modifier of each ability
@@ -224,6 +220,7 @@ int Character::modifier(int abilityScore)
 //! Implementation of a levelUp method, at the same time updates everything else depending on the level
 void Character::levelUp()
 {
+
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
 	this->nextAttackBonus();
@@ -299,14 +296,15 @@ int Character::getHitPoints()
 }
 
 //implementation of a setter method for attack bonus
-
 void Character::nextAttackBonus() {
 	this->attackB = this->attackB + 1;
 }
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
+
 	this->attackB = this->lvl + this->getModStrength();
+
 }
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB

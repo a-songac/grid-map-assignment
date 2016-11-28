@@ -96,5 +96,6 @@ void BullyCharacterBuilder::buildFighter() {
 	buildDamageBonus();
 
 	buildHitPoints();
+	
 
 }

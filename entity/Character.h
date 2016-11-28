@@ -45,10 +45,6 @@ public:
 	void nextHitPoints();
     void setHitPoints(int);
 	int getHitPoints();
-<<<<<<< HEAD
-=======
-	void previousHitPoints();
->>>>>>> ability score generation method completed for various type of fighter
 	void GenerateModifiers();
 	//set modifier based on ability scores
 	int modifier(int);
@@ -146,6 +142,12 @@ public:
 	void numberOfAttack();
 	int getNumberOfattack();
 
+<<<<<<< HEAD
+=======
+
+	//void Character::unEquipItem(ItemContainer*,string);
+
+>>>>>>> character builder pattern completed
 private:
 	vector<Item> items;
 	int lvl;
