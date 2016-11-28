@@ -14,6 +14,7 @@
 #include <sstream>
 #include <fstream>
 #include <string>
+#include <iterator>
 
 #include "Character.h"
 #include "../core/Subject.h"
@@ -21,7 +22,7 @@
 #include "../utils/LogUtils.h"
 #include "../view/CharacterView.h"
 #include "repo/ItemRepository.h"
-#include <iterator>
+#include "../service/Settings.h"
 using std::istream_iterator;
 
 
@@ -68,6 +69,7 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
 
+    // TODO WHAT IS THAT FOR????
 	if (lvl >= 16)
 	{
 		baseAttackBonus.push_back(lvl);
@@ -90,8 +92,10 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	{
 		baseAttackBonus.push_back(lvl);
 	}
-
-
+//	this->armor();
+//	this->attackBonus();
+//	this->damageBonus();
+//	this->armorClass();
 }
 
 
@@ -143,8 +147,9 @@ Character::Character(Character* character) {
 	{
 		baseAttackBonus.push_back(lvl);
 	}
-
-
+	this->attackBonus();
+	this->armorClass();
+	this->damageBonus();
 }
 
 
@@ -186,14 +191,15 @@ void Character::updateStatsAtEquip(Item* equipment) {
 				this->setConstitution(this->getConstitution() + eVec[i].getBonus());
 				this->setModConstitution(modifier(this->getConstitution()));
 			}
-			if (eVec[i].getType() == "Armor")
+			if (eVec[i].getType() == "Armor") {
 				this->armorPoints += eVec[i].getBonus();
 				this->shieldPoints += eVec[i].getBonus();
-
+			}
 
 			if (eVec[i].getType() == "AtkDamage")
 				this->damageB += eVec[i].getBonus();
-
+			if (eVec[i].getType() == "AtkBonus")
+				this->attackB += eVec[i].getBonus();
 
 		}
 		this->hitPoints();
@@ -233,11 +239,14 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 			this->setConstitution(this->getConstitution() - eVec[i].getBonus());
 			this->setModConstitution(modifier(this->getConstitution()));
 		}
-		if (eVec[i].getType() == "Armor")
+		if (eVec[i].getType() == "Armor") {
 			this->armorPoints -= eVec[i].getBonus();
-
+			this->shieldPoints -= eVec[i].getBonus();
+		}
 		if (eVec[i].getType() == "AtkDamage")
 			this->damageB -= eVec[i].getBonus();
+		if (eVec[i].getType() == "AtkBonus")
+			this->attackB -= eVec[i].getBonus();
 	}
 	this->resetHitPoints();
 
@@ -257,6 +266,7 @@ void Character::levelUp()
 {
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
+	this->attackBonus();
 	for (size_t i = 0; i < baseAttackBonus.size(); i++)
 	{
 		baseAttackBonus[i] += 1;
@@ -381,6 +391,7 @@ int Character::getHitPoints()
 {
 	return this->currentHitPoints;
 }
+/*
 //implementation of a setter method for armor
 void Character::armor()
 {
@@ -391,15 +402,17 @@ void Character::armor()
 int Character::getArmor()
 {
 	return this->armorPoints;
-}
+}*/
 //implementation of a setter method for attack bonus
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
 
-	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
+	this->attackB = this->lvl + this->getModStrength();
+
 
 }
+
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB
 int Character::getAttackBonus()
@@ -407,8 +420,10 @@ int Character::getAttackBonus()
 	return this->attackB;
 }
 
-void Character::ArmorClass()
+void Character::armorClass()
 {
+    this->armorPoints = this->getModDexterity();
+    /*
 	if (armorPoints > 0)
 	{
 
@@ -421,13 +436,13 @@ void Character::ArmorClass()
 	else if (shieldPoints > 0 && armorPoints > 0)
 	{
 		this->armorClass = 10 + modifiers[1] + armorPoints + shieldPoints;
-	}
+	}*/
 
 }
 
 int Character::getArmorClass()
 {
-	return this->armorClass;
+	return this->armorPoints;
 }
 //! implementation of a setter method for attack damage
 void Character::damageBonus()
@@ -518,43 +533,134 @@ bool Character::saveCharacter(string name)
 		return false;
 	}
 }
-void Character::attack(Character *enemy)
+//void Character::attack(Character *enemy)
+//
+//{
+//	int turn = 1;
+//
+//
+//	while (attackB > 0)
+//	{
+//		string name = this->getName();
+//		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+//
+//		int attackRoll = dice1.roll_d20();
+//		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+//
+//		int rollAndBonus = attackRoll + attackB;
+//		logInfo("Character", "attack", this->getName()+"just rolled" );
+//
+//		if (rollAndBonus > enemy->armorClass)
+//		{
+//			int damageRollValue = dice1.roll_d8();
+//			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
+//			int DamageinCombat;
+//			DamageinCombat = damageRollValue + damageB +modifiers[0];
+//
+//			enemy->currentHitPoints -= DamageinCombat;
+//			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
+//		}
+//
+//		else
+//		{
+//			logInfo("Character", "attack", "Attack missed");
+//		}
+//	}
+//
+//
+//
+//}
 
+
+
+void Character::attack(Character* enemy, bool melee)
 {
-	int turn = 1;
+    bool range = !melee;
+    stringstream sstream;
+    string attackTypeName = range? "Range" : "Melee";
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", attackTypeName + " attack start: " + this->getName() + " on " + enemy->getName());
+
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", "Compute attack attempt score...");
 
 
-	while (attackB > 0)
-	{
-		string name = this->getName();
-		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+    int attackRoll = dice1.roll_d20();
 
-		int attackRoll = dice1.roll_d20();
-		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+    sstream << "d20 dice roll result: " << attackRoll;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
 
-		int rollAndBonus = attackRoll + attackB;
-		logInfo("Character", "attack", this->getName()+"just rolled" );
+    // TODO: compute attack modifier based on level
+    // IS THIS OK:
+	int attackModifier = this->attackB;
 
-		if (rollAndBonus > enemy->armorClass)
-		{
-			int damageRollValue = dice1.roll_d8();
-			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
-			int DamageinCombat;
-			DamageinCombat = damageRollValue + damageB +modifiers[0];
+    sstream << "Attack modifier value: " << attackModifier;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
 
-			enemy->currentHitPoints -= DamageinCombat;
-			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
-		}
+    // TODO compute the attack modifier based on the weapon he is using atm
+    // will have to reger to the worn items I think
+    // IS THAT OK
+    int weaponModifier;
+    if (range) {
+        weaponModifier = this->getModDexterity();
+        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
+    } else {
+        weaponModifier = this->getModStrength();
+        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
+    }
 
-		else
-		{
-			logInfo("Character", "attack", "Attack missed");
-		}
-	}
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    // How is the attackB
+
+    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
+    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->getArmorClass();
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", sstream.str());
+    sstream.str("");
+
+    if (rollAndBonus > enemy->getArmorClass())
+    {
+        int damageRollValue = dice1.roll_d8();
+        sstream << "d8 dice damage roll result: " << damageRollValue;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        sstream << "Damage modifier value: " << weaponModifier;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        int DamageinCombat;
+
+        //TODO How do i compute the damage modifier?
+        DamageinCombat = damageRollValue + weaponModifier;
 
 
+        sstream << "Damage inflicted on victim's current HP: " << DamageinCombat << "/" << enemy->currentHitPoints;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        enemy->currentHitPoints -= DamageinCombat;
+    }
+
+    else
+    {
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack", "Attack missed");
+    }
 
 }
+
+
 
 // Load a Character from file
 bool Character::loadCharacter(string name1)

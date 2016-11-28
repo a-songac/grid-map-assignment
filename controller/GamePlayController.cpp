@@ -140,7 +140,7 @@ void GamePlayController::startGame(Game* game) {
 
         this->map->movePlayer(entryDoor.row, entryDoor.column);
         do {
-
+            
             mapOver = userPlayer.turn(this->map);
             if (!mapOver) {
                 for (size_t i = 0; i < gamePlayers->size(); i++) {
@@ -160,6 +160,7 @@ void GamePlayController::startGame(Game* game) {
                 //Reset Campaign
                 game->setMapIndex(0);
                 gameOver=true;
+
             }
             else{
                 MapRepository::instance()->clearEntity(this->map->getName());
@@ -184,9 +185,10 @@ void GamePlayController::startGame(Game* game) {
             
         }
         else{
-            //Quit
+            //Quit or died
             gameOver=true;
         }
+
 
         
         // reset map to what it was
@@ -195,15 +197,19 @@ void GamePlayController::startGame(Game* game) {
         //SETTINGS::IN_GAME = false;
         map->unsetInGamePlayers();
   
+    } while (!gameOver);
 
-    } while(!gameOver);
+    bool died = false;
+    if (gameCharacter->getHitPoints() <= 0) {
+        died = true;
+        cout << " ************ GAME OVER, YOU DIED ************" << endl;
+    }
 
     
     // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
-    if (readYesNoInput("Would you like to save your progress?[Y/n]", 1))
+    if (!died && readYesNoInput("Would you like to save your progress?[Y/n]", 1))
+
     {
-
-
         if ("" == game->getGameSaveName()) {
             game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));
         }

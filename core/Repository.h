@@ -374,6 +374,9 @@ template <class T>
 Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
     character->loadCharacter("characters/" + fileName);
+    character->armorClass();
+    character->attackBonus();
+    character->damageBonus();
     character->setName(fileName);
 	CharacterView* charView = new CharacterView(character);
     return character;
@@ -463,26 +466,26 @@ bool Repository<T>::persistItem(Item* item, std::string name) {
 template <class T>
 Campaign* Repository<T>::loadCampaign(string fileName) {
     boost::filesystem::path myfile("campaigns/"+fileName);
-    
+
     if( !boost::filesystem::exists(myfile))
     {
         return nullptr;
     }
-    
+
     Campaign* lCampaign;
     std::ifstream ifs("campaigns/" + fileName, std::ios::binary);
     boost::archive::text_iarchive ia(ifs);
     ia >> lCampaign;
     ifs.close();
     Campaign* loadedCampaign = new Campaign(lCampaign);
-    
+
     return loadedCampaign;
 }
 
-    
+
 template <class T>
 bool Repository<T>::persistCampaign(Campaign* c, std::string name) {
-        
+
     std::ofstream ofs("campaigns/"+name);
     boost::archive::text_oarchive oa(ofs);
     oa << c;

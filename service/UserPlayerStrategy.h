@@ -7,7 +7,7 @@
 class UserPlayerStrategy : public PlayerStrategy {
     public:
         void move(GamePlayer* player, Map* map);
-        void attack(GamePlayer* player, GamePlayer* victim);
+        void attack(GamePlayer* player, GamePlayer* victim, bool melee);
         void freeAction(GamePlayer* player);
         bool turn(GamePlayer* player, Map* map);
         void modifyGameSettings();
