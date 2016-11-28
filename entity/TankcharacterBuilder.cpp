@@ -75,13 +75,18 @@ void TankCharacterBuilder::buildLevel() {
 //! Implementation of a buildFighter method that builds a complete fighter
 void TankCharacterBuilder::buildFighter() {
 
+<<<<<<< HEAD
 	buildLevel();
 	std::vector<int> abilityScores;
+=======
+	std::vector<int> newAbilityScores;
+>>>>>>> ability score generation method completed for various type of fighter
 
 	for (size_t i = 0; i < 6; i++)
 	{
-		abilityScores.push_back(character->genAbilityScores());
+		newAbilityScores.push_back(character->genAbilityScores());
 	}
+<<<<<<< HEAD
 	std::sort(abilityScores.begin(), abilityScores.end());
 	buildConstitution(abilityScores[5]);
 	buildDexterity(abilityScores[4]);
@@ -92,6 +97,15 @@ void TankCharacterBuilder::buildFighter() {
 	buildArmorClass();
 	buildAttackBonus();
 	buildDamageBonus();
+=======
+	std::sort(newAbilityScores.begin(), newAbilityScores.end());
+	buildConstitution(newAbilityScores[5]);
+	buildDexterity(newAbilityScores[4]);
+	buildStrength(newAbilityScores[3]);
+	buildIntelligence(newAbilityScores[2]);
+	buildCharisma(newAbilityScores[1]);
+	buildWisdom(newAbilityScores[0]);
+>>>>>>> ability score generation method completed for various type of fighter
 	buildHitPoints();
 
 }

@@ -75,13 +75,16 @@ void NimbleCharacterBuilder::buildDamageBonus() {
 //! Implementation of a buildFighter method that builds a complete fighter
 void NimbleCharacterBuilder::buildFighter() {
 
+
 	buildLevel();
 	std::vector<int> abilityScores;
+
 
 	for (size_t i = 0; i < 6; i++)
 	{
 		abilityScores.push_back(character->genAbilityScores());
 	}
+
 	std::sort(abilityScores.begin(), abilityScores.end());
 	buildDexterity(abilityScores[5]);
 	buildConstitution(abilityScores[4]);

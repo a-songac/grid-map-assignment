@@ -45,6 +45,10 @@ public:
 	void nextHitPoints();
     void setHitPoints(int);
 	int getHitPoints();
+<<<<<<< HEAD
+=======
+	void previousHitPoints();
+>>>>>>> ability score generation method completed for various type of fighter
 	void GenerateModifiers();
 	//set modifier based on ability scores
 	int modifier(int);

@@ -78,10 +78,12 @@ void BullyCharacterBuilder::buildFighter() {
 	buildLevel();
 	std::vector<int> abilityScores;
 
+
 	for (size_t i = 0; i < 6; i++)
 	{
 		abilityScores.push_back(character->genAbilityScores());
 	}
+
 	std::sort(abilityScores.begin(), abilityScores.end());
 	buildStrength(abilityScores[5]);
 	buildConstitution(abilityScores[4]);
@@ -92,6 +94,7 @@ void BullyCharacterBuilder::buildFighter() {
 	buildArmorClass();
 	buildAttackBonus();
 	buildDamageBonus();
+
 	buildHitPoints();
 
 }

@@ -204,7 +204,11 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 			this->attackB -= eVec[i].getBonus();
 		}
 	}
+<<<<<<< HEAD
 	//TODO: if constitution decreases then substract the difference of the old constitution and new cons to HP
+=======
+	this->previousHitPoints();
+>>>>>>> ability score generation method completed for various type of fighter
 
 }
 //! Implementation of a modifier method, that calculates the modifier of each ability

@@ -43,8 +43,42 @@ int main()
         }
 
     #endif // RUN_TESTS
+<<<<<<< HEAD
 
     MapRepository::instance();
+=======
+	int number;
+	DDMaster ddMaster;
+	CharacterBuilder* bullyCharacterBuilder = new BullyCharacterBuilder();
+	CharacterBuilder* nimbleCharacterBuilder = new NimbleCharacterBuilder();
+	CharacterBuilder* tankCharacterBuilder = new TankCharacterBuilder();
+
+	ddMaster.setCharacterBuilder(bullyCharacterBuilder);
+	ddMaster.constructCharacter();
+	Character* bully = ddMaster.getCharacter();
+	CharacterView* bView = new CharacterView(bully);
+	bully->setLevel(1);
+	cout << "Bully: " << endl;
+	bully->display();
+	
+	ddMaster.setCharacterBuilder(nimbleCharacterBuilder);
+	ddMaster.constructCharacter();
+	Character* nimble = ddMaster.getCharacter();
+	CharacterView* nView = new CharacterView(nimble);
+	nimble->setLevel(1);
+	cout << "Nimble: " << endl;
+	nimble->display();
+
+	ddMaster.setCharacterBuilder(tankCharacterBuilder);
+	ddMaster.constructCharacter();
+	Character* tank = ddMaster.getCharacter();
+	CharacterView* tView = new CharacterView(tank);
+	nimble->setLevel(1);
+	cout << "tank: " << endl;
+	nimble->display();
+	cin >> number;
+   /* MapRepository::instance();
+>>>>>>> ability score generation method completed for various type of fighter
     CharacterRepository::instance();
     ItemRepository::instance();
     GameRepository::instance();
