@@ -1,3 +1,15 @@
+/// @file
+/// @brief
+/// Header file for GameElement.class.  Wrapper for the elements that a map may contain: items (in chest) and map characters.  Adds the notion of positin on the map of these items. \n\n
+///
+/// @details
+/// 1. Game Rules: A map may contain items in a chest and other game characters. These elements have a precise location on the map  \n\n
+/// 2. Design: The GameElement class is a base class for the specific elements a map may contain, namely items and characters \n\n
+/// 3. Libraries: \n
+///     - Boost Library used for serialization: eases the process of serialization and minimizes the work needed if the schema of the class changes \n
+///     - Standard Libraries: string
+
+
 #pragma once
 
 #include "Coordinate.h"

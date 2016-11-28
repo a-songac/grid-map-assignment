@@ -14,6 +14,7 @@
 #include "GameElement.h"
 #include "GameItem.h"
 #include "GamePlayer.h"
+#include "../utils/IOUtils.h"
 
 
 #include <boost/archive/text_oarchive.hpp>
@@ -198,24 +199,24 @@ inline void Map::setPlayer(int row, int column, bool yes) {
 }
 
 inline bool Map::movePlayer(int row, int column) {
-
+    bool returnValue = true;
     if (isWall(row, column)) {
         cout << "OUCH! You hit a wall! Please retry" << endl;
-        return false;
+        returnValue = false;
     }
     if (Cell::OCCUPANT_FRIEND == getOccupant(row, column)) {
         cout << "Stepping on your friend's toes! Please retry" << endl;
-        return false;
+        returnValue = false;
     }
     if (Cell::OCCUPANT_OPPONENT == getOccupant(row, column)) {
         cout << "You wish you could crush him hein?! Please retry" << endl;
-        return false;
+        returnValue = false;
     }
     if (!isPlayerAdjacent(row, column)
         && !(column == this->playerPosition.column && row == this->playerPosition.row)
         && (-1 != this->playerPosition.column && -1 != this->playerPosition.row)) {
         cout << "Trying to teleport my friend?! Please retry" << endl;
-        return false;
+        returnValue = false;
     }
 
     if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
@@ -226,7 +227,10 @@ inline bool Map::movePlayer(int row, int column) {
     grid.at(row).at(column).setPlayer(true);
     this->render(); // TODO change to notify
 
-    return true;
+    if (!returnValue)
+        readStringInput("Press any key to continue", "");
+
+    return returnValue;
 }
 
 inline bool Map::isPlayerAdjacent(int row, int column) {

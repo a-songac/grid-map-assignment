@@ -1,3 +1,15 @@
+/// @file
+/// @brief
+/// Header file for Game.class.  Game keeps track of the character's game progress in a campaign
+///
+/// @details
+/// 1. Game Rules:  Keep track of the user's progress in a campaign.   \n\n
+/// 2. Design: Regular class that wraps the user's character and sotres game progress info in data members \n\n
+/// 3. Libraries: \n
+///     - Boost Library used for serialization: eases the process of serialization and minimizes the work needed if the schema of the class changes \n
+///     - Standard Libraries: string
+
+
 #pragma once
 
 #include "Character.h"
@@ -26,10 +38,10 @@ class Game {
 
         void setCharacterName(std::string);
         std::string getCharacterName();
-    
+
         void setCampaignName(std::string c);
         std::string getCampaignName();
-    
+
         void setMapIndex(int i);
         int getMapIndex();
 

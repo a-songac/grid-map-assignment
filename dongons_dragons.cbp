@@ -132,6 +132,7 @@
 		<Unit filename="service/UserPlayerStrategy.cpp" />
 		<Unit filename="service/UserPlayerStrategy.h" />
 		<Unit filename="test/MapTest.cpp" />
+		<Unit filename="test/PlayerStrategyTest.cpp" />
 		<Unit filename="test/ShortestPathTest.cpp" />
 		<Unit filename="test/ShortestPathTest.h" />
 		<Unit filename="utils/ArrayUtils.cpp" />
