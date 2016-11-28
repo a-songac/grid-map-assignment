@@ -358,7 +358,7 @@ void Character::ArmorClass()
 	}
 	else if (shieldPoints > 0)
 	{
-		this->armorClass = 10 + modifiers[1] + armorPoints;
+		this->armorClass = 10 + modifiers[1] + shieldPoints;
 	}
 	else if (shieldPoints > 0 && armorPoints > 0)
 	{

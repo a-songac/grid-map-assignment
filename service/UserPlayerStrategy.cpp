@@ -339,7 +339,8 @@ bool UserPlayerStrategy::endGameLevelUp(Character* character) {
             }
             else
             {
-                // true; WHAT IS THAT CONDITION FOR?
+                
             }
+	return true;
 
 }
