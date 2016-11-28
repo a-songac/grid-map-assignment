@@ -30,6 +30,8 @@ class GamePlayer : public GameElement
         void makeHostile();
         void display();
 
+        PlayerStrategy* getActionStrategy();
+
 
     protected:
 
@@ -62,5 +64,7 @@ inline void GamePlayer::setInGameCharacter(Character* charac) {
 inline Character* GamePlayer::getInGameCharacter() {
     return this->inGameCharacter;
 }
-
+inline PlayerStrategy* GamePlayer::getActionStrategy() {
+    return this->actionStrategy;
+}
 

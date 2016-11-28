@@ -16,6 +16,7 @@
 class MapView : public Observer {
     public:
         MapView();
+        ~MapView();
         MapView(Map* map);
         void renderMap();
         void update();
