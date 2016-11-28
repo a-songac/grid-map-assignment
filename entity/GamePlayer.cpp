@@ -51,3 +51,16 @@ std::string GamePlayer::getTypeName() {
 	}
 	return "Hostile";
 }
+
+void GamePlayer::makeHostile() {
+    if (this->type == Cell::OCCUPANT_FRIEND) {
+        this->type = Cell::OCCUPANT_OPPONENT;
+        this->actionStrategy = new AggressivePlayerStrategy();
+    }
+}
+
+void GamePlayer::display() {
+    std::string locationString = MapInteractionHelper::coordinateToString(this->location);
+    cout << inGameCharacter->getName() << " - " << getTypeName()
+            << " - " << locationString << " - HP: " <<  inGameCharacter->getHitPoints() << endl;
+}

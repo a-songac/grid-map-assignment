@@ -49,12 +49,15 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
     int row = exitDoor.row;
     stringstream stringStream;
     stringStream << "What you want to do next[i]?"
-               << "\n    Enter map location to move"
-               << "\n    Press 'a' for attack"
-               << "\n    Press 'bp' for backpack"
-               << "\n    Press 'i' to see game info"
-               << "\n    Press 's' for settings"
-               << "\n    Press 'q' to quit"
+               << "\nTURN ACTION"
+               << "\n    - Enter map location to move"
+               << "\n    - Press 'a' for attack"
+               << "\n    - Press 'f' for free action"
+               << "\nNON-TURN ACTION"
+               << "\n    - Press 'bp' for backpack"
+//               << "\n    - Press 'i' to see game info"
+               << "\n    - Press 's' for settings"
+               << "\n    - Press 'q' to quit"
                << "\nYour choice[i]: ";
     do {
 
@@ -86,6 +89,10 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         else if (goTo == "s") {
             turnDone = false;
             this->modifyGameSettings();
+            map->render();
+        }
+        else if (goTo == "f") {
+            turnDone = true;
             map->render();
         }
         else {
@@ -211,7 +218,13 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
 
 
         this->attack(map->getUserGamePlayer(), victim, isDirectAttack);
-
+        if (victim->getType() == Cell::OCCUPANT_FRIEND) {
+            victim->makeHostile();
+            map->fillCell(
+                    victim->getLocation()->row,
+                    victim->getLocation()->column,
+                    Cell::OCCUPANT_OPPONENT);
+        }
         // CHECK IF VICTIM DIED
         if (character->getHitPoints() <= 0) {
             return false;
@@ -222,7 +235,8 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
         return true;
 
     } else {
-        cout << "No one to attack!" << endl;
+        cout << "No one to attack! Please perform another turn action" << endl;
+        readStringInputNoEmpty("Press any key to continue");
         return false;
     }
 }

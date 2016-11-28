@@ -87,6 +87,8 @@ string MapInteractionHelper::readMapLocationWhileInGame(Map* map, string message
             return input;
         } else if (input == "s") {
             return input;
+        } else if (input == "f") {
+            return input;
         }
         else {
             error = true;

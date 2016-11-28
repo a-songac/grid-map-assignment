@@ -27,6 +27,9 @@ class GamePlayer : public GameElement
         void setInGameCharacter(Character* charac);
         Character* getInGameCharacter();
 
+        void makeHostile();
+        void display();
+
 
     protected:
 
@@ -59,4 +62,5 @@ inline void GamePlayer::setInGameCharacter(Character* charac) {
 inline Character* GamePlayer::getInGameCharacter() {
     return this->inGameCharacter;
 }
+
 

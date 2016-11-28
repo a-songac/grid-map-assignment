@@ -4,6 +4,7 @@
 #include "../entity/Dice.h"
 #include "../entity/Cell.h"
 #include "../utils/LogUtils.h"
+#include "../utils/IOUtils.h"
 
 #include <sstream>
 
@@ -106,6 +107,9 @@ void CombatService::eliminateDeadBodies(Map* map) {
                     playerAt->getLocation()->row,
                     playerAt->getLocation()->column,
                      Cell::OCCUPANT_EMPTY);
+            cout << "Character died: ";
+            playerAt->display();
+            readStringInput("Press any key to continue", "");
         }
     }
 }
