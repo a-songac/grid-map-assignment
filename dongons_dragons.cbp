@@ -98,6 +98,8 @@
 		<Unit filename="entity/ItemContainer.h" />
 		<Unit filename="entity/Map.cpp" />
 		<Unit filename="entity/Map.h" />
+		<Unit filename="entity/repo/CampaignRepository.cpp" />
+		<Unit filename="entity/repo/CampaignRepository.h" />
 		<Unit filename="entity/repo/CharacterRepository.cpp" />
 		<Unit filename="entity/repo/CharacterRepository.h" />
 		<Unit filename="entity/repo/GameRepository.cpp" />
@@ -106,6 +108,8 @@
 		<Unit filename="entity/repo/ItemRepository.h" />
 		<Unit filename="entity/repo/MapRepository.cpp" />
 		<Unit filename="entity/repo/MapRepository.h" />
+		<Unit filename="entity_generator/DataGenerator.cpp" />
+		<Unit filename="entity_generator/DataGenerator.h" />
 		<Unit filename="entity_generator/MapGenerator.cpp" />
 		<Unit filename="entity_generator/MapGenerator.h" />
 		<Unit filename="main.cpp" />
