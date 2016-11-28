@@ -21,8 +21,12 @@
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
-
+#include "entity/DDMaster.h"
+#include "entity/BullycharacterBuilder.h"
+#include "entity/NimbleCharacterBuilder.h"
+#include "entity/TankCharacterBuilder.h"
 using namespace std;
+
 
 int main()
 {
@@ -37,8 +41,6 @@ int main()
         }
 
     #endif // RUN_TESTS
-
-
 
     MapRepository::instance();
     CharacterRepository::instance();

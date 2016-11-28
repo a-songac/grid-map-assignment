@@ -15,6 +15,11 @@
 #include "ItemEditor.h"
 #include "../entity/repo/ItemRepository.h"
 #include "CharacterInteractionHelper.h"
+#include "../entity/BullycharacterBuilder.h"
+#include "../entity/NimbleCharacterBuilder.h"
+#include "../entity/TankCharacterBuilder.h"
+#include "../entity/CharacterBuilder.h"
+#include "../entity/DDMaster.h"
 
 using namespace std;
 
@@ -30,64 +35,102 @@ void CharacterEditorController::selectAction() {
     do {
         exit = false;
         cout << "\n\n******* Character Editor ********" << endl;
-        cout << "1. Create character with randomly generated ability scores" << endl;
-        cout << "2. Create character with standard d20 game ability scores" << endl;
-        cout << "3. View existing characters" << endl;
-        cout << "4. Exit" << endl;
-        abilityScore = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 4);
+        cout << "1. Create a new character" << endl;
+        cout << "2. View existing characters" << endl;
+        cout << "3. Exit" << endl;
+        abilityScore = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
 
         switch (abilityScore)
         {
             case 1:
-                createCharacter(false);
+                createCharacter();
                 break;
-
             case 2:
-                createCharacter(true);
+				editExistingcharacter();
                 break;
-
             case 3:
-                editExistingcharacter();
-                break;
-
-            case 4:
-                exit = true;
+				exit = true;
         }
 	} while (!exit);
 }
 
-void CharacterEditorController::createCharacter(bool pregenerated) {
-
-    int level;
-
-    Character* character = new Character();
-	CharacterView* cView = new CharacterView(character);
-
-    level = readIntegerInput("What level do you consider yourself?[1]: ", 1);
-    cout << "*********************************" << endl;
-    if (pregenerated) {
-        cout << "Your ability scores are: " << endl;
-        character->preGenAbilityScores();
-    } else {
-        cout << "generating your ability scores....." << endl;
-            character->randomlyGenAbilityScores();
-    }
-    cout << "*********************************" << endl;
-
-    character->setLevel(level);
-    character->armorClass();
-    character->attackBonus();
-    character->damageBonus();
-    character->display();
-
-    initializeBackpack(character);
-
-    cout << "\nHere is your backpack: " << endl;
-    character->displayBackpack();
-
-    cout << endl << endl;
-
-    saveCharacter(character);
+void CharacterEditorController::createCharacter() {
+	DDMaster ddMaster;
+	CharacterBuilder* bullyCharacterBuilder;
+	CharacterBuilder* nimbleCharacterBuilder;
+	CharacterBuilder* tankCharacterBuilder;
+    int lvl, fighter;
+	cout << "\n\n******* Choose a Fighter ********" << endl;
+	cout << "1. Bully" << endl;
+	cout << "2. Nimble" << endl;
+	cout << "3. Tank" << endl;
+	fighter = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
+	switch (fighter) 
+	{
+		case 1:
+		{
+			bullyCharacterBuilder = new BullyCharacterBuilder();
+			ddMaster.setCharacterBuilder(bullyCharacterBuilder);
+			ddMaster.constructCharacter();
+			Character* bully = ddMaster.getCharacter();
+			CharacterView* bView = new CharacterView(bully);
+			lvl = readIntegerInput("Select a starting level[1]: ", 1);
+			bully->setLevel(lvl);
+			bully->armorClass();
+			bully->setAttackBonus();
+			bully->attackBonus();
+			bully->damageBonus();
+			initializeBackpack(bully);
+			bully->display();
+			cout << "\nHere is your backpack: " << endl;
+			bully->displayBackpack();
+			saveCharacter(bully);
+			cout << endl << endl;
+			break;
+		}
+		case 2:
+		{
+			nimbleCharacterBuilder = new NimbleCharacterBuilder();
+			ddMaster.setCharacterBuilder(nimbleCharacterBuilder);
+			ddMaster.constructCharacter();
+			Character* nimble = ddMaster.getCharacter();
+			CharacterView* nView = new CharacterView(nimble);
+			lvl = readIntegerInput("Select a starting level[1]: ", 1);
+			nimble->setLevel(lvl);
+			nimble->armorClass();
+			nimble->setAttackBonus();
+			nimble->attackBonus();
+			nimble->damageBonus();
+			initializeBackpack(nimble);
+			nimble->display();
+			cout << "\nHere is your backpack: " << endl;
+			nimble->displayBackpack();
+			cout << endl << endl;
+			saveCharacter(nimble);
+			break;
+		}
+		case 3:
+		{
+			tankCharacterBuilder = new TankCharacterBuilder();
+			ddMaster.setCharacterBuilder(tankCharacterBuilder);
+			ddMaster.constructCharacter();
+			Character* tank = ddMaster.getCharacter();
+			CharacterView* tView = new CharacterView(tank);
+			lvl = readIntegerInput("Select a starting level[1]: ", 1);
+			tank->setLevel(lvl);
+			tank->armorClass();
+			tank->setAttackBonus();
+			tank->attackBonus();
+			tank->damageBonus();
+			initializeBackpack(tank);
+			tank->display();
+			cout << "\nHere is your backpack: " << endl;
+			tank->displayBackpack();
+			cout << endl << endl;
+			saveCharacter(tank);
+			break; 
+		}
+	}
 
 }
 

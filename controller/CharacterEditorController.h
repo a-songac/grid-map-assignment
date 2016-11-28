@@ -10,11 +10,11 @@ class CharacterEditorController {
         static const size_t BACKPACK_INIT_SIZE;
 
         static void selectAction();
-		static Character* selectCharacter();
+		//static Character* selectCharacter();
         static void initializeBackpack(Character* character);
 
     private:
-        static void createCharacter(bool pregenerated);
+        static void createCharacter();
         static void editExistingcharacter();
         static void saveCharacter(Character* character);
 

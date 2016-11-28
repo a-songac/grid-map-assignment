@@ -44,7 +44,6 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
     bool gameOver = false;
     Character* character = player->getInGameCharacter();
     string goTo;
-    int input;
     Coordinate exitDoor = map->getExitDoorCoordinate();
     Coordinate nextPosition;
     int col = exitDoor.column;
@@ -101,7 +100,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
-            int input1, input2, input3;
+            
 
             // CHECK ALL ITEMS WERE COLLECTED
             if(turnDone!=false){
@@ -290,12 +289,12 @@ void UserPlayerStrategy::modifyGameSettings() {
 void UserPlayerStrategy::endGameLevelUp(Character* character) {
 
     int input1, input2, input3;
-
+	
     if (character->getLevel() == 4 || character->getLevel() == 6 || character->getLevel() == 8 || character->getLevel() == 12
             || character->getLevel() == 14 || character->getLevel() ==16 || character->getLevel() == 19 )
     {
                 cout << "You have the possibility to increase your ability scores !! " << endl;
-                cout << "Press 1 - to increase one ability score 2 " << endl;
+                cout << "Press 1 - to increase one ability score by 2 " << endl;
                 cout << "Press 2 - to increase two ability scores by 1" << endl;
                 input1 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 2);
 
@@ -377,5 +376,5 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
             {
                 // true; WHAT IS THAT CONDITION FOR?
             }
-
+		
 }

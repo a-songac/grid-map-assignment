@@ -1,0 +1,43 @@
+﻿  CampaignEditorController.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  CharacterEditorController.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\repo\../../core/Repository.h(22): fatal error C1083: Cannot open include file: 'boost/filesystem.hpp': No such file or directory
+  EditorFacadeController.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  GamePlayController.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  ItemEditor.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\repo\../../core/Repository.h(22): fatal error C1083: Cannot open include file: 'boost/filesystem.hpp': No such file or directory
+  MapEditorController.cpp
+controller\MapEditorController.cpp(5): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  MapInteractionHelper.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  Observer.cpp
+  Campaign.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  Cell.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  Character.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\repo\../../core/Repository.h(22): fatal error C1083: Cannot open include file: 'boost/filesystem.hpp': No such file or directory
+  Dice.cpp
+  Map.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  CharacterRepository.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\repo\../../core/Repository.h(22): fatal error C1083: Cannot open include file: 'boost/filesystem.hpp': No such file or directory
+  ItemRepository.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\repo\../../core/Repository.h(22): fatal error C1083: Cannot open include file: 'boost/filesystem.hpp': No such file or directory
+  MapRepository.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  MapGenerator.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  main.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity/Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  MapValidator.cpp
+c:\users\ahmad\desktop\grid-map-assignment\entity\Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  ArrayUtils.cpp
+c:\users\ahmad\desktop\grid-map-assignment\utils\../entity/Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  Generating Code...
+  Compiling...
+  MapView.cpp
+c:\users\ahmad\desktop\grid-map-assignment\view\../entity/Cell.h(9): fatal error C1083: Cannot open include file: 'boost/archive/text_oarchive.hpp': No such file or directory
+  Generating Code...

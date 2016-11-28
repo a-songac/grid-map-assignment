@@ -23,6 +23,7 @@
 #include "../view/CharacterView.h"
 #include "repo/ItemRepository.h"
 #include "../service/Settings.h"
+#include "../utils/IOUtils.h"
 using std::istream_iterator;
 
 
@@ -47,7 +48,7 @@ Character::~Character() {
 //!  it is of type Character
 Character::Character(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution)
 {
-
+	int level;
 	//modifiers
 	modifiers[0] = modifier(strength);
 	modifiers[1] = modifier(dexterity);
@@ -68,36 +69,12 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 
 	this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
-
-    // TODO WHAT IS THAT FOR????
-	if (lvl >= 16)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-		baseAttackBonus.push_back(lvl - 15);
-	}
-	else if (lvl >= 11)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-	}
-	else if (lvl >= 6)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-	}
-	else
-	{
-		baseAttackBonus.push_back(lvl);
-	}
-//	this->armor();
-//	this->attackBonus();
-//	this->damageBonus();
-//	this->armorClass();
+	level = readIntegerInput("What level do you consider yourself?[1]: ", 1);
+	this->setLevel(level);
+	this->armorClass();
+	this->attackBonus();
+	this->damageBonus();
 }
-
 
 Character::Character(Character* character) {
 
@@ -124,37 +101,10 @@ Character::Character(Character* character) {
 
 	this->backpack = new vector<string>(*(character->backpack));
     this->wornItems = new vector<string>(*(character->wornItems));
-
-	if (lvl >= 16)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-		baseAttackBonus.push_back(lvl - 15);
-	}
-	else if (lvl >= 11)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-	}
-	else if (lvl >= 6)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-	}
-	else
-	{
-		baseAttackBonus.push_back(lvl);
-	}
-	this->attackBonus();
 	this->armorClass();
+	this->attackBonus();
 	this->damageBonus();
 }
-
-
-
-
 
 void Character::updateStatsAtEquip(Item* equipment) {
 
@@ -194,15 +144,16 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			if (eVec[i].getType() == "Armor") {
 				this->armorPoints += eVec[i].getBonus();
 				this->shieldPoints += eVec[i].getBonus();
+				this->armorClass();
 			}
-
-			if (eVec[i].getType() == "AtkDamage")
+			if (eVec[i].getType() == "AtkDamage") {
 				this->damageB += eVec[i].getBonus();
-			if (eVec[i].getType() == "AtkBonus")
+			}
+			if (eVec[i].getType() == "AtkBonus") {
 				this->attackB += eVec[i].getBonus();
-
+			}
 		}
-		this->hitPoints();
+		//TODO: if constitution increases add the difference of the old constitution and new cons to HP
 
 }
 void Character::updateStatsAtUnequip(Item* equipment) {
@@ -242,13 +193,16 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		if (eVec[i].getType() == "Armor") {
 			this->armorPoints -= eVec[i].getBonus();
 			this->shieldPoints -= eVec[i].getBonus();
+			this->armorClass();
 		}
-		if (eVec[i].getType() == "AtkDamage")
+		if (eVec[i].getType() == "AtkDamage") {
 			this->damageB -= eVec[i].getBonus();
-		if (eVec[i].getType() == "AtkBonus")
+		}
+		if (eVec[i].getType() == "AtkBonus") {
 			this->attackB -= eVec[i].getBonus();
+		}
 	}
-	this->resetHitPoints();
+	//TODO: if constitution decreases then substract the difference of the old constitution and new cons to HP
 
 }
 //! Implementation of a modifier method, that calculates the modifier of each ability
@@ -267,23 +221,12 @@ void Character::levelUp()
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
 	this->attackBonus();
-	for (size_t i = 0; i < baseAttackBonus.size(); i++)
-	{
-		baseAttackBonus[i] += 1;
-	}
-	if (lvl == 6 || lvl == 11 || lvl == 16)
-	{
-		baseAttackBonus.push_back(1);
-	}
 	Notify();
-
-
 }
 //! implementation of setLevel that initializes the level at the beginning of the game depending on what the user provides.
 void Character::setLevel(int level)
 {
 	this->lvl = level;
-
 }
 //! Implementation of a getter method for level
 //! @return int: value of lvl
@@ -324,50 +267,7 @@ int Character::genAbilityScores()
 
 	return sumOfDice;
 }
-//! Implementation of pre-generated ability scores
-void Character::preGenAbilityScores()
-{
-	//pre generated numbers
-	abilityScores[0] = 15;
-	abilityScores[1] = 14;
-	abilityScores[2] = 13;
-	abilityScores[3] = 12;
-	abilityScores[4] = 10;
-	abilityScores[5] = 8;
-	//modifiers
-	modifiers[0] = modifier(abilityScores[0]);
-	modifiers[1] = modifier(abilityScores[1]);
-	modifiers[2] = modifier(abilityScores[2]);
-	modifiers[3] = modifier(abilityScores[3]);
-	modifiers[4] = modifier(abilityScores[4]);
-	modifiers[5] = modifier(abilityScores[5]);
-
-	currentHitPoints = 10;
-
-}
-
-void Character::randomlyGenAbilityScores() {
-
-	//ability scores
-	abilityScores[0] = genAbilityScores();
-	abilityScores[1] = genAbilityScores();
-	abilityScores[2] = genAbilityScores();
-	abilityScores[3] = genAbilityScores();
-	abilityScores[4] = genAbilityScores();
-	abilityScores[5] = genAbilityScores();
-	//modifiers
-	modifiers[0] = modifier(abilityScores[0]);
-	modifiers[1] = modifier(abilityScores[1]);
-	modifiers[2] = modifier(abilityScores[2]);
-	modifiers[3] = modifier(abilityScores[3]);
-	modifiers[4] = modifier(abilityScores[4]);
-	modifiers[5] = modifier(abilityScores[5]);
-
-	currentHitPoints = 10;
-
-}
-//implementation of a setter method for hit points
-
+// used at load 
 void Character::GenerateModifiers()
 {
 	modifiers[0] = modifier(abilityScores[0]);
@@ -377,13 +277,12 @@ void Character::GenerateModifiers()
 	modifiers[4] = modifier(abilityScores[4]);
 	modifiers[5] = modifier(abilityScores[5]);
 }
-void Character::resetHitPoints() {
+void Character::previousHitPoints() {
 	this->currentHitPoints = this->currentHitPoints - this->getModConstitution();
 }
-void Character::hitPoints()
+void Character::nextHitPoints()
 {
-
-	this->currentHitPoints = this->getModConstitution() + dice1.roll_d10();
+	this->currentHitPoints = this->currentHitPoints + this->getModConstitution() + dice1.roll_d10();
 }
 //! Implementation of a getter method for currentHitPoints
 //! @return int: value of currentHitPoints
@@ -391,28 +290,16 @@ int Character::getHitPoints()
 {
 	return this->currentHitPoints;
 }
-/*
-//implementation of a setter method for armor
-void Character::armor()
-{
-	this->armorPoints = this->getModDexterity();
-}
-//! Implementation of a getter method for armor
-//! @return int: value of armorPoints
-int Character::getArmor()
-{
-	return this->armorPoints;
-}*/
+
 //implementation of a setter method for attack bonus
+void Character::setAttackBonus() {
+	this->attackB = 0;
+}
 void Character::attackBonus()
 {
 	//depends on the weapon of choice
-
 	this->attackB = this->lvl + this->getModStrength();
-
-
 }
-
 //! Implementation of a getter method for attack bonus
 //! @return int: value of attackB
 int Character::getAttackBonus()
@@ -422,33 +309,30 @@ int Character::getAttackBonus()
 
 void Character::armorClass()
 {
-    this->armorPoints = this->getModDexterity();
-    /*
-	if (armorPoints > 0)
+    this->ac = 10 + this->getModDexterity();
+	if (shieldPoints > 0 && armorPoints > 0)
 	{
-
-		this->armorClass = 10 + modifiers[1] + armorPoints;
+		this->ac = 10 + this->getModDexterity() + armorPoints + shieldPoints;
+	}
+	else if (armorPoints > 0)
+	{
+		this->ac = 10 + this->getModDexterity() + armorPoints;
 	}
 	else if (shieldPoints > 0)
 	{
-		this->armorClass = 10 + modifiers[1] + armorPoints;
+		this->ac = 10 + this->getModDexterity() + shieldPoints;
 	}
-	else if (shieldPoints > 0 && armorPoints > 0)
-	{
-		this->armorClass = 10 + modifiers[1] + armorPoints + shieldPoints;
-	}*/
 
 }
 
 int Character::getArmorClass()
 {
-	return this->armorPoints;
+	return this->ac;
 }
 //! implementation of a setter method for attack damage
 void Character::damageBonus()
 {
-	this->damageB = this->modifiers[0];
-
+	this->damageB = this->getModStrength();
 }
 //! Implementation of a getter method for attack damage
 //! @return int: value of attackD
@@ -486,19 +370,15 @@ bool Character::validateAttackBonus()
 
 //! Implementation of fill cell, set any cell to anything it might eventually contain
 //! @param damage: damage sustained by the charactere
+//TODO Ask Arnaud if we still need this method
 void Character::hit(int damage)
 {
 	currentHitPoints = currentHitPoints - damage;
 }
-
-
-
 void Character::printAbilityScores() {
 
 	Notify();
 }
-
-
 bool Character::saveCharacter(string name)
 {
 	std::ofstream f(name, std::ios::out);
@@ -533,8 +413,137 @@ bool Character::saveCharacter(string name)
 		return false;
 	}
 }
+<<<<<<< HEAD
 
 
+=======
+//void Character::attack(Character *enemy)
+//
+//{
+//	int turn = 1;
+//
+//
+//	while (attackB > 0)
+//	{
+//		string name = this->getName();
+//		logInfo("Character", "attack", (this->getName()+"Turn Number:" ));
+//
+//		int attackRoll = dice1.roll_d20();
+//		logInfo("Character", "attack", "A d20 dice has been rolled to help see you will attack first");
+//
+//		int rollAndBonus = attackRoll + attackB;
+//		logInfo("Character", "attack", this->getName()+"just rolled" );
+//
+//		if (rollAndBonus > enemy->armorClass)
+//		{
+//			int damageRollValue = dice1.roll_d8();
+//			logInfo("Character", "attack", "A d8 dice has been rolled to help determine the damage ");
+//			int DamageinCombat;
+//			DamageinCombat = damageRollValue + damageB +modifiers[0];
+//
+//			enemy->currentHitPoints -= DamageinCombat;
+//			logInfo("Character", "attack", "The enemy  just lost: "+ DamageinCombat );
+//		}
+//
+//		else
+//		{
+//			logInfo("Character", "attack", "Attack missed");
+//		}
+//	}
+//
+//
+//
+//}
+
+
+
+void Character::attack(Character* enemy, bool melee)
+{
+    bool range = !melee;
+    stringstream sstream;
+    string attackTypeName = range? "Range" : "Melee";
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", attackTypeName + " attack start: " + this->getName() + " on " + enemy->getName());
+
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", "Compute attack attempt score...");
+
+
+    int attackRoll = dice1.roll_d20();
+
+    sstream << "d20 dice roll result: " << attackRoll;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    // TODO: compute attack modifier based on level
+    // IS THIS OK:
+	int attackModifier = this->attackB;
+
+    sstream << "Attack modifier value: " << attackModifier;
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    // TODO compute the attack modifier based on the weapon he is using atm
+    // will have to reger to the worn items I think
+    // IS THAT OK
+    int weaponModifier;
+    if (range) {
+        weaponModifier = this->getModDexterity();
+        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
+    } else {
+        weaponModifier = this->getModStrength();
+        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
+    }
+
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack",  sstream.str());
+    sstream.str("");
+
+    // How is the attackB
+
+    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
+    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << enemy->getArmorClass();
+    if(SETTINGS::LOG_CHAR)
+        logInfo("Character", "attack", sstream.str());
+    sstream.str("");
+
+    if (rollAndBonus > enemy->getArmorClass())
+    {
+        int damageRollValue = dice1.roll_d8();
+        sstream << "d8 dice damage roll result: " << damageRollValue;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        sstream << "Damage modifier value: " << weaponModifier;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        int DamageinCombat;
+
+        //TODO How do i compute the damage modifier?
+        DamageinCombat = damageRollValue + weaponModifier;
+
+
+        sstream << "Damage inflicted on victim's current HP: " << DamageinCombat << "/" << enemy->currentHitPoints;
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack",  sstream.str());
+        sstream.str("");
+
+        enemy->currentHitPoints -= DamageinCombat;
+    }
+
+    else
+    {
+        if(SETTINGS::LOG_CHAR)
+            logInfo("Character", "attack", "Attack missed");
+    }
+
+}
+>>>>>>> Builder pattern integrated and character and ChaEditController refactor
 // Load a Character from file
 bool Character::loadCharacter(string name1)
 {
@@ -691,7 +700,6 @@ bool Character::validateContainer(vector<string>* wornItems)
 	else {
 		return true;
 	}
-
 }
 //void Character::unEquipItem(string name) {
 //	vector<Item> iVec = this->wornItems->getItems();
@@ -800,13 +808,13 @@ int Character::getModConstitution() {
 }
 
 //! Implementation of Fighter Class. Inherites from the super class Character
-Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
-
-}
-Fighter::Fighter()
-{
-
-}
+//Fighter::Fighter(int strength, int dexterity, int intelligence, int charisma, int wisdom, int constitution) :Character(strength * 2, dexterity * 2, intelligence, charisma, wisdom, constitution) {
+//
+//}
+//Fighter::Fighter()
+//{
+//
+//}
 
 
 // /////////////////////////////////////////

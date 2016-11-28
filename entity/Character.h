@@ -1,4 +1,3 @@
-//!  Character.hpp\n
 //!  Character\n
 //
 //!  Created by Hyjaz Loudin on 2016-10-15.\n
@@ -42,26 +41,25 @@ public:
 	Character(Character* character);
 	//hit points
 	void hit(int);
-	void hitPoints();
-	int getHitPoints();
+	void previousHitPoints();
+	void nextHitPoints();
     void setHitPoints(int);
-	void resetHitPoints();
+	int getHitPoints();
 	void GenerateModifiers();
 	//set modifier based on ability scores
 	int modifier(int);
 	//generate ability scores
 	int genAbilityScores();
-	void randomlyGenAbilityScores();
-	void preGenAbilityScores();
 	//leveling up
-	void levelUp();
 	int getLevel();
 	void setLevel(int);
+	void levelUp();
 	//armor class
-	void armor();
-	int getArmor();
+	void armorClass();
+	int getArmorClass();
 	//attack bonus
 	void attackBonus();
+	void setAttackBonus();
 	int getAttackBonus();
 	//attack damage
 	void damageBonus();
@@ -95,13 +93,6 @@ public:
 	int getCharisma();
 	int getWisdom();
 	int getConstitution();
-	//getter for modifiers
-	int getModStrength();
-	int getModDexterity();
-	int getModIntelligence();
-	int getModCharisma();
-	int getModWisdom();
-	int getModConstitution();
 	//setter for modifiers
 	void setModStrength(int);
 	void setModDexterity(int);
@@ -109,6 +100,13 @@ public:
 	void setModCharisma(int);
 	void setModWisdom(int);
 	void setModConstitution(int);
+	//getter for modifiers
+	int getModStrength();
+	int getModDexterity();
+	int getModIntelligence();
+	int getModCharisma();
+	int getModWisdom();
+	int getModConstitution();
 	//name
 	std::string getName();
 	void setName(std::string name);
@@ -123,7 +121,6 @@ public:
 	void unequipItem(string);
 	//checkIfItemExists in backpack
 	bool checkIfItemExists(string, string);
-
 	vector<std::string>* backpack;
 	vector<std::string>* wornItems;
 	//display Items
@@ -136,16 +133,18 @@ public:
 	Item* getWornItemsItem(std::string name);
 
 	bool hasItemInBackpack(std::string itemName);
-	bool isWearingItem(std::string itemName);
 	bool hasItemHelper(std::vector<string>* items, std::string name);
+<<<<<<< HEAD
 	void armorClass();
 	int getArmorClass();
 
 	int computeAttackBonus();
+=======
+	bool isWearingItem(std::string itemName);
+	void attack(Character* enemy, bool range);
+	//void attack(Character *enemy);
+>>>>>>> Builder pattern integrated and character and ChaEditController refactor
 
-
-
-	//void Character::unEquipItem(ItemContainer*,string);
 private:
 	vector<Item> items;
 	int lvl;
@@ -153,21 +152,12 @@ private:
 	int abilityScores[6];
 	int damageB;
 	int attackB;
+	int ac;
 	int armorPoints;
 	int shieldPoints;
 	vector <int> baseAttackBonus;
 	int currentHitPoints = 0;
 	std::string name;
-
-
-
-};
-
-class Fighter : public Character
-{
-public:
-	Fighter();
-	Fighter(int, int, int, int, int, int);
 
 };
 
