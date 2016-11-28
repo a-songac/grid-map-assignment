@@ -86,9 +86,10 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
             int input1, input2, input3;
 
             // CHECK ALL ITEMS WERE COLLECTED
-            if (nextPosition.row == row && nextPosition.column == col
-                    && readYesNoInput("You have reached the exit door, do you want to finish the game?[Y/n] ", true))
-            {
+            if(turnDone!=false){
+               if (nextPosition.row == row && nextPosition.column == col
+                    && readYesNoInput("You have reached the exit door, do you want to finish the map?[Y/n] ", true))
+               {
                 character->levelUp();
                 cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
                 string name;
@@ -96,8 +97,13 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                 endGameLevelUp(character);
 
                 gameOver = true;
-                cout << "You will now be returned to the main menu" << endl;
+                
+               }
             }
+            else{
+                map->render();
+            }
+            
         }
     } while (!turnDone);
 

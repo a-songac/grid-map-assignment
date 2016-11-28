@@ -152,7 +152,7 @@ Campaign* CampaignEditorController::loadCampaign() {
     string filename;
     vector<string>* campaignReferences = CampaignRepository::instance()->listAll();
     if(campaignReferences->empty()) {
-        cout << "No campaigns currently saved. Redirecting to editor menu." << endl;
+        cout << "No campaigns currently saved. Redirecting to menu." << endl;
         campaign = nullptr;
     }
     else {
