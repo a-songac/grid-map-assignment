@@ -1,3 +1,14 @@
+/// @file
+/// @brief
+/// Header file for GameItem.class.  Wrapper for the items in chests a map may contain \n\n
+///
+/// @details
+/// 1. Game Rules: A map may contain items in a chest that are collectable by the user. These items have a precise location on the map.  \n\n
+/// 2. Design: The GameItem is a child of the GameElement class \n\n
+/// 3. Libraries: \n
+///     - Boost Library used for serialization: eases the process of serialization and minimizes the work needed if the schema of the class changes \n
+///     - Standard Libraries: string
+
 #pragma once
 
 #include "GameElement.h"

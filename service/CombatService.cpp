@@ -8,6 +8,8 @@
 
 #include <sstream>
 
+using namespace std;
+
 bool CombatService::isAdjacent(Coordinate origin, Coordinate destination) {
 
     return (destination.row == origin.row + 1 && destination.column == origin.column)

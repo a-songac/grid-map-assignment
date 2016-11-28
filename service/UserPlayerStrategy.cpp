@@ -20,6 +20,8 @@
 
 #include <sstream>
 
+using namespace std;
+
 void UserPlayerStrategy::move(GamePlayer* player, Map* map) {
 }
 void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim, bool melee) {
@@ -113,13 +115,13 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                 endGameLevelUp(character);
 
                 gameOver = true;
-                
+
                }
             }
             else{
                 map->render();
             }
-            
+
         }
     } while (!turnDone);
 

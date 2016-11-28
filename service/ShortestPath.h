@@ -1,3 +1,13 @@
+/// @file
+/// @brief
+/// Header file for ShortestPath.class.  algorithm to compute shortest path between two locations on a map, considering the obstacles (walls and other players)
+/// Implements attack method.
+///
+/// @details
+/// 1. Game Rules: The navigation of characters on the map is limited by the walls and the other characters. \n\n
+/// 2. Design: Concreteimplementation of a strategy for the PlayerStrategy. Derived from NonUserStrategy class \n\n
+/// 3. Libraries: standard libraries: vector
+
 #ifndef SHORTESTPATH_H
 #define SHORTESTPATH_H
 
