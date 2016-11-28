@@ -222,13 +222,14 @@ inline bool Map::movePlayer(int row, int column) {
     if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
        grid[playerPosition.row][playerPosition.column].setPlayer(false);
     }
-    playerPosition.row = row;
-    playerPosition.column = column;
-    grid.at(row).at(column).setPlayer(true);
-    this->render(); // TODO change to notify
-
-    if (!returnValue)
-        readStringInput("Press any key to continue", "");
+    if (!returnValue){
+        readStringInput("Press any key to continue and retry", "");
+    } else {
+        playerPosition.row = row;
+        playerPosition.column = column;
+        grid.at(row).at(column).setPlayer(true);
+        this->render(); // TODO change to notify
+    }
 
     return returnValue;
 }
