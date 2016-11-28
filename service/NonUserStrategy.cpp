@@ -71,8 +71,8 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
     }
 
     // attack if next or at 1 cell from user
-    else if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
-
+    else  {
+        this->distanceFromUser = 1;
         this->attack(player, gameMap->getUserGamePlayer(), this->distanceFromUser == 1);
 
         if (gameMap->getUserGamePlayer()->getInGameCharacter()->getHitPoints() <= 0) {
