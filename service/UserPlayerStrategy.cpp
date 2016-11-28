@@ -227,9 +227,8 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
                     victim->getLocation()->column,
                     Cell::OCCUPANT_OPPONENT);
         }
-        // CHECK IF VICTIM DIED
         if (character->getHitPoints() <= 0) {
-            return false;
+            return true;
         }
 
         CombatService::eliminateDeadBodies(map);
