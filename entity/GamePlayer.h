@@ -4,6 +4,7 @@ class PlayerStrategy; // forward reference
 
 #include "GameElement.h"
 #include "Coordinate.h"
+#include "Character.h"
 #include "../service/PlayerStrategy.h"
 
 #include <boost/archive/text_oarchive.hpp>
@@ -23,12 +24,16 @@ class GamePlayer : public GameElement
         bool turn(Map* map);
         std::string getTypeName();
 
+        void setInGameCharacter(Character* charac);
+        Character* getInGameCharacter();
+
 
     protected:
 
     private:
         PlayerStrategy* actionStrategy;
         char type;
+        Character* inGameCharacter;
 
         // Serializer
         friend class boost::serialization::access;
@@ -46,3 +51,12 @@ class GamePlayer : public GameElement
 inline char GamePlayer::getType() {
     return this->type;
 }
+
+
+inline void GamePlayer::setInGameCharacter(Character* charac) {
+    this->inGameCharacter = charac;
+}
+inline Character* GamePlayer::getInGameCharacter() {
+    return this->inGameCharacter;
+}
+

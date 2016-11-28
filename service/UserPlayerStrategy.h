@@ -7,13 +7,13 @@
 class UserPlayerStrategy : public PlayerStrategy {
     public:
         void move(GamePlayer* player, Map* map);
-        void attack(GamePlayer* player, GamePlayer* victim);
+        void attack(GamePlayer* player, GamePlayer* victim, bool melee);
         void freeAction(GamePlayer* player);
         bool turn(GamePlayer* player, Map* map);
-        void modifyGameLogSettings();
+        void modifyGameSettings();
     private:
         void backpackOption(Character* character);
         bool postAttack(Character* character, Map* map);
-        bool endGameLevelUp(Character* character);
+        void endGameLevelUp(Character* character);
 
 };

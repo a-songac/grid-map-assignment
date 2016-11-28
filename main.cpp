@@ -12,6 +12,8 @@
 #include "entity/repo/MapRepository.h"
 #include "entity/repo/CharacterRepository.h"
 #include "entity/repo/ItemRepository.h"
+#include "entity/repo/GameRepository.h"
+#include "entity/repo/CampaignRepository.h"
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
@@ -29,6 +31,8 @@ int main()
     MapRepository::instance();
     CharacterRepository::instance();
     ItemRepository::instance();
+    GameRepository::instance();
+    CampaignRepository::instance();
 
     #ifdef RUN_TEST_MANUAL
         if (readYesNoInput("Test Shortest path algorithm?[Y/n]: ", true)) {
@@ -55,7 +59,14 @@ int main()
             case 1:
             {
                 GamePlayController gameController;
-                gameController.newGame();
+                cout << "********* PLAY GAME *********" << endl;
+                cout << "1. Start a new game" << endl;
+                cout << "2. Load previous game" << endl;
+                int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
+                if (1 == choice)
+                    gameController.newGame();
+                else
+                    gameController.loadGame();
                 break;
             }
             case 2:

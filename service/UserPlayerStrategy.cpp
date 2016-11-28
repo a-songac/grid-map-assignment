@@ -16,13 +16,19 @@
 #include "../controller/CharacterInteractionHelper.h"
 #include "../controller/MapInteractionHelper.h"
 #include "CombatService.h"
-#include "LogSettings.h"
+#include "Settings.h"
 
 #include <sstream>
 
 void UserPlayerStrategy::move(GamePlayer* player, Map* map) {
 }
-void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim) {
+void UserPlayerStrategy::attack(GamePlayer* player, GamePlayer* victim, bool melee) {
+
+    CombatService::attack(
+            player->getInGameCharacter(),
+            victim->getInGameCharacter(),
+            melee);
+
 }
 void UserPlayerStrategy::freeAction(GamePlayer* player) {
 }
@@ -34,7 +40,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
     bool turnDone = true;
     bool quit = false;
     bool gameOver = false;
-    Character* character = CharacterRepository::instance()->getEntity(player->getElementReference());
+    Character* character = player->getInGameCharacter();
     string goTo;
     int input;
     Coordinate exitDoor = map->getExitDoorCoordinate();
@@ -65,6 +71,9 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         else if (goTo == "a") {
 
             turnDone = postAttack(character, map);
+            if (character->getHitPoints() <= 0) {
+                gameOver = true;
+            }
             map->render();
 
         }
@@ -76,7 +85,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         }
         else if (goTo == "s") {
             turnDone = false;
-            this->modifyGameLogSettings();
+            this->modifyGameSettings();
             map->render();
         }
         else {
@@ -86,25 +95,24 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
             int input1, input2, input3;
 
             // CHECK ALL ITEMS WERE COLLECTED
-            if (nextPosition.row == row && nextPosition.column == col
-                    && readYesNoInput("You have reached the exit door, do you want to finish the game?[Y/n] ", true))
-            {
+            if(turnDone!=false){
+               if (nextPosition.row == row && nextPosition.column == col
+                    && readYesNoInput("You have reached the exit door, do you want to finish the map?[Y/n] ", true))
+               {
                 character->levelUp();
                 cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
                 string name;
 
                 endGameLevelUp(character);
 
-                if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
-                {
-
-                    if (CharacterRepository::instance()->save(character->getName(), character)) {
-                        cout << "Character successfully saved!" << endl;
-                    }
-                }
                 gameOver = true;
-                cout << "You will now be returned to the main menu" << endl;
+                
+               }
             }
+            else{
+                map->render();
+            }
+            
         }
     } while (!turnDone);
 
@@ -161,7 +169,8 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
     Coordinate* enemyLocation;
     vector<GamePlayer*> directAttackable = vector<GamePlayer*>();
     vector<GamePlayer*> rangeAttackable = vector<GamePlayer*>();
-    GamePlayer* player, victim;
+    GamePlayer* player;
+    GamePlayer* victim;
     bool isDirectAttack;
 
 
@@ -200,10 +209,15 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
             victim = rangeAttackable.at(index-1-directSize);
         }
 
-        // TODO:
-        // PROCESS ATTACK
 
+        this->attack(map->getUserGamePlayer(), victim, isDirectAttack);
 
+        // CHECK IF VICTIM DIED
+        if (character->getHitPoints() <= 0) {
+            return false;
+        }
+
+        CombatService::eliminateDeadBodies(map);
 
         return true;
 
@@ -219,39 +233,44 @@ string onOff(bool value) {
         return "ON";
     return "OFF";
 }
-void UserPlayerStrategy::modifyGameLogSettings() {
+void UserPlayerStrategy::modifyGameSettings() {
     bool done = false;
     do {
         cout << "Settings: " << endl
-        << "1. Toggle Game Logs: " << onOff(LOG::GAME) << endl
-        << "2. Toggle Map Log: " << onOff(LOG::MAP) << endl
-        << "3. Toggle Dice Logs: " << onOff(LOG::DICE) << endl
-        << "4. Toggle Character Logs: " << onOff(LOG::CHAR) << endl
-        << "5. Exit" << endl;
-        int choice = readIntegerInputWithRange("Your choice[5]: ", 5, 1, 5);
+        << "1. Toggle Game Logs: " << onOff(SETTINGS::LOG_GAME) << endl
+        << "2. Toggle Map Logs: " << onOff(SETTINGS::LOG_MAP) << endl
+        << "3. Toggle Dice Logs: " << onOff(SETTINGS::LOG_DICE) << endl
+        << "4. Toggle Character Logs: " << onOff(SETTINGS::LOG_CHAR) << endl
+        << "5. Toggle Map Elements View: " << onOff(SETTINGS::MAP_ELEMENTS_VIEW) << endl
+        << "6. Exit" << endl;
+        int choice = readIntegerInputWithRange("Your choice[6]: ", 6, 1, 6);
 
         switch (choice) {
             case 1:
-                LOG::GAME = !LOG::GAME;
+                SETTINGS::LOG_GAME = !SETTINGS::LOG_GAME;
                 break;
             case 2:
-                LOG::MAP = !LOG::MAP;
+                SETTINGS::LOG_MAP = !SETTINGS::LOG_MAP;
                 break;
             case 3:
-                LOG::DICE = !LOG::DICE;
+                SETTINGS::LOG_DICE = !SETTINGS::LOG_DICE;
                 break;
             case 4:
-                LOG::CHAR = !LOG::CHAR;
+                SETTINGS::LOG_CHAR = !SETTINGS::LOG_CHAR;
                 break;
             case 5:
+                SETTINGS::MAP_ELEMENTS_VIEW = !SETTINGS::MAP_ELEMENTS_VIEW;
+                break;
+            case 6:
                 done = true;
+                break;
         }
     }while (!done);
 
 }
 
 
-bool UserPlayerStrategy::endGameLevelUp(Character* character) {
+void UserPlayerStrategy::endGameLevelUp(Character* character) {
 
     int input1, input2, input3;
 

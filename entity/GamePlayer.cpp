@@ -2,14 +2,14 @@
 #include "../service/FriendlyPlayerStrategy.h"
 #include "../service/AggressivePlayerStrategy.h"
 #include "../service/UserPlayerStrategy.h"
-#include "../service/LogSettings.h"
+#include "../service/Settings.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
 
 #include "Cell.h"
 
 GamePlayer::GamePlayer(std::string elementReference, Coordinate* location, char type)
-	: GameElement(elementReference, location), type(type)
+	: GameElement(elementReference, location), type(type), inGameCharacter(nullptr)
 {
 	if (type == Cell::OCCUPANT_FRIEND) {
 		actionStrategy = new FriendlyPlayerStrategy();
@@ -23,7 +23,7 @@ GamePlayer::GamePlayer(std::string elementReference, Coordinate* location, char 
 }
 
 GamePlayer::GamePlayer(GamePlayer* gamePlayer)
-	: GameElement(gamePlayer), type(gamePlayer->getType()) {
+	: GameElement(gamePlayer), type(gamePlayer->getType()), inGameCharacter(nullptr) {
 	if (type == Cell::OCCUPANT_FRIEND) {
 		actionStrategy = new FriendlyPlayerStrategy();
 	}
@@ -39,9 +39,8 @@ GamePlayer::GamePlayer() : type(Cell::OCCUPANT_EMPTY) {}
 
 
 bool GamePlayer::turn(Map* map) {
-	if (LOG::GAME) logInfo("GamePlayer", "turn", "Turn switching: " + getElementReference() + " - " + MapInteractionHelper::coordinateToString(getLocation()));
-	this->actionStrategy->turn(this, map);
-	return true;
+	if (SETTINGS::LOG_GAME) logInfo("GamePlayer", "turn", "Turn switching: " + getElementReference() + " - " + MapInteractionHelper::coordinateToString(getLocation()));
+	return this->actionStrategy->turn(this, map);
 
 }
 

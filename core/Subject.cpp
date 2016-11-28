@@ -7,7 +7,7 @@ Subject::Subject(){
 }
 
 Subject::~Subject() {
-	delete _observers;
+        delete _observers;	
 }
 
 void Subject::Attach(Observer* addObserver) {

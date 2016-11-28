@@ -14,27 +14,50 @@
 
 class Campaign {
     public:
+    
         Campaign();
-        Campaign(vector<Map> m);
+        Campaign(vector<std::string>* m);
+        Campaign(Campaign* c);
     
         bool validate();
-        vector<Map> getMaps();
+        vector<std::string>* getMaps();
+        void setMaps(vector<std::string>* m);
+        std::string getName();
+        void setName(std::string n);
+    
+        void display();
     
     
     private:
     
-        std::vector<Map> maps;
+        std::vector<std::string>* maps;
+        string name;
     
+
         friend class boost::serialization::access;
         template<class Archive>
         void serialize(Archive & ar, const unsigned int version)
         {
             ar & maps;
+            ar & name;
         }
 
-    
+
 };
 
-inline vector<Map> Campaign::getMaps(){
+inline vector<std::string>* Campaign::getMaps(){
     return maps;
+}
+
+
+inline void Campaign::setMaps(vector<std::string>* m){
+    maps = m;
+}
+
+inline string Campaign::getName(){
+    return name;
+}
+
+inline void Campaign::setName(std::string n){
+    name = n;
 }

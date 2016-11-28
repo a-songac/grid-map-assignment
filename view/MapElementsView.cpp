@@ -7,6 +7,7 @@
 #include "../entity/repo/ItemRepository.h"
 #include "../controller/CharacterInteractionHelper.h"
 #include "../controller/MapInteractionHelper.h"
+#include "../service/Settings.h"
 
 #include <vector>
 
@@ -19,6 +20,8 @@ void MapElementsView::update() {
 }
 
 void MapElementsView::summary() {
+    if (!SETTINGS::MAP_ELEMENTS_VIEW && SETTINGS::IN_GAME) return;
+
 
     GamePlayer* gamePlayer;
     GameItem* gameItem;
@@ -30,17 +33,25 @@ void MapElementsView::summary() {
     string itemCollected;
 
     cout << "************ Map Elements Summary ************" << endl;
+    if (SETTINGS::IN_GAME) {
+        character = this->map->getUserGamePlayer()->getInGameCharacter();
+        cout << "ME: " << character->getName() << " - HP: " << character->getHitPoints() << endl;
+    }
     cout << "PLAYERS:" << endl;
     for(size_t i = 0; i < this->map->getGamePlayers()->size(); i++) {
 
         gameElement = this->map->getGamePlayers()->at(i);
         gamePlayer = static_cast<GamePlayer*>(gameElement);
-        character = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
+
+        character = SETTINGS::IN_GAME?
+                gamePlayer->getInGameCharacter():
+                CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
+
         strategyName = CharacterInteractionHelper::getStrategyName(gamePlayer->getType());
         locationString = MapInteractionHelper::coordinateToString(gamePlayer->getLocation());
 
-        cout << "    " << (i+1) << ". " << gamePlayer->getElementReference() << " - " << strategyName
-            << " - " << locationString << endl;
+        cout << "    " << (i+1) << ". " << character->getName() << " - " << strategyName
+            << " - " << locationString << " - HP: " <<  character->getHitPoints() << endl;
     }
 
 

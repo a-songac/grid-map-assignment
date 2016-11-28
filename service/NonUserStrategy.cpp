@@ -1,13 +1,14 @@
 #include "NonUserStrategy.h"
 
 #include "ShortestPath.h"
-#include "../service/LogSettings.h"
+#include "../service/Settings.h"
+#include "../service/CombatService.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
 
 
 void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
-    if (LOG::GAME) logInfo("NonUserStrategy", "move", "Moving attempt from: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+    if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Moving attempt from: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
     this->distanceFromUser = -1;
 
     Coordinate* currentLocation = player->getLocation();
@@ -25,7 +26,7 @@ void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
         // Check for a path that avoids game characters.  If any, use this one instead, otherwise stay
         pathToUser =  shortestPath.computeShortestPath((*currentLocation), playerPosition, true);
         if (pathToUser.size() == 0) {
-            if (LOG::GAME) logInfo("NonUserStrategy", "move", "Cannot move: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+            if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Cannot move: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
             return;
         }
 
@@ -49,7 +50,7 @@ void NonUserStrategy::move(GamePlayer* player, Map* gameMap) {
     currentLocation->column = nextLocation.column;
 
     gameMap->fillCell(nextLocation.row, nextLocation.column, player->getType());
-    if (LOG::GAME) logInfo("NonUserStrategy", "move", "Moved to new location: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
+    if (SETTINGS::LOG_GAME) logInfo("NonUserStrategy", "move", "Moved to new location: " + player->getElementReference() + " - " + MapInteractionHelper::coordinateToString(player->getLocation()));
 
 }
 
@@ -57,6 +58,7 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
 
     bool distanceAttack = false;
     bool nextToPlayer = false;
+    bool gameOver = false;
 
     Coordinate* currentLocation = player->getLocation();
     Coordinate playerPosition = gameMap->getPlayerPosition();
@@ -69,12 +71,17 @@ bool NonUserStrategy::turn(GamePlayer* player, Map* gameMap) {
     }
 
     // attack if next or at 1 cell from user
-    if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
+    else if (this->distanceFromUser == 1 || this->distanceFromUser == 2) {
 
-        // pass nullptr because they attack the user player, who is accessible through the repo
-        // this is why we don't need the GamePlayer instance of the
-        this->attack(player, nullptr);
+        this->attack(player, gameMap->getUserGamePlayer(), this->distanceFromUser == 1);
+
+        if (gameMap->getUserGamePlayer()->getInGameCharacter()->getHitPoints() <= 0) {
+            gameOver = true;
+        } else {
+            CombatService::eliminateDeadBodies(gameMap);
+        }
+
     }
 
-    return true;
+    return gameOver;
 }

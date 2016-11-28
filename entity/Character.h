@@ -2,7 +2,7 @@
 //!  Character\n
 //
 //!  Created by Hyjaz Loudin on 2016-10-15.\n
-//!  Copyright © 2016 Hyjaz Loudin. All rights reserved.\n
+//!  Copyright ï¿½ 2016 Hyjaz Loudin. All rights reserved.\n
 //! //! @file \n
 //! @brief Header file for the Character class  \n
 //!
@@ -39,10 +39,12 @@ public:
 	Character();
 	~Character();
 	Character(int, int, int, int, int, int);
+	Character(Character* character);
 	//hit points
 	void hit(int);
 	void hitPoints();
 	int getHitPoints();
+    void setHitPoints(int);
 	void resetHitPoints();
 	void GenerateModifiers();
 	//set modifier based on ability scores
@@ -137,8 +139,11 @@ public:
 	bool hasItemInBackpack(std::string itemName);
 	bool isWearingItem(std::string itemName);
 	bool hasItemHelper(std::vector<string>* items, std::string name);
-	void ArmorClass();
+	void armorClass();
 	int getArmorClass();
+
+	int computeAttackBonus();
+	void attack(Character* enemy, bool range);
 
 
 
@@ -153,7 +158,6 @@ private:
 	int armorPoints;
 	int shieldPoints;
 	vector <int> baseAttackBonus;
-	int armorClass;
 	int currentHitPoints = 0;
 	std::string name;
 
@@ -175,6 +179,10 @@ inline void Character::setName(std::string name) {
 
 inline std::string Character::getName() {
     return this->name;
+}
+
+inline void Character::setHitPoints(int i){
+    currentHitPoints = i;
 }
 
 #endif
