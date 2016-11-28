@@ -42,7 +42,7 @@ void GamePlayController::newGame() {
     if (this->campaign->getMaps()->empty()) {
         return;
     }
-    
+
     this->map = MapRepository::instance()->getEntity(this->campaign->getMaps()->at(0));
 
     Character* referenceCharacter;
@@ -123,11 +123,12 @@ void GamePlayController::startGame(Game* game) {
 
     bool mapOver = false;
     bool gameOver = false;
+    bool died = false;
 
     cout << "\n************* Start Game *************" << endl << endl;
 
     do{
-        
+
         map->setInGamePlayers();
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
         Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
@@ -135,25 +136,38 @@ void GamePlayController::startGame(Game* game) {
         userPlayer.setInGameCharacter(gameCharacter);
         map->setUserGamePlayer(&userPlayer);
         initialHp = gameCharacter->getHitPoints();
-        
+
         vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
         this->map->movePlayer(entryDoor.row, entryDoor.column);
         do {
-            
+
             mapOver = userPlayer.turn(this->map);
             if (!mapOver) {
                 for (size_t i = 0; i < gamePlayers->size(); i++) {
                     gamePlayers->at(i)->turn(this->map);
+                    map->render();
+                    gamePlayers->at(i)->display();
+                    readStringInput("This player just finishied his turn, press any key to continue...", "");
+
+                    if (gameCharacter->getHitPoints() <= 0) {
+                        died = true;
+                        gameOver = true;
+                        mapOver = true;
+                        cout << "\n\n\n************ GAME OVER, YOU DIED ************" << endl << endl;
+                        gameCharacter->setHitPoints(initialHp);
+                        readStringInput("Press any key to continue and go back to menu...", "");
+                        break;
+                    }
                 }
             }
 
         } while (!mapOver);
-    
+
         //Assuming map completion
         if(characterLevel!=gameCharacter->getLevel()){
             //map completed
-            
+
             if(game->getMapIndex() == (this->campaign->getMaps()->size()-1)){
                 //campaign completed
                 cout << "Campaign Completed!" << endl;
@@ -168,21 +182,21 @@ void GamePlayController::startGame(Game* game) {
                 this->map = MapRepository::instance()->getEntity(nextMapName);
                 game->setMapIndex(game->getMapIndex()+1);
                 map->unsetInGamePlayers();
-                
+
                 if (readYesNoInput("Would you like to save your progress?[Y/n]", 1))
                 {
-                
-                
+
+
                     if ("" == game->getGameSaveName()) {
                         game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));
                     }
                     if (GameRepository::instance()->save(game->getGameSaveName(), game)) {
                         cout << "Game successfully saved" << endl;
                     }
-                
+
                 }
             }
-            
+
         }
         else{
             //Quit or died
@@ -190,23 +204,15 @@ void GamePlayController::startGame(Game* game) {
         }
 
 
-        
+
         // reset map to what it was
-            
-            
+
+
         //SETTINGS::IN_GAME = false;
         map->unsetInGamePlayers();
-  
+
     } while (!gameOver);
 
-    bool died = false;
-    if (gameCharacter->getHitPoints() <= 0) {
-        died = true;
-        cout << " ************ GAME OVER, YOU DIED ************" << endl;
-        gameCharacter->setHitPoints(initialHp);
-    }
-
-    
     // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
     if (!died && readYesNoInput("Would you like to save your progress?[Y/n]", 1))
 
