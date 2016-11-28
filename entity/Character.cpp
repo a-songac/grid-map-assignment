@@ -64,34 +64,13 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	abilityScores[4] = wisdom;
 	abilityScores[5] = constitution;
 
-	currentHitPoints = 10;
+	currentHitPoints = 10 +modifiers[5];
 
 	this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
 
     // TODO WHAT IS THAT FOR????
-	if (lvl >= 16)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-		baseAttackBonus.push_back(lvl - 15);
-	}
-	else if (lvl >= 11)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-	}
-	else if (lvl >= 6)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-	}
-	else
-	{
-		baseAttackBonus.push_back(lvl);
-	}
+	
 //	this->armor();
 //	this->attackBonus();
 //	this->damageBonus();
@@ -110,7 +89,7 @@ Character::Character(Character* character) {
 	modifiers[3] = modifier(character->getCharisma());
 	modifiers[4] = modifier(character->getWisdom());
 	modifiers[5] = modifier(character->getConstitution());
-
+	
 	//ability scores
 
 	abilityScores[0] = character->getStrength();
@@ -120,33 +99,12 @@ Character::Character(Character* character) {
 	abilityScores[4] = character->getWisdom();
 	abilityScores[5] = character->getConstitution();
 
-	currentHitPoints = 10;
+	currentHitPoints = 10 + modifiers[5];
 
 	this->backpack = new vector<string>(*(character->backpack));
     this->wornItems = new vector<string>(*(character->wornItems));
 
-	if (lvl >= 16)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-		baseAttackBonus.push_back(lvl - 15);
-	}
-	else if (lvl >= 11)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-		baseAttackBonus.push_back(lvl - 10);
-	}
-	else if (lvl >= 6)
-	{
-		baseAttackBonus.push_back(lvl);
-		baseAttackBonus.push_back(lvl - 5);
-	}
-	else
-	{
-		baseAttackBonus.push_back(lvl);
-	}
+	
 	this->attackBonus();
 	this->armorClass();
 	this->damageBonus();
@@ -202,7 +160,8 @@ void Character::updateStatsAtEquip(Item* equipment) {
 				this->attackB += eVec[i].getBonus();
 
 		}
-		this->hitPoints();
+
+		
 
 }
 void Character::updateStatsAtUnequip(Item* equipment) {
@@ -248,7 +207,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 		if (eVec[i].getType() == "AtkBonus")
 			this->attackB -= eVec[i].getBonus();
 	}
-	this->resetHitPoints();
+	
 
 }
 //! Implementation of a modifier method, that calculates the modifier of each ability
@@ -267,14 +226,7 @@ void Character::levelUp()
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
 	this->attackBonus();
-	for (size_t i = 0; i < baseAttackBonus.size(); i++)
-	{
-		baseAttackBonus[i] += 1;
-	}
-	if (lvl == 6 || lvl == 11 || lvl == 16)
-	{
-		baseAttackBonus.push_back(1);
-	}
+	
 	Notify();
 
 
@@ -363,7 +315,7 @@ void Character::randomlyGenAbilityScores() {
 	modifiers[4] = modifier(abilityScores[4]);
 	modifiers[5] = modifier(abilityScores[5]);
 
-	currentHitPoints = 10;
+	currentHitPoints = 10+modifiers[5];
 
 }
 //implementation of a setter method for hit points

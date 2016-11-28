@@ -154,10 +154,10 @@ private:
 	int modifiers[6];
 	int abilityScores[6];
 	int damageB;
-	int attackB;
+	int attackB = 1;
 	int armorPoints;
 	int shieldPoints;
-	vector <int> baseAttackBonus;
+	
 	int currentHitPoints = 0;
 	std::string name;
 

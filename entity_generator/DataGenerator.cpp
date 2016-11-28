@@ -68,7 +68,8 @@ Character* DataGenerator::genCharacter() {
     character->attackBonus();
     character->damageBonus();
     character->display();
-
+	
+	return character;
 }
 
 

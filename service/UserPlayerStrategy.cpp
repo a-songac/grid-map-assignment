@@ -360,6 +360,6 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
             {
                 
             }
-	return true;
+	
 
 }
