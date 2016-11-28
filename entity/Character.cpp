@@ -91,8 +91,9 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 	{
 		baseAttackBonus.push_back(lvl);
 	}
-
-
+	this->armor();
+	this->attackBonus();
+	this->damageBonus();
 }
 
 
@@ -144,8 +145,10 @@ Character::Character(Character* character) {
 	{
 		baseAttackBonus.push_back(lvl);
 	}
-
-
+	this->attackBonus();
+	this->armor();
+	this->attackBonus();
+	this->damageBonus();
 }
 
 
@@ -187,14 +190,15 @@ void Character::updateStatsAtEquip(Item* equipment) {
 				this->setConstitution(this->getConstitution() + eVec[i].getBonus());
 				this->setModConstitution(modifier(this->getConstitution()));
 			}
-			if (eVec[i].getType() == "Armor")
+			if (eVec[i].getType() == "Armor") {
 				this->armorPoints += eVec[i].getBonus();
 				this->shieldPoints += eVec[i].getBonus();
-
+			}
 
 			if (eVec[i].getType() == "AtkDamage")
 				this->damageB += eVec[i].getBonus();
-
+			if (eVec[i].getType() == "AtkBonus")
+				this->attackB += eVec[i].getBonus();
 
 		}
 		this->hitPoints();
@@ -234,11 +238,14 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 			this->setConstitution(this->getConstitution() - eVec[i].getBonus());
 			this->setModConstitution(modifier(this->getConstitution()));
 		}
-		if (eVec[i].getType() == "Armor")
+		if (eVec[i].getType() == "Armor") {
 			this->armorPoints -= eVec[i].getBonus();
-
+			this->shieldPoints -= eVec[i].getBonus();
+		}
 		if (eVec[i].getType() == "AtkDamage")
 			this->damageB -= eVec[i].getBonus();
+		if (eVec[i].getType() == "AtkBonus")
+			this->attackB -= eVec[i].getBonus();
 	}
 	this->resetHitPoints();
 
@@ -258,6 +265,7 @@ void Character::levelUp()
 {
 	this->lvl++;
 	this->currentHitPoints = this->currentHitPoints + dice1.roll_d10() + this->getModConstitution();
+	this->attackBonus();
 	for (size_t i = 0; i < baseAttackBonus.size(); i++)
 	{
 		baseAttackBonus[i] += 1;
@@ -398,15 +406,7 @@ void Character::attackBonus()
 {
 	//depends on the weapon of choice
 
-	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
-
-}
-
-int Character::computeAttackBonus()
-{
-	//depends on the weapon of choice
-
-	this->attackB = baseAttackBonus.at(lvl) + modifiers[0];
+	this->attackB = this->lvl + this->getModStrength();
 
 }
 
@@ -589,7 +589,7 @@ void Character::attack(Character* enemy, bool melee)
 
     // TODO: compute attack modifier based on level
     // IS THIS OK:
-    int attackModifier = this->computeAttackBonus();
+	int attackModifier = this->attackB;
     sstream << "Attack modifier value: " << attackModifier;
     if(SETTINGS::LOG_CHAR)
         logInfo("Character", "attack",  sstream.str());
@@ -600,10 +600,10 @@ void Character::attack(Character* enemy, bool melee)
     // IS THAT OK
     int weaponModifier;
     if (range) {
-        weaponModifier = this->modifiers[1];
+        weaponModifier = this->getModDexterity;
         sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
     } else {
-        weaponModifier = this->modifiers[0];
+        weaponModifier = this->getModStrength;
         sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
     }
 
