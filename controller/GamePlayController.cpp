@@ -119,7 +119,7 @@ void GamePlayController::startGame(Game* game) {
     game->setCharacterName(game->getUserCharacter()->getName());
     int characterLevel = gameCharacter->getLevel();
     SETTINGS::IN_GAME = true;
-
+    int initialHp = 0;
 
     bool mapOver = false;
     bool gameOver = false;
@@ -134,7 +134,7 @@ void GamePlayController::startGame(Game* game) {
         GamePlayer userPlayer(gameCharacter->getName(), userLocation, Cell::OCCUPANT_PLAYER);
         userPlayer.setInGameCharacter(gameCharacter);
         map->setUserGamePlayer(&userPlayer);
-
+        initialHp = gameCharacter->getHitPoints();
         
         vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
@@ -203,6 +203,7 @@ void GamePlayController::startGame(Game* game) {
     if (gameCharacter->getHitPoints() <= 0) {
         died = true;
         cout << " ************ GAME OVER, YOU DIED ************" << endl;
+        gameCharacter->setHitPoints(initialHp);
     }
 
     
