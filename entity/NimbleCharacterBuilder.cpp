@@ -1,4 +1,4 @@
-#include "NimblecharacterBuilder.h"
+#include "NimbleCharacterBuilder.h"
 #include "../utils/IOUtils.h"
 #include <algorithm>
 using namespace std;
@@ -97,5 +97,5 @@ void NimbleCharacterBuilder::buildFighter() {
 	buildDamageBonus();
 	buildHitPoints();
 
-	
+
 }

@@ -21,12 +21,12 @@
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
-#include "../grid-map-assignment/controller/CharacterEditorController.h"
-#include "../grid-map-assignment/entity/BullycharacterBuilder.h"
-#include "../grid-map-assignment/entity/NimbleCharacterBuilder.h"
-#include "../grid-map-assignment/entity/TankCharacterBuilder.h"
-#include "../grid-map-assignment/entity/CharacterBuilder.h"
-#include "../grid-map-assignment/entity/DDMaster.h"
+#include "../controller/CharacterEditorController.h"
+#include "../entity/BullycharacterBuilder.h"
+#include "../entity/NimbleCharacterBuilder.h"
+#include "../entity/TankCharacterBuilder.h"
+#include "../entity/CharacterBuilder.h"
+#include "../entity/DDMaster.h"
 
 using namespace std;
 

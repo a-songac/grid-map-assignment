@@ -1,4 +1,4 @@
-#include "TankcharacterBuilder.h"
+#include "TankCharacterBuilder.h"
 #include "../utils/IOUtils.h"
 #include <algorithm>
 using namespace std;
