@@ -29,7 +29,7 @@ void CampaignEditorController::createCampaign(){
 
     //Check if maps actually exist
     if(!(MapRepository::instance()->listAll()->empty())){
-        vector<string> vs;
+        vector<string>* vs = new std::vector<string>();
         //Add Maps
         do{
                 
@@ -37,7 +37,7 @@ void CampaignEditorController::createCampaign(){
             string mapName = map->getName();
 
             if(map->validate()){
-                vs.push_back(mapName);
+                vs->push_back(mapName);
                 done = !(readYesNoInput("Would you like to add another map to add to your campaign? [Y/n]", true));
 
             }
@@ -49,8 +49,7 @@ void CampaignEditorController::createCampaign(){
         }while(!done);
         
         //Add vector of map names to campaign
-        vector<string>* vsp = &vs;
-        this->campaign->setMaps(vsp);
+        this->campaign->setMaps(vs);
         
         //Save Campaign
         bool save = readYesNoInput("Would you like to save this campaign? (Y/n)", true);

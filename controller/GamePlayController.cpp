@@ -40,6 +40,7 @@ void GamePlayController::newGame() {
     CampaignEditorController campaignEditorController;
     this->campaign = campaignEditorController.loadCampaign();
     if (this->campaign->getMaps()->empty()) {
+        cout << "This Campaign is empty! Returning to menu." << endl;
         return;
     }
 
