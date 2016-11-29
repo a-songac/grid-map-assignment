@@ -100,7 +100,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
-            
+        
 
             // CHECK ALL ITEMS WERE COLLECTED
             if(turnDone!=false){
