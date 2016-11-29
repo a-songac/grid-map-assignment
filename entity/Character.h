@@ -135,19 +135,12 @@ public:
 
 	bool hasItemInBackpack(std::string itemName);
 	bool hasItemHelper(std::vector<string>* items, std::string name);
-	void armorClass();
-	int getArmorClass();
+
 	bool isWearingItem(std::string itemName);
 	//void attack(Character *enemy);
 	void numberOfAttack();
 	int getNumberOfattack();
 
-<<<<<<< HEAD
-=======
-
-	//void Character::unEquipItem(ItemContainer*,string);
-
->>>>>>> character builder pattern completed
 private:
 	vector<Item> items;
 	int lvl;
