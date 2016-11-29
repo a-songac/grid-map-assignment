@@ -148,7 +148,7 @@ void GamePlayController::startGame(Game* game) {
                     gamePlayers->at(i)->turn(this->map);
                     map->render();
                     gamePlayers->at(i)->display();
-                    readStringInput("This player just finishied his turn, press any key to continue...", "");
+                    readStringInput("Player above finishied his turn, press any key to continue...", "");
 
                     if (gameCharacter->getHitPoints() <= 0) {
                         died = true;

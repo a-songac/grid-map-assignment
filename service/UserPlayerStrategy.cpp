@@ -220,6 +220,8 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
 
 
         this->attack(map->getUserGamePlayer(), victim, isDirectAttack);
+        cout << "After attack, victim ends up with " << victim->getInGameCharacter()->getHitPoints() << " HP." << endl;
+        readStringInput("Press any key to continue...", "");
         if (victim->getType() == Cell::OCCUPANT_FRIEND) {
             victim->makeHostile();
             map->fillCell(
