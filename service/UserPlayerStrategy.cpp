@@ -121,7 +121,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                     for (size_t i = 0; i < map->getGameItems()->size(); i++) {
                         gameItem = map->getGameItems()->at(i);
                         if (*(gameItem->getLocation()) == nextPosition) {
-                            //character->lootItem(gameItem);
+                            character->lootItems(gameItem);
                             break;
                         }
                     }
@@ -243,7 +243,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
             return true;
         }
         if (victim->getInGameCharacter()->getHitPoints() <= 0) {
-            // character->lootItems(victim);
+            character->lootItems(victim->getInGameCharacter());
         }
 
         CombatService::eliminateDeadBodies(map);

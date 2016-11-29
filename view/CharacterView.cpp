@@ -38,7 +38,7 @@ void CharacterView::display() {
 		cout << "Charisma: " << _subject->getCharisma() << " (+" << _subject->getModCharisma() << ")" << endl;
 		cout << "Wisdom: " << _subject->getWisdom() << " (+" << _subject->getModWisdom() << ")"<< endl;
 		cout << "Constitution: " << _subject->getConstitution() << " (+" << _subject->getModConstitution() << ")" << endl;
-		cout << "Armor: " << _subject->getArmorClass() << endl;
+		cout << "Armor Class: " << _subject->getArmorClass() << endl;
 		cout << "Attack Damage: " << _subject->getDamageBonus() << endl;
 		cout << "Attack Bonus: " << _subject->getAttackBonus() << endl;
 		cout << "Attack per Round: " << _subject->getNumberOfattack() << endl;
