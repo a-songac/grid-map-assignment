@@ -22,7 +22,6 @@
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
 
-
 using namespace std;
 
 int main()
