@@ -229,13 +229,13 @@ void Map::setInGamePlayers(Character* character) {
 			gamePlayer->setInGameCharacter(inGameCharacterCopy);
 			break;
 		case 1:
-			factorBy(character, inGameCharacterCopy, 1);
+			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 1));
 			break;
 		case 2:
-			factorBy(character, inGameCharacterCopy, 0.5);
+			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 0.5));
 			break;
 		case 3: 
-			factorBy(character, inGameCharacterCopy, 2);
+			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 2));
 			break;
 			
 		}
