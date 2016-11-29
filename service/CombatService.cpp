@@ -115,7 +115,6 @@ bool CombatService::attack(Character* attacker, Character* victim, bool melee) {
 
 void CombatService::eliminateDeadBodies(Map* map) {
 
-
     GamePlayer* playerAt;
     for (size_t i = 0; i < map->getGamePlayers()->size(); i++) {
         playerAt = map->getGamePlayers()->at(i);
@@ -127,6 +126,7 @@ void CombatService::eliminateDeadBodies(Map* map) {
                     playerAt->getLocation()->column,
                      Cell::OCCUPANT_EMPTY);
             cout << "Character died: ";
+
             playerAt->display();
             readStringInput("Press any key to continue", "");
         }
