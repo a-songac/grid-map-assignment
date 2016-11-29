@@ -271,7 +271,7 @@ int Character::genAbilityScores()
 
 	return sumOfDice;
 }
-// used at load 
+// used at load
 void Character::GenerateModifiers()
 {
 	modifiers[0] = modifier(abilityScores[0]);
@@ -720,7 +720,7 @@ void Character::displayWornItems() {
 }
 
 Item* Character::getItemHelper(vector<string>* items, string name) {
-	
+
     for (size_t i = 0; i < items->size(); i++) {
         if (name == items->at(i)) {
             return ItemRepository::instance()->getEntity(name);
@@ -768,3 +768,10 @@ void Character::numberOfAttack() {
 int Character::getNumberOfattack() {
 	return this->attPerRound;
 }
+
+
+void Character::lootItems(GameItem* chest) {
+}
+void Character::lootItems(Character* victim) {
+}
+
