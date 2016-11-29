@@ -1,5 +1,7 @@
 #include <iostream>
-
+#include <random>
+#include <ctime>
+#include <algorithm>
 #include "Map.h"
 #include "../service/MapValidator.h"
 #include "../utils/ArrayUtils.h"
@@ -209,17 +211,34 @@ char Map::getOriginalOccupant(Coordinate location) {
     return grid.at(location.row).at(location.column).getOriginalOccupant();
 }
 
-void Map::setInGamePlayers() {
+void Map::setInGamePlayers(Character* character) {
     Character* realCharacter;
     Character* inGameCharacterCopy;
     GamePlayer* gamePlayer;
-
+	srand(time(NULL));
+	int result = (rand() % 3);
     for (size_t i = 0; i < this->gamePlayers->size(); i++) {
+		gamePlayer = this->gamePlayers->at(i);
+		realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
+		inGameCharacterCopy = new Character(realCharacter);
 
-        gamePlayer = this->gamePlayers->at(i);
-        realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
-        inGameCharacterCopy = new Character(realCharacter);
-        gamePlayer->setInGameCharacter(inGameCharacterCopy);
+		
+
+		switch (result) {
+		case 0:
+			gamePlayer->setInGameCharacter(inGameCharacterCopy);
+			break;
+		case 1:
+			factorBy(character, inGameCharacterCopy, 1);
+			break;
+		case 2:
+			factorBy(character, inGameCharacterCopy, 0.5);
+			break;
+		case 3: 
+			factorBy(character, inGameCharacterCopy, 2);
+			break;
+			
+		}
 
     }
 }
@@ -235,3 +254,27 @@ void Map::unsetInGamePlayers() {
     }
 }
 
+Character* Map::factorBy(Character* character, Character* characterCopy,double factor){
+	
+	characterCopy->setLevel(character->getLevel());
+	characterCopy->setStrength(floor(character->getStrength()*factor));
+	characterCopy->setCharisma(floor(character->getCharisma()*factor));
+	characterCopy->setConstitution(floor(character->getConstitution()*factor));
+	characterCopy->setDexterity(floor(character->getDexterity()*factor));
+	characterCopy->setWisdom(floor(character->getWisdom()*factor));
+	characterCopy->setIntelligence(floor(character->getIntelligence()*factor));
+	characterCopy->setModStrength(characterCopy->modifier(characterCopy->getStrength()));
+	characterCopy->setModCharisma(characterCopy->modifier(characterCopy->getCharisma()));
+	characterCopy->setModConstitution(characterCopy->modifier(characterCopy->getConstitution()));
+	characterCopy->setModDexterity(characterCopy->modifier(characterCopy->getDexterity()));
+	characterCopy->setModWisdom(characterCopy->modifier(characterCopy->getWisdom()));
+	characterCopy->setModIntelligence(characterCopy->modifier(characterCopy->getIntelligence()));
+	characterCopy->armorClass();
+	characterCopy->attackBonus();
+	characterCopy->damageBonus();
+	characterCopy->numberOfAttack();
+	return characterCopy;
+
+
+
+}

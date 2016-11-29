@@ -149,7 +149,7 @@ void UserPlayerStrategy::backpackOption(Character* character) {
         cout << "************* Menu *************" << endl << endl;
         cout << "1 - View backpack" << endl;
         cout << "2 - View worn items" << endl;
-        cout << "3 - Equip itemUnequip item" << endl;
+        cout << "3 - Equip item" << endl;
         cout << "4 - Unequip item" << endl;
         cout << "5 - Exit" << endl;
         input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);

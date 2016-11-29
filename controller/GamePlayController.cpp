@@ -129,7 +129,7 @@ void GamePlayController::startGame(Game* game) {
 
     do{
 
-        map->setInGamePlayers();
+        map->setInGamePlayers(gameCharacter);
         Coordinate entryDoor = this->map->getEntryDoorCoordinate();
         Coordinate* userLocation = new Coordinate(entryDoor.row, entryDoor.column);
         GamePlayer userPlayer(gameCharacter->getName(), userLocation, Cell::OCCUPANT_PLAYER);

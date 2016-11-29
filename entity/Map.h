@@ -82,9 +82,9 @@ class Map : public Subject{
 
         Coordinate getPlayerPosition();
 
-        void setInGamePlayers();
+        void setInGamePlayers(Character* character);
         void unsetInGamePlayers();
-
+		Character* factorBy(Character* character, Character* characterCopy, double factor);
     private:
         std::vector<std::vector <Cell> > grid;
         int height;
