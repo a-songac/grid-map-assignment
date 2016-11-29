@@ -807,8 +807,4 @@ int Character::getNumberOfattack() {
 }
 
 
-void Character::lootItems(GameItem* chest) {
-}
-void Character::lootItems(Character* victim) {
-}
 

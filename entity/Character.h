@@ -146,8 +146,6 @@ public:
 	
 	int getNumberOfattack();
 
-	void lootItems(GameItem* chest);
-	void lootItems(Character* victim);
 
 private:
 	vector<Item> items;
