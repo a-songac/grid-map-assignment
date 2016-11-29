@@ -21,22 +21,7 @@
 #include "utils/IOUtils.h"
 #include "controller/GamePlayController.h"
 #include "test/ShortestPathTest.h"
-<<<<<<< HEAD
-#include "controller/CharacterEditorController.h"
-#include "entity/BullycharacterBuilder.h"
-#include "entity/NimbleCharacterBuilder.h"
-#include "entity/TankCharacterBuilder.h"
-#include "entity/CharacterBuilder.h"
-#include "entity/DDMaster.h"
 
-=======
-#include "../controller/CharacterEditorController.h"
-#include "../entity/BullycharacterBuilder.h"
-#include "../entity/NimbleCharacterBuilder.h"
-#include "../entity/TankCharacterBuilder.h"
-#include "../entity/CharacterBuilder.h"
-#include "../entity/DDMaster.h"
->>>>>>> 514ec40c4c894486b14ec3c0734b716a1cf4214d
 
 using namespace std;
 
