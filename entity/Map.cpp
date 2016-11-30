@@ -215,13 +215,13 @@ void Map::setInGamePlayers(Character* character) {
     Character* realCharacter;
     Character* inGameCharacterCopy;
     GamePlayer* gamePlayer;
-	srand(time(NULL));
-	int result = (rand() % 3);
+	
     for (size_t i = 0; i < this->gamePlayers->size(); i++) {
 		gamePlayer = this->gamePlayers->at(i);
 		realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
 		inGameCharacterCopy = new Character(realCharacter);
-
+		srand(time(NULL));
+		int result = (rand() % 3);
 		
 
 		switch (result) {
