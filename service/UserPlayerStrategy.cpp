@@ -17,6 +17,7 @@
 #include "../controller/MapInteractionHelper.h"
 #include "CombatService.h"
 #include "Settings.h"
+#include "../controller/ItemInteractionHelper.h"
 
 #include <sstream>
 
@@ -56,7 +57,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                << "\n    - Press 'f' for free action"
                << "\nNON-TURN ACTION"
                << "\n    - Press 'bp' for backpack"
-//               << "\n    - Press 'i' to see game info"
+               << "\n    - Press 'i' to see game info"
                << "\n    - Press 's' for settings"
                << "\n    - Press 'q' to quit"
                << "\nYour choice[i]: ";
@@ -142,7 +143,8 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
 void UserPlayerStrategy::backpackOption(Character* character) {
     bool quit = false;
-    string goTo, itemNameEquip, itemNameUnequip;
+    string goTo;
+    Item* chosenItem;
     int input;
     do {
         cout << "************* Menu *************" << endl << endl;
@@ -161,16 +163,20 @@ void UserPlayerStrategy::backpackOption(Character* character) {
             character->displayWornItems();
             break;
         case 3:
-            itemNameEquip = readStringInputNoEmpty("Enter the item name with which you want to equip: ");
-            character->equipItem(itemNameEquip);
-            character->displayWornItems();
-            character->printAbilityScores();
+            chosenItem = ItemInteractionHelper::selectItemFromBackpack(character);
+            if (nullptr != chosenItem) {
+                character->equipItem(chosenItem->getName());
+                character->displayWornItems();
+                character->printAbilityScores();
+            }
             break;
         case 4:
-            itemNameUnequip = readStringInputNoEmpty("Enter the item name which you want to unequip: ");
-            character->unequipItem(itemNameUnequip);
-            character->displayBackpack();
-            character->printAbilityScores();
+            chosenItem = ItemInteractionHelper::selectItemFromWornItems(character);
+            if (nullptr != chosenItem) {
+                character->unequipItem(chosenItem->getName());
+                character->displayBackpack();
+                character->printAbilityScores();
+            }
             break;
         case 5:
             quit = true;
@@ -230,7 +236,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
 
         this->attack(map->getUserGamePlayer(), victim, isDirectAttack);
         cout << "After attack, victim ends up with " << victim->getInGameCharacter()->getHitPoints() << " HP." << endl;
-        readStringInput("Press any key to continue...", "");
+        readStringInput("press enter to continue...", "");
         if (victim->getType() == Cell::OCCUPANT_FRIEND) {
             victim->makeHostile();
             map->fillCell(
@@ -251,7 +257,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
 
     } else {
         cout << "No one to attack! Please perform another turn action" << endl;
-        readStringInputNoEmpty("Press any key to continue");
+        readStringInputNoEmpty("press enter to continue");
         return false;
     }
 }

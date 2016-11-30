@@ -21,6 +21,7 @@
 #include "../entity/TankCharacterBuilder.h"
 #include "../entity/CharacterBuilder.h"
 #include "../entity/DDMaster.h"
+#include "ItemInteractionHelper.h"
 
 using namespace std;
 
@@ -66,7 +67,7 @@ void CharacterEditorController::createCharacter() {
 	cout << "2. Nimble" << endl;
 	cout << "3. Tank" << endl;
 	fighter = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
-	switch (fighter) 
+	switch (fighter)
 	{
 		case 1:
 		{
@@ -111,7 +112,7 @@ void CharacterEditorController::createCharacter() {
 			tank->displayBackpack();
 			cout << endl << endl;
 			saveCharacter(tank);
-			break; 
+			break;
 		}
 	}
 
@@ -184,20 +185,21 @@ void CharacterEditorController::initializeBackpack(Character* character) {
 // TODO Currently only displays existing characters, need to add the possibility to modify them
 void CharacterEditorController::editExistingcharacter() {
 	bool quit = false;
-	string goTo, itemNameEquip, itemNameUnequip;
+	string goTo;
+	Item* chosenItem;
 	int input;
 	//TODO call a selectCharacter from CharacterInteractionHelper.cpp
 	Character* character = CharacterInteractionHelper::selectCharacter();
 	do {
-		
+
 		cout << "************* Menu *************" << endl << endl;
 		cout << "1. View Character" << endl;
 		cout << "2. View backpack" << endl;
 		cout << "3. View worn items" << endl;
 		cout << "4. Equip item" << endl;
 		cout << "5. Unequip item" << endl;
-		cout << "6. Save" << endl;
-		cout << "7. Exit" << endl;
+		cout << "6. Save and Exit" << endl;
+		cout << "7. Exit without saving" << endl;
 		input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 7);
 		switch (input) {
 		case 1:
@@ -209,21 +211,30 @@ void CharacterEditorController::editExistingcharacter() {
 			character->displayWornItems();
 			break;
 		case 4:
-			itemNameEquip = readStringInputNoEmpty("Enter the item name with which you want to equip: ");
-			character->equipItem(itemNameEquip);
-			character->displayWornItems();
-			character->printAbilityScores();
+			chosenItem = ItemInteractionHelper::selectItemFromBackpack(character);
+            if (nullptr != chosenItem) {
+                character->equipItem(chosenItem->getName());
+                character->displayWornItems();
+                character->printAbilityScores();
+            }
 			break;
 		case 5:
-			itemNameUnequip = readStringInputNoEmpty("Enter the item name which you want to unequip: ");
-			character->unequipItem(itemNameUnequip);
-			character->displayBackpack();
-			character->printAbilityScores();
-			break;
+			if (nullptr != chosenItem) {
+                character->unequipItem(chosenItem->getName());
+                character->displayBackpack();
+                character->printAbilityScores();
+            }
+            break;
 		case 6:
-			character->saveCharacter(character->getName());
+            CharacterRepository::instance()->save(character->getName(), character);
+            cout << "Changes successfully saved" << endl;
+            quit = true;
+            break;
 		case 7:
-			quit = true;
+			quit = readYesNoInput("Do you really want to leave without saving your changes?[Y/n]: ", true);
+            if (quit) {
+                CharacterRepository::instance()->clearEntity(character->getName());
+            }
 			break;
 		}
 	} while (!quit);
@@ -233,7 +244,7 @@ void CharacterEditorController::saveCharacter(Character* character) {
 
     string name;
 
-    if (readYesNoInput("Would you like to save your character?[Y/n]", 1))
+    if (readYesNoInput("Would you like to save your character?[Y/n]: ", 1))
     {
         name = readFileName("please provide a name for the character: ");
         character->setName(name);

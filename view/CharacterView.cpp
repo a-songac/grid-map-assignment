@@ -31,6 +31,8 @@ void CharacterView::display() {
 
 
 		cout << "================================================================================" << endl;
+		cout << "Name: " << _subject->getName() << endl;
+		cout << "================================================================================" << endl;
 		cout << "Level: " << _subject->getLevel() << endl;
 		cout << "Strength: " << _subject->getStrength() << " (+" << _subject->getModStrength() << ")"<< endl;
 		cout << "Dexterity: " << _subject->getDexterity() << " (+" << _subject->getModDexterity() << ")"  << endl;

@@ -417,6 +417,8 @@ Item* Repository<T>::loadItem(string fileName) {
         {
             getline(f, enhancementType);
             getline(f, getBonus);
+            if ("" == enhancementType)
+                break;
             bonus = std::stoi(getBonus);
             Enhancements.push_back(Enhancement(enhancementType, bonus));
         }

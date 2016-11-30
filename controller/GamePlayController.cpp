@@ -90,8 +90,13 @@ void GamePlayController::loadGame() {
 
             } else {
                 // TODO
+                cout << "\n****************************" << endl;
                 cout << "Game Character: "+ game->getCharacterName() << endl;
                 game->getUserCharacter()->display();
+                Campaign* camp = CampaignRepository::instance()->getEntity(game->getCampaignName());
+                camp->display();
+                cout << "Progress: " << game->getMapIndex() + 1 << endl;
+                cout << "****************************" << endl;
                 confirm = readYesNoInput("You confirm the selection of this game displayed above?[Y/n]: ", true);
             }
 
@@ -149,7 +154,7 @@ void GamePlayController::startGame(Game* game) {
                     gamePlayers->at(i)->turn(this->map);
                     map->render();
                     gamePlayers->at(i)->display();
-                    readStringInput("Player above finishied his turn, press any key to continue...", "");
+                    readStringInput("Player above finishied his turn, press enter to continue...", "");
 
                     if (gameCharacter->getHitPoints() <= 0) {
                         died = true;
@@ -157,7 +162,7 @@ void GamePlayController::startGame(Game* game) {
                         mapOver = true;
                         cout << "\n\n\n************ GAME OVER, YOU DIED ************" << endl << endl;
                         gameCharacter->setHitPoints(initialHp);
-                        readStringInput("Press any key to continue and go back to menu...", "");
+                        readStringInput("press enter to continue and go back to menu...", "");
                         break;
                     }
                 }
@@ -212,7 +217,6 @@ void GamePlayController::startGame(Game* game) {
 
     // SAVING OF THE GAME, NOT ONLY THE CHARACTER, PLUS SAVE A COPY OF THE CHARACTER
     if (!died && readYesNoInput("Would you like to save your progress?[Y/n]", 1))
-
     {
         if ("" == game->getGameSaveName()) {
             game->setGameSaveName(readStringInputNoEmpty("Please provide a name for the game: "));
@@ -221,6 +225,8 @@ void GamePlayController::startGame(Game* game) {
             cout << "Game successfully saved" << endl;
         }
 
+    } else {
+        GameRepository::instance()->clearEntity(game->getGameSaveName());
     }
 
 
