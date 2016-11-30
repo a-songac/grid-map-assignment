@@ -57,7 +57,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                << "\n    - Press 'f' for free action"
                << "\nNON-TURN ACTION"
                << "\n    - Press 'bp' for backpack"
-//               << "\n    - Press 'i' to see game info"
+               << "\n    - Press 'i' to see game info"
                << "\n    - Press 's' for settings"
                << "\n    - Press 'q' to quit"
                << "\nYour choice[i]: ";

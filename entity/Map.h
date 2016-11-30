@@ -225,11 +225,11 @@ inline bool Map::movePlayer(int row, int column) {
         returnValue = false;
     }
 
-    if (-1 != this->playerPosition.column && -1 != this->playerPosition.row){
+    if (returnValue && -1 != this->playerPosition.column && -1 != this->playerPosition.row){
        grid[playerPosition.row][playerPosition.column].setPlayer(false);
     }
     if (!returnValue){
-        readStringInput("press enter to continue and retry", "");
+        readStringInput("press enter to continue and retry...", "");
     } else {
         playerPosition.row = row;
         playerPosition.column = column;
