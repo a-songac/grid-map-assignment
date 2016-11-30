@@ -113,48 +113,218 @@ void Character::updateStatsAtEquip(Item* equipment) {
 
 			if (eVec[i].getType() == "Strength")
 			{
-				this->setStrength(this->getStrength() + eVec[i].getBonus());
-				this->setModStrength(modifier(this->getStrength()));
-				this->attackBonus();
+				if (this->getLevel() < 3) {
+					this->setStrength(this->getStrength() + 1);
+					this->setModStrength(modifier(this->getStrength()));
+					this->attackBonus();
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setStrength(this->getStrength() + 2);
+					this->setModStrength(modifier(this->getStrength()));
+					this->attackBonus();
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setStrength(this->getStrength() + 3);
+					this->setModStrength(modifier(this->getStrength()));
+					this->attackBonus();
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setStrength(this->getStrength() + 4);
+					this->setModStrength(modifier(this->getStrength()));
+					this->attackBonus();
+				}
+				else{
+					this->setStrength(this->getStrength() + 5);
+					this->setModStrength(modifier(this->getStrength()));
+					this->attackBonus();
+				}
 			}
 			if (eVec[i].getType() == "Dexterity")
 			{
-				this->setDexterity(this->getDexterity() + eVec[i].getBonus());
-				this->setModDexterity(modifier(this->getDexterity()));
+				if (this->getLevel() < 3) {
+					this->setDexterity(this->getDexterity() + 1);
+					this->setModDexterity(modifier(this->getDexterity()));
+					this->armorClass();
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setDexterity(this->getDexterity() + 2);
+					this->setModDexterity(modifier(this->getDexterity()));
+					this->armorClass();
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setDexterity(this->getDexterity() + 3);
+					this->setModDexterity(modifier(this->getDexterity()));
+					this->armorClass();
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setDexterity(this->getDexterity() + 4);
+					this->setModDexterity(modifier(this->getDexterity()));
+					this->armorClass();
+				}
+				else {
+					this->setDexterity(this->getDexterity() + 5);
+					this->setModDexterity(modifier(this->getDexterity()));
+					this->armorClass();
+				}
 			}
 			if (eVec[i].getType() == "Intelligence")
 			{
-				this->setIntelligence(this->getIntelligence() + eVec[i].getBonus());
-				this->setModIntelligence(modifier(this->getIntelligence()));
+				if (this->getLevel() < 3) {
+					this->setIntelligence(this->getIntelligence() + 1);
+					this->setModIntelligence(modifier(this->getIntelligence()));
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setIntelligence(this->getIntelligence() + 2);
+					this->setModIntelligence(modifier(this->getIntelligence()));
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setIntelligence(this->getIntelligence() + 3);
+					this->setModIntelligence(modifier(this->getIntelligence()));
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setIntelligence(this->getIntelligence() + 4);
+					this->setModIntelligence(modifier(this->getIntelligence()));
+				}
+				else {
+					this->setIntelligence(this->getIntelligence() + 5);
+					this->setModIntelligence(modifier(this->getIntelligence()));
+				}
 			}
 			if (eVec[i].getType() == "Charisma")
 			{
-				this->setCharisma(this->getCharisma() + eVec[i].getBonus());
-				this->setModCharisma(modifier(this->getCharisma()));
+				if (this->getLevel() < 3) {
+					this->setCharisma(this->getCharisma() + 1);
+					this->setModCharisma(modifier(this->getCharisma()));
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setCharisma(this->getCharisma() + 2);
+					this->setModCharisma(modifier(this->getCharisma()));
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setCharisma(this->getCharisma() + 3);
+					this->setModCharisma(modifier(this->getCharisma()));
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setCharisma(this->getCharisma() + 4);
+					this->setModCharisma(modifier(this->getCharisma()));
+				}
+				else{
+					this->setCharisma(this->getCharisma() + 5);
+					this->setModCharisma(modifier(this->getCharisma()));
+				}
 			}
 			if (eVec[i].getType() == "Wisdom")
 			{
-				this->setWisdom(this->getWisdom() + eVec[i].getBonus());
-				this->setModWisdom(modifier(this->getWisdom()));
+				if (this->getLevel() < 3) {
+					this->setWisdom(this->getWisdom() + 1);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setWisdom(this->getWisdom() + 2);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setWisdom(this->getWisdom() + 3);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setWisdom(this->getWisdom() + 4);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else {
+					this->setWisdom(this->getWisdom() + 5);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
 			}
 			if (eVec[i].getType() == "Constitution")
 			{
-				this->setConstitution(this->getConstitution() + eVec[i].getBonus());
-				this->setModConstitution(modifier(this->getConstitution()));
+				if (this->getLevel() < 3) {
+					this->setConstitution(this->getConstitution() + eVec[i].getBonus());
+					this->setModConstitution(modifier(this->getConstitution()));
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->setWisdom(this->getWisdom() + 2);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->setWisdom(this->getWisdom() + 3);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->setWisdom(this->getWisdom() + 4);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
+				else {
+					this->setWisdom(this->getWisdom() + 5);
+					this->setModWisdom(modifier(this->getWisdom()));
+				}
 			}
 			if (eVec[i].getType() == "Armor") {
-				this->armorPoints += eVec[i].getBonus();
-				this->shieldPoints += eVec[i].getBonus();
-				this->armorClass();
+				if (this->getLevel() < 3) {
+					this->armorPoints += 1;
+					this->shieldPoints += 1;
+					this->armorClass();
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->armorPoints += 2;
+					this->shieldPoints += 2;
+					this->armorClass();
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->armorPoints += 3;
+					this->shieldPoints += 3;
+					this->armorClass();
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->armorPoints += 4;
+					this->shieldPoints += 4;
+					this->armorClass();
+				}
+				else {
+					this->armorPoints += 5;
+					this->shieldPoints += 5;
+					this->armorClass();
+				}
+				
+				
 			}
 			if (eVec[i].getType() == "AtkDamage"){
-				this->damageB += eVec[i].getBonus();
+				if (this->getLevel() < 3) {
+					this->damageB += 1;
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					this->damageB += 2;
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					this->damageB += 3;
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					this->damageB += 4;
+				}
+				else {
+					this->damageB += 5;
+				}
 			}
 			if (eVec[i].getType() == "AtkBonus") {
-				this->attackB += eVec[i].getBonus();
+				if (this->getLevel() < 3) {
+					atkBonus += 1;
+				}
+				else if (this->getLevel() > 2 && this->getLevel() < 6) {
+					atkBonus += 2;
+				}
+				else if (this->getLevel() > 5 && this->getLevel() < 11) {
+					atkBonus += 3;
+				}
+				else if (this->getLevel() > 10 && this->getLevel() < 16) {
+					atkBonus += 4;
+				}
+				else {
+					atkBonus += 5;
+				}
+
 			}
 		}
-		//TODO: if constitution increases add the difference of the old constitution and new cons to HP
+		
 
 }
 
@@ -303,7 +473,7 @@ void Character::attackBonus()
 {
 	//depends on the weapon of choice
 
-	this->attackB = this->lvl + this->getModStrength();
+	this->attackB = this->lvl + this->getModStrength() + this->atkBonus;
 
 }
 //! Implementation of a getter method for attack bonus

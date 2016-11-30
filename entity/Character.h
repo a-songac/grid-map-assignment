@@ -154,6 +154,7 @@ private:
 	int abilityScores[6];
 	int damageB;
 	int attackB = 0;
+	int atkBonus = 0;
 	int ac;
 	int armorPoints;
 	int shieldPoints;
