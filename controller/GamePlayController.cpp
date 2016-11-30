@@ -40,6 +40,7 @@ void GamePlayController::newGame() {
     CampaignEditorController campaignEditorController;
     this->campaign = campaignEditorController.loadCampaign();
     if (this->campaign->getMaps()->empty()) {
+        cout << "This Campaign is empty! Returning to menu." << endl;
         return;
     }
 
@@ -117,7 +118,6 @@ void GamePlayController::startGame(Game* game) {
 
     Character* gameCharacter = game->getUserCharacter();
     game->setCharacterName(game->getUserCharacter()->getName());
-    int characterLevel = gameCharacter->getLevel();
     SETTINGS::IN_GAME = true;
     int initialHp = 0;
 
@@ -136,6 +136,7 @@ void GamePlayController::startGame(Game* game) {
         userPlayer.setInGameCharacter(gameCharacter);
         map->setUserGamePlayer(&userPlayer);
         initialHp = gameCharacter->getHitPoints();
+        int characterLevel = gameCharacter->getLevel();
 
         vector<GamePlayer*>* gamePlayers = this->map->getGamePlayers();
 
@@ -164,8 +165,7 @@ void GamePlayController::startGame(Game* game) {
 
         } while (!mapOver);
 
-        //Assuming map completion
-        if(characterLevel!=gameCharacter->getLevel()){
+        if(characterLevel != gameCharacter->getLevel()){
             //map completed
 
             if(game->getMapIndex() == (this->campaign->getMaps()->size()-1)){
@@ -206,9 +206,6 @@ void GamePlayController::startGame(Game* game) {
 
 
         // reset map to what it was
-
-
-        //SETTINGS::IN_GAME = false;
         map->unsetInGamePlayers();
 
     } while (!gameOver);
