@@ -224,7 +224,7 @@ void Map::setInGamePlayers(Character* character) {
 		int result = (rand() % 3);
 		
 
-		switch (2) {
+		switch (result) {
 		case 0:
 			gamePlayer->setInGameCharacter(inGameCharacterCopy);
 			break;
