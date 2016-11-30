@@ -150,7 +150,7 @@ Item* ItemEditor::ring() {
 				choice == 3 && constitution == 1 ||
 				choice == 4 && wisdom == 1 || choice == 5 && charisma == 1)
 			{
-				cout << "You can select atmost one enhancement type" << endl;
+				cout << "You already have this enhancement type" << endl;
 				retry = true;
 			}
 		} while (retry);
@@ -434,7 +434,7 @@ Item* ItemEditor::shield() {
 
 	itemType = "Shield";
 	enhancementType = "ArmorC";
-	itemName = readStringInputNoEmpty("What is the name of your Shield");
+	itemName = readStringInputNoEmpty("What is the name of your Shield: ");
 	armorBonus = readIntegerInputWithRange("Select an enhancement level, ranging from 1 to 5 [1]: ", 1, 1, 5);
 	typeEnhancements.push_back(enhancementType);
 	bonus.push_back(armorBonus);
