@@ -32,7 +32,6 @@ Item* ItemInteractionHelper::selectItem() {
 				return nullptr;
 
 			} else {
-
                 item->displayItem();
                 confirm1 = readYesNoInput("You confirm the selection of this item displayed above?[Y/n]: ", true);
             }

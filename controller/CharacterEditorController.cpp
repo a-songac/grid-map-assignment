@@ -8,6 +8,7 @@
 
 #include "../entity/repo/CharacterRepository.h"
 #include "CharacterEditorController.h"
+#include "CharacterInteractionHelper.h"
 #include "../entity/Character.h"
 #include "../view/CharacterView.h"
 #include "../entity/ItemContainer.h"
@@ -36,7 +37,7 @@ void CharacterEditorController::selectAction() {
         exit = false;
         cout << "\n\n******* Character Editor ********" << endl;
         cout << "1. Create a new character" << endl;
-        cout << "2. View existing characters" << endl;
+        cout << "2. Edit existing characters" << endl;
         cout << "3. Exit" << endl;
         abilityScore = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
 
@@ -182,30 +183,50 @@ void CharacterEditorController::initializeBackpack(Character* character) {
 
 // TODO Currently only displays existing characters, need to add the possibility to modify them
 void CharacterEditorController::editExistingcharacter() {
-
-    Character* character;
-
-    vector<string>* characterReferences = CharacterRepository::instance()->listAll();
-    if (characterReferences->empty()) {
-        cout << "No characters currently saved. Redirecting to editor menu." << endl;
-    } else {
-        cout << "Please select the character you want to load and view: "<< endl;
-        for (size_t i = 0; i < characterReferences->size(); i++) {
-            cout << (i+1) << ":" << characterReferences->at(i) << endl;
-        }
-
-        int index = readIntegerInputWithRange("Your selection[1]: ", 1, 1, characterReferences->size());
-        character = CharacterRepository::instance()->getEntity(index-1);
-
-        if (nullptr == character) {
-            cout << "Error, could not load chosen character" << endl;
-        } else {
-
-            character->display();
-            character->displayBackpack();
-
-        }
-    }
+	bool quit = false;
+	string goTo, itemNameEquip, itemNameUnequip;
+	int input;
+	//TODO call a selectCharacter from CharacterInteractionHelper.cpp
+	Character* character = CharacterInteractionHelper::selectCharacter();
+	do {
+		
+		cout << "************* Menu *************" << endl << endl;
+		cout << "1. View Character" << endl;
+		cout << "2. View backpack" << endl;
+		cout << "3. View worn items" << endl;
+		cout << "4. Equip item" << endl;
+		cout << "5. Unequip item" << endl;
+		cout << "6. Save" << endl;
+		cout << "7. Exit" << endl;
+		input = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 7);
+		switch (input) {
+		case 1:
+			character->printAbilityScores();
+		case 2:
+			character->displayBackpack();
+			break;
+		case 3:
+			character->displayWornItems();
+			break;
+		case 4:
+			itemNameEquip = readStringInputNoEmpty("Enter the item name with which you want to equip: ");
+			character->equipItem(itemNameEquip);
+			character->displayWornItems();
+			character->printAbilityScores();
+			break;
+		case 5:
+			itemNameUnequip = readStringInputNoEmpty("Enter the item name which you want to unequip: ");
+			character->unequipItem(itemNameUnequip);
+			character->displayBackpack();
+			character->printAbilityScores();
+			break;
+		case 6:
+			character->saveCharacter(character->getName());
+		case 7:
+			quit = true;
+			break;
+		}
+	} while (!quit);
 }
 
 void CharacterEditorController::saveCharacter(Character* character) {

@@ -156,7 +156,6 @@ private:
 	int ac;
 	int armorPoints;
 	int shieldPoints;
-	vector <int> baseAttackBonus;
 	int currentHitPoints = 0;
 	int attPerRound = 1;
 	std::string name;

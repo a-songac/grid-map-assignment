@@ -24,7 +24,7 @@ void ItemEditor::editorAlternatives() {
     do {
     cout << "Please select an option:" << endl;
     cout << "1. Create an item" << endl;
-    cout << "2. Edit an existing item" << endl;
+    cout << "2. View an existing item" << endl;
     cout << "3. Exit" << endl;
 
     int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 3);
@@ -36,7 +36,6 @@ void ItemEditor::editorAlternatives() {
             case 2:
                 Item* item;
                 item = ItemInteractionHelper::selectItem();
-                cout << "\nEditing yet to be implemented" << endl << endl;
                 break;
             case 3:
                 quit = true;

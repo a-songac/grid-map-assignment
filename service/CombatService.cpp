@@ -18,8 +18,6 @@ bool CombatService::isAdjacent(Coordinate origin, Coordinate destination) {
 		|| (destination.row == origin.row && destination.column == origin.column - 1);
 
 }
-
-
 bool CombatService::canRangeAttack(Coordinate origin, Coordinate destination, int range, Map* gameMap) {
 	ShortestPath shortestPath(gameMap);
 	vector<Coordinate> pathToUser;
