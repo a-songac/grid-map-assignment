@@ -146,6 +146,11 @@ public:
 	
 	int getNumberOfattack();
 
+	int getArmorPoints();
+	void setArmorPoints(int);
+
+	int getShieldPoints();
+	void setShieldPoints(int);
 
 private:
 	vector<Item> items;
@@ -154,10 +159,9 @@ private:
 	int abilityScores[6];
 	int damageB;
 	int attackB = 0;
-	int atkBonus = 0;
 	int ac;
-	int armorPoints;
-	int shieldPoints;
+	int armorPoints = 0;
+	int shieldPoints = 0;
 	int currentHitPoints = 0;
 	int attPerRound = 1;
 	std::string name;

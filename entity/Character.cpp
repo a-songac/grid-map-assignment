@@ -37,6 +37,8 @@ Character::Character()
 {
     this ->backpack = new vector<string>();
     this ->wornItems = new vector<string>();
+	this->armorPoints = 0;
+	this->shieldPoints = 0;
 }
 
 Character::~Character() {
@@ -107,7 +109,7 @@ Character::Character(Character* character) {
 }
 
 void Character::updateStatsAtEquip(Item* equipment) {
-
+	string type = equipment->getType();
 	vector<Enhancement> eVec = equipment->getInfluences();
 		for (size_t i = 0; i < eVec.size(); i++) {
 
@@ -259,36 +261,56 @@ void Character::updateStatsAtEquip(Item* equipment) {
 					this->setModWisdom(modifier(this->getWisdom()));
 				}
 			}
-			if (eVec[i].getType() == "Armor") {
+			if (eVec[i].getType() == "ArmorC") {
 				if (this->getLevel() < 3) {
-					this->armorPoints += 1;
-					this->shieldPoints += 1;
+					if (type == "Armor") {
+						this->setArmorPoints(1);
+					}
+					else if (type == "Shield") {
+						this->setShieldPoints(1);
+					}
 					this->armorClass();
 				}
 				else if (this->getLevel() > 2 && this->getLevel() < 6) {
-					this->armorPoints += 2;
-					this->shieldPoints += 2;
+					if (type == "Armor") {
+						this->armorPoints += 2;
+					}
+					else if (type == "Shield") {
+						this->shieldPoints += 2;
+					}
 					this->armorClass();
 				}
 				else if (this->getLevel() > 5 && this->getLevel() < 11) {
-					this->armorPoints += 3;
-					this->shieldPoints += 3;
+					if (type == "Armor") {
+						this->armorPoints += 3;
+					}
+					else if (type == "Shield") {
+						this->shieldPoints += 3;
+					}
 					this->armorClass();
 				}
 				else if (this->getLevel() > 10 && this->getLevel() < 16) {
-					this->armorPoints += 4;
-					this->shieldPoints += 4;
+					if (type == "Armor") {
+						this->armorPoints += 4;
+					}
+					else if (type == "Shield") {
+						this->shieldPoints += 5;
+					}
 					this->armorClass();
 				}
 				else {
-					this->armorPoints += 5;
-					this->shieldPoints += 5;
+					if (type == "Armor") {
+						this->armorPoints += 5;
+					}
+					else if (type == "Shield") {
+						this->shieldPoints += 5;
+					}
 					this->armorClass();
 				}
 				
 				
 			}
-			if (eVec[i].getType() == "AtkDamage"){
+			if (eVec[i].getType() == "DmgBonus"){
 				if (this->getLevel() < 3) {
 					this->damageB += 1;
 				}
@@ -307,19 +329,20 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			}
 			if (eVec[i].getType() == "AtkBonus") {
 				if (this->getLevel() < 3) {
-					atkBonus += 1;
+					this->attackB += 1;
+					cout << this->attackB;
 				}
 				else if (this->getLevel() > 2 && this->getLevel() < 6) {
-					atkBonus += 2;
+					this->attackB += 2;
 				}
 				else if (this->getLevel() > 5 && this->getLevel() < 11) {
-					atkBonus += 3;
+					this->attackB += 3;
 				}
 				else if (this->getLevel() > 10 && this->getLevel() < 16) {
-					atkBonus += 4;
+					this->attackB += 4;
 				}
 				else {
-					atkBonus += 5;
+					this->attackB += 5;
 				}
 
 			}
@@ -327,7 +350,18 @@ void Character::updateStatsAtEquip(Item* equipment) {
 		
 
 }
-
+int Character::getArmorPoints(){
+	return this->armorPoints;
+}
+void Character::setArmorPoints(int armorPoints) {
+	this->armorPoints = this->armorPoints + armorPoints;
+}
+int Character::getShieldPoints() {
+	return this->shieldPoints;
+}
+void Character::setShieldPoints(int shieldPoints) {
+	this->shieldPoints = this->shieldPoints + shieldPoints;
+}
 void Character::updateStatsAtUnequip(Item* equipment) {
 
 	vector<Enhancement> eVec = equipment->getInfluences();
@@ -473,7 +507,7 @@ void Character::attackBonus()
 {
 	//depends on the weapon of choice
 
-	this->attackB = this->lvl + this->getModStrength() + this->atkBonus;
+	this->attackB = this->lvl + this->getModStrength();
 
 }
 //! Implementation of a getter method for attack bonus
@@ -486,17 +520,17 @@ int Character::getAttackBonus()
 void Character::armorClass()
 {
     this->ac = 10 + this->getModDexterity();
-	if (shieldPoints > 0 && armorPoints > 0)
+	if (this->getShieldPoints() > 0 && this->getArmorPoints() > 0)
 	{
-		this->ac = 10 + this->getModDexterity() + armorPoints + shieldPoints;
+		this->ac = 10 + this->getModDexterity() + this->getArmorPoints() + this->getShieldPoints();
 	}
-	else if (armorPoints > 0)
+	else if (this->getArmorPoints() > 0)
 	{
-		this->ac = 10 + this->getModDexterity() + armorPoints;
+		this->ac = 10 + this->getModDexterity() + this->getArmorPoints();
 	}
-	else if (shieldPoints > 0)
+	else if (this->getShieldPoints() > 0)
 	{
-		this->ac = 10 + this->getModDexterity() + shieldPoints;
+		this->ac = 10 + this->getModDexterity() + this->getShieldPoints();
 	}
 
 }
