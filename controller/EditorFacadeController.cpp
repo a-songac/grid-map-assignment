@@ -43,32 +43,23 @@ void EditorFacadeController::editorMenu() {
                 //Load map for editing
                 MapEditorController mapEditor;
                 Map* map = MapInteractionHelper::selectMap();
-
-                //Edit Options
-
-                mapEditor.editMap(map);
+                if (nullptr != map) {
+                    mapEditor.editMap(map);
+                }
 
                 cout << "Redirecting to editor menu." << endl;
-                
-                
-
             }
         }
         else if(eChoice == 2){ // Campaign Editor
 
-        
+
             cout << "*********** Campaign Editor ************" << endl << endl;
 
-            cout << "Please select one of the following options:" << endl << "Create New Campaign: 1"
-                << endl << "Edit an Existing Campaign: 2" << endl;
+            cout << "Please select one of the following options:" << endl << "1. Create New Campaign"
+                << endl << "2. Edit an Existing Campaign" << endl;
 
-            int cChoice = readIntegerInput("", 1);
-            while (cChoice != 1 && cChoice != 2) {
-                cout << "This is not a choice, please retry" << endl;
-                eChoice = readIntegerInput("Your choice[1]:", 1);
-            }
+            int cChoice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 2);
 
-            
             if(cChoice == 1){
 
                 //Create Campaign

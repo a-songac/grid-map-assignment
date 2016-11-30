@@ -201,10 +201,10 @@ inline void Map::setPlayer(int row, int column, bool yes) {
 }
 
 inline bool Map::movePlayer(int row, int column) {
-    
+
     if(SETTINGS::LOG_MAP)
         logInfo("Map", "movePlayer", "Position - row: "+std::to_string(row)+" column: "+std::to_string(column));
-    
+
     bool returnValue = true;
     if (isWall(row, column)) {
         cout << "OUCH! You hit a wall! Please retry" << endl;
@@ -229,7 +229,7 @@ inline bool Map::movePlayer(int row, int column) {
        grid[playerPosition.row][playerPosition.column].setPlayer(false);
     }
     if (!returnValue){
-        readStringInput("Press any key to continue and retry", "");
+        readStringInput("press enter to continue and retry", "");
     } else {
         playerPosition.row = row;
         playerPosition.column = column;

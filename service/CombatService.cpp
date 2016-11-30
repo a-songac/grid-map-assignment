@@ -143,7 +143,7 @@ void CombatService::eliminateDeadBodies(Map* map) {
             cout << "Character died: ";
 
             playerAt->display();
-            readStringInput("Press any key to continue", "");
+            readStringInput("press enter to continue", "");
         }
     }
 }

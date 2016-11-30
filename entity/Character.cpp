@@ -610,23 +610,28 @@ void Character::lootItems(Character *victim )
 			cout << victim->backpack->at(i) + " has been added to your backpack ";
 		}
 	}
+	readStringInput("Looted victim's backpack items (above), press enter to continue...", "");
 
 }
 
 void Character::lootItems(GameItem *chest)
 {
+    if (chest->getCollected())
+        return;
+
 	if (this->hasItemInBackpack(chest->getElementReference())==false)
 	{
 		this->backpack->push_back(chest->getElementReference());
-		cout << chest->getElementReference() + " has been added to your backpack after succefull looting";
+		cout << chest->getElementReference() + " has been added to your backpack after succefull looting" << endl;
 
 	}
 	else
 	{
-		cout << "Item " + chest->getElementReference() + " could not be looted because it already exists in backpack";
+		cout << "You already have item " + chest->getElementReference() + " in your backpack";
 
 	}
-	
+    readStringInput("press enter to continue...", "");
+	chest->setCollected(true);
 
 }
 

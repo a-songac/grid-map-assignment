@@ -17,6 +17,7 @@ Character* CharacterInteractionHelper::selectCharacter() {
 	do {
 		if (characterReferences->empty()) {
 			cout << "No characters currently saved. Redirecting to editor menu." << endl;
+			break;
 		}
 		else {
 			cout << "Please select the character you want to load and view: " << endl;
