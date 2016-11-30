@@ -101,7 +101,6 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
 
-
             // CHECK ALL ITEMS WERE COLLECTED
             if(turnDone!=false){
                if (nextPosition.row == row && nextPosition.column == col
@@ -121,7 +120,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                     for (size_t i = 0; i < map->getGameItems()->size(); i++) {
                         gameItem = map->getGameItems()->at(i);
                         if (*(gameItem->getLocation()) == nextPosition) {
-                            //character->lootItem(gameItem);
+                            character->lootItems(gameItem);
                             break;
                         }
                     }
@@ -243,7 +242,7 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
             return true;
         }
         if (victim->getInGameCharacter()->getHitPoints() <= 0) {
-            // character->lootItems(victim);
+            character->lootItems(victim->getInGameCharacter());
         }
 
         CombatService::eliminateDeadBodies(map);

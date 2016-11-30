@@ -15,6 +15,8 @@
 #include "GameItem.h"
 #include "GamePlayer.h"
 #include "../utils/IOUtils.h"
+#include "../utils/LogUtils.h"
+#include "../service/Settings.h"
 
 
 #include <boost/archive/text_oarchive.hpp>
@@ -199,6 +201,10 @@ inline void Map::setPlayer(int row, int column, bool yes) {
 }
 
 inline bool Map::movePlayer(int row, int column) {
+    
+    if(SETTINGS::LOG_MAP)
+        logInfo("Map", "movePlayer", "Position - row: "+std::to_string(row)+" column: "+std::to_string(column));
+    
     bool returnValue = true;
     if (isWall(row, column)) {
         cout << "OUCH! You hit a wall! Please retry" << endl;

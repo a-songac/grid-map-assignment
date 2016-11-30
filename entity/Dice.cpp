@@ -2,6 +2,8 @@
 #include <ctime>
 
 #include "Dice.h"
+#include "../service/Settings.h"
+#include "../utils/LogUtils.h"
 
 //Default constructor
 Dice::Dice()
@@ -38,25 +40,43 @@ int Dice::roll_4d6()
 
 	//Add first 3 elements
 	int sumOfDice = sortedResults[0] + sortedResults[1] + sortedResults[2];
+    
+    if(SETTINGS::LOG_DICE)
+        logInfo("Dice", "roll_4d6()", std::to_string(sumOfDice));
 
 	return sumOfDice;
 
 }
 
 int Dice::roll_d8() {
-
-	return ((rand() % 8) + 1);
+    
+    int roll = ((rand() % 8) + 1);
+    
+    if(SETTINGS::LOG_DICE)
+        logInfo("Dice", "roll_d8()", std::to_string(roll));
+    
+	return roll;
 
 }
 
 //Roll a d10
 int Dice::roll_d10()
 {
-	return ((rand() % 10) + 1);
+    int roll =((rand() % 10) + 1);
+    
+    if(SETTINGS::LOG_DICE)
+        logInfo("Dice", "roll_d10()", std::to_string(roll));
+    
+	return roll;
 }
 
 int Dice::roll_d20() {
 
-	return ((rand() % 20) + 1);
+    int roll = ((rand() % 20) + 1);
+    
+    if(SETTINGS::LOG_DICE)
+        logInfo("Dice", "roll_d20()", std::to_string(roll));
+    
+	return roll;
 
 }

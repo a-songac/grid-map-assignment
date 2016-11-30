@@ -141,10 +141,11 @@ public:
 	bool isWearingItem(std::string itemName);
 	//void attack(Character *enemy);
 	void numberOfAttack();
+	void lootItems(Character *victm);
+	void lootItems(GameItem *chest);
+	
 	int getNumberOfattack();
 
-	void lootItems(GameItem* chest);
-	void lootItems(Character* victim);
 
 private:
 	vector<Item> items;
