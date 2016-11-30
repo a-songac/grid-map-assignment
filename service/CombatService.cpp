@@ -42,79 +42,95 @@ bool CombatService::attack(Character* attacker, Character* victim, bool melee) {
     if(SETTINGS::LOG_CHAR)
         logInfo("Character", "attack", "Compute attack attempt score...");
 
-
+	int attackPerRound = attacker->getNumberOfattack();
     int attackRoll = dice1.roll_d20();
+	int baseAttackBonus;
+	for (size_t i = 0; i < attackPerRound; i++) {
+		sstream << "d20 dice roll result: " << attackRoll;
+		if (SETTINGS::LOG_CHAR)
+			logInfo("Character", "attack", sstream.str());
+		sstream.str("");
+		if (i == 0) {
+			sstream << "Attack number: " << i + 1;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
+			baseAttackBonus = attacker->getLevel();
+		}
+		else if (i == 1) {
+			baseAttackBonus = attacker->getLevel() - 5;
+		}
+		else if (i == 2) {
+			baseAttackBonus = attacker->getLevel() - 10;
+		}
+		else if (i == 3) {
+			baseAttackBonus = attacker->getLevel() - 15;
+		}
 
-    sstream << "d20 dice roll result: " << attackRoll;
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
+		sstream << "Base attack bonus value: " << baseAttackBonus;
+		if (SETTINGS::LOG_CHAR)
+			logInfo("Character", "attack", sstream.str());
+		sstream.str("");
 
-	int attackModifier = attacker->getAttackBonus();
+		int weaponModifier;
+		if (range) {
+			weaponModifier = attacker->getModDexterity();
+			sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
+		}
+		else {
+			weaponModifier = attacker->getModStrength();
+			sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
+		}
 
-    sstream << "Attack modifier value: " << attackModifier;
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
+		if (SETTINGS::LOG_CHAR)
+			logInfo("Character", "attack", sstream.str());
+		sstream.str("");
 
-    int weaponModifier;
-    if (range) {
-        weaponModifier = attacker->getModDexterity();
-        sstream << "Weapon dexterity modifier value for range attack: " << weaponModifier;
-    } else {
-        weaponModifier = attacker->getModStrength();
-        sstream << "Weapon strength modifier value for melee attack: " << weaponModifier;
-    }
+		// How is the attackB
 
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack",  sstream.str());
-    sstream.str("");
+		int rollAndBonus = attackRoll + weaponModifier + baseAttackBonus;
+		sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << victim->getArmorClass();
+		if (SETTINGS::LOG_CHAR)
+			logInfo("Character", "attack", sstream.str());
+		sstream.str("");
 
-    // How is the attackB
+		if (rollAndBonus > victim->getArmorClass())
+		{
+			int damageRollValue = dice1.roll_d8();
+			sstream << "d8 dice damage roll result: " << damageRollValue;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 
-    int rollAndBonus = attackRoll + weaponModifier + attackModifier;
-    sstream << "Attacker attack attempt total value: " << rollAndBonus << " VS victim's armor class value: " << victim->getArmorClass();
-    if(SETTINGS::LOG_CHAR)
-        logInfo("Character", "attack", sstream.str());
-    sstream.str("");
+			sstream << "Damage modifier value: " << weaponModifier;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 
-    if (rollAndBonus > victim->getArmorClass())
-    {
-        int damageRollValue = dice1.roll_d8();
-        sstream << "d8 dice damage roll result: " << damageRollValue;
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
+			int damageinCombat;
 
-        sstream << "Damage modifier value: " << weaponModifier;
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
-
-        int damageinCombat;
-
-        //TODO How do i compute the damage modifier?
-        damageinCombat = damageRollValue + weaponModifier;
+			//TODO How do i compute the damage modifier?
+			damageinCombat = damageRollValue + weaponModifier;
 
 
-        sstream << "Damage inflicted on victim's current HP: " << damageinCombat << "/" << victim->getHitPoints();
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack",  sstream.str());
-        sstream.str("");
+			sstream << "Damage inflicted on victim's current HP: " << damageinCombat << "/" << victim->getHitPoints();
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 
-        victim->setHitPoints(victim->getHitPoints() - damageinCombat);
-    }
-    else
-    {
-        if(SETTINGS::LOG_CHAR)
-            logInfo("Character", "attack", "Attack missed");
-    }
+			victim->setHitPoints(victim->getHitPoints() - damageinCombat);
+		}
+		else
+		{
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", "Attack missed");
+		}
+	}
     return true;
 }
 
 
 void CombatService::eliminateDeadBodies(Map* map) {
-
 
     GamePlayer* playerAt;
     for (size_t i = 0; i < map->getGamePlayers()->size(); i++) {
@@ -127,8 +143,10 @@ void CombatService::eliminateDeadBodies(Map* map) {
                     playerAt->getLocation()->column,
                      Cell::OCCUPANT_EMPTY);
             cout << "Character died: ";
+
             playerAt->display();
             readStringInput("Press any key to continue", "");
         }
     }
 }
+

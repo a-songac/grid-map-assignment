@@ -26,10 +26,12 @@
 #define Character_h
 #include <vector>
 #include <string>
+
 #include "../core/Subject.h"
 #include "ItemContainer.h"
 #include "Item.h"
 #include "../controller/ItemEditor.h"
+#include "GameItem.h"
 //#include "../controller/ItemEditor.h"
 //! Class that implements a character
 class Character: public Subject
@@ -139,7 +141,11 @@ public:
 	bool isWearingItem(std::string itemName);
 	//void attack(Character *enemy);
 	void numberOfAttack();
+	void lootItems(Character *victm);
+	void lootItems(GameItem *chest);
+	
 	int getNumberOfattack();
+
 
 private:
 	vector<Item> items;

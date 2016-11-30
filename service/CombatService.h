@@ -31,5 +31,5 @@ class CombatService {
         static bool canRangeAttack(Coordinate origin, Coordinate destination, int range, Map* map);
         static bool attack(Character* attacker, Character* victim, bool melee);
         static void eliminateDeadBodies(Map* map);
-
+		static void multipleAttack(Character* attacker, int baseAttackBonus);
 };

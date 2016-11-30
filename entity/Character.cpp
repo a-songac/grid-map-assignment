@@ -271,7 +271,7 @@ int Character::genAbilityScores()
 
 	return sumOfDice;
 }
-// used at load 
+// used at load
 void Character::GenerateModifiers()
 {
 	modifiers[0] = modifier(abilityScores[0]);
@@ -594,6 +594,43 @@ bool Character::validateContainer(vector<string>* wornItems)
 //		}
 //	}
 //}
+
+void Character::lootItems(Character *victim )
+{
+	for (size_t i = 0; i < victim->backpack->size(); i++)
+	{
+		if (this->hasItemInBackpack(victim->backpack->at(i)) == true)
+		{
+			cout << victim->backpack->at(i) + " could not be added to your backpack because you already have it " << endl;
+
+		}
+		else
+		{
+			this->backpack->push_back(victim->backpack->at(i));
+			cout << victim->backpack->at(i) + " has been added to your backpack ";
+		}
+	}
+
+}
+
+void Character::lootItems(GameItem *chest)
+{
+	if (this->hasItemInBackpack(chest->getElementReference())==false)
+	{
+		this->backpack->push_back(chest->getElementReference());
+		cout << chest->getElementReference() + " has been added to your backpack after succefull looting";
+
+	}
+	else
+	{
+		cout << "Item " + chest->getElementReference() + " could not be looted because it already exists in backpack";
+
+	}
+	
+
+}
+
+
 bool Character::checkIfItemExists(string wearItem, string name) {
 
 	if (wearItem == name)
@@ -720,7 +757,7 @@ void Character::displayWornItems() {
 }
 
 Item* Character::getItemHelper(vector<string>* items, string name) {
-	
+
     for (size_t i = 0; i < items->size(); i++) {
         if (name == items->at(i)) {
             return ItemRepository::instance()->getEntity(name);
@@ -768,3 +805,6 @@ void Character::numberOfAttack() {
 int Character::getNumberOfattack() {
 	return this->attPerRound;
 }
+
+
+

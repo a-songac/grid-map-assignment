@@ -100,20 +100,30 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
 
             nextPosition = MapInteractionHelper::convertToCoordinate(map, goTo);
             turnDone = map->movePlayer(nextPosition.row, nextPosition.column);
-        
 
             // CHECK ALL ITEMS WERE COLLECTED
             if(turnDone!=false){
                if (nextPosition.row == row && nextPosition.column == col
                     && readYesNoInput("You have reached the exit door, do you want to finish the map?[Y/n] ", true))
                {
-                character->levelUp();
-                cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
-                string name;
+                    character->levelUp();
+                    cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
+                    string name;
 
-                endGameLevelUp(character);
+                    endGameLevelUp(character);
 
-                gameOver = true;
+                    gameOver = true;
+
+               } else if (map->getOccupant(nextPosition.row, nextPosition.column) == Cell::OCCUPANT_CHEST) {
+
+                    GameItem* gameItem;
+                    for (size_t i = 0; i < map->getGameItems()->size(); i++) {
+                        gameItem = map->getGameItems()->at(i);
+                        if (*(gameItem->getLocation()) == nextPosition) {
+                            character->lootItems(gameItem);
+                            break;
+                        }
+                    }
 
                }
             }
@@ -231,6 +241,9 @@ bool UserPlayerStrategy::postAttack(Character* character, Map* map) {
         if (character->getHitPoints() <= 0) {
             return true;
         }
+        if (victim->getInGameCharacter()->getHitPoints() <= 0) {
+            character->lootItems(victim->getInGameCharacter());
+        }
 
         CombatService::eliminateDeadBodies(map);
 
@@ -289,7 +302,7 @@ void UserPlayerStrategy::modifyGameSettings() {
 void UserPlayerStrategy::endGameLevelUp(Character* character) {
 
     int input1, input2, input3;
-	
+
     if (character->getLevel() == 4 || character->getLevel() == 6 || character->getLevel() == 8 || character->getLevel() == 12
             || character->getLevel() == 14 || character->getLevel() ==16 || character->getLevel() == 19 )
     {
@@ -376,5 +389,5 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
             {
                 // true; WHAT IS THAT CONDITION FOR?
             }
-		
+
 }
