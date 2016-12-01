@@ -79,7 +79,7 @@ public:
 	//print ability score
 	void printAbilityScores();
 	//unit testing validation
-	bool validateNewCharacter();
+	bool validateNewCharacter(int);
 	bool validateHitPoints();
 	bool validateAttackBonus();
 	//setter for ability scores

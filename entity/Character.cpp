@@ -675,8 +675,13 @@ int Character::genAbilityScores()
 
 	//Add first 3 elements
 	int sumOfDice = sortedResults[0] + sortedResults[1] + sortedResults[2];
-
-	return sumOfDice;
+	if(validateNewCharacter(sumOfDice)){
+		return sumOfDice;
+	}
+	else {
+		return 0;
+	}
+	
 }
 // used at load
 void Character::GenerateModifiers()
@@ -758,10 +763,10 @@ int Character::getDamageBonus()
 }
 //! Implementation of the verification of a newly created Character
 //! @return bool value, true of the character is valid (stats should be in the 3-18 range for a new character), false if invalid.
-bool Character::validateNewCharacter()
+bool Character::validateNewCharacter(int score)
 {
 	for (int i = 0; i <= 5; i++)
-		if (abilityScores[i]<3 || abilityScores[i]>18)
+		if (score<3 || score>18)
 			return false;
 	return true;
 }
