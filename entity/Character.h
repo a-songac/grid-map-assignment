@@ -118,7 +118,7 @@ public:
 	void removeItemFromBackpack(std::string);
 	void removeItemFromWornItems(string itemName);
 	//validate worn Items
-	bool validateContainer(vector<std::string>*);
+	bool validateContainer(vector<Item*>*, Item* item);
 	//equip and unequip
 	void equipItem(string);
 	void unequipItem(string);

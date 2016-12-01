@@ -222,14 +222,11 @@ void Map::setInGamePlayers(Character* character) {
 		realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
 		inGameCharacterCopy = new Character(realCharacter);
 		srand((unsigned)time(0));
-		int result = (rand() % 3);
+		int result = (rand() % 3 + 1);
 		cout << result << endl;
 		characView = new CharacterView(inGameCharacterCopy);
 
 		switch (result) {
-		case 0:
-			gamePlayer->setInGameCharacter(inGameCharacterCopy);
-			break;
 		case 1:
 			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 1));
 			break;

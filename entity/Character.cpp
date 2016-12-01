@@ -897,7 +897,8 @@ void Character::equipItem(string itemName)
 	{
 		if (this->backpack->at(i) == itemName)
 		{
-			if (validateContainer(this->wornItems))
+			Item* itemToValidate = this->getBackpackItem(itemName);
+			if (validateContainer(this->getAllItems(this->wornItems),itemToValidate))
 			{
 				this->wornItems->push_back(itemName);
 				this->updateStatsAtEquip(this->getWornItemsItem(itemName));
@@ -907,7 +908,7 @@ void Character::equipItem(string itemName)
 			}
 			else
 			{
-				cout << "You cannot equip Item: " << itemName << endl;
+				cout << "You can only equip one item of type: " << itemToValidate->getType() << endl;
 			}
 		}
 	}
@@ -945,7 +946,7 @@ void Character::removeItemHelper(vector<string>* item, string itemName) {
 		}
 	}
 }
-bool Character::validateContainer(vector<string>* wornItems)
+bool Character::validateContainer(vector<Item*>* items, Item* item)
 {
 	int helmetCtr = 0;
 	int armorCtr = 0;
@@ -954,32 +955,33 @@ bool Character::validateContainer(vector<string>* wornItems)
 	int beltCtr = 0;
 	int bootsCtr = 0;
 	int weaponCtr = 0;
+	for (size_t j = 0; j < items->size(); j++) {
+		string itemType = items->at(j)->getType();
 
-	for (size_t i = 0; i < wornItems->size(); i++) {
-		if (wornItems->at(i) == "Helmet") {
-			helmetCtr++;
-		}
-		else if (wornItems->at(i) == "Armor") {
-			armorCtr++;
-		}
-		else if (wornItems->at(i) == "Shield") {
-			shieldCtr++;
-		}
-		else if (wornItems->at(i) == "Ring") {
-			ringCtr++;
-		}
-		else if (wornItems->at(i) == "Belt") {
-			beltCtr++;
-		}
-		else if (wornItems->at(i) == "Boots") {
-			bootsCtr++;
-		}
-		else if (wornItems->at(i) == "Weapon") {
-			weaponCtr++;
-		}
+			if (itemType == "Helmet" && item->getType() == "Helmet") {
+				helmetCtr++;
+			}
+			else if (itemType == "Armor" && item->getType() == "Armor") {
+				armorCtr++;
+			}
+			else if (itemType =="Shield" && item->getType() == "Shield") {
+				shieldCtr++;
+			}
+			else if (itemType == "Ring" && item->getType() == "Ring") {
+				ringCtr++;
+			}
+			else if (itemType == "Belt" && item->getType() == "Belt") {
+				beltCtr++;
+			}
+			else if (itemType == "Boots" && item->getType() == "Boots") {
+				bootsCtr++;
+			}
+			else if (itemType == "Weapon" &&  item->getType() == "Weapon") {
+				weaponCtr++;
+			}
 	}
 
-	if (helmetCtr>1 || armorCtr>1 || shieldCtr>1 || ringCtr>1 || beltCtr>1 || bootsCtr>1 || weaponCtr>1) {
+	if (helmetCtr>0 || armorCtr>0 || shieldCtr>0 || ringCtr>0 || beltCtr>0 || bootsCtr>0 || weaponCtr>0) {
 		return false;
 	}
 	else {
