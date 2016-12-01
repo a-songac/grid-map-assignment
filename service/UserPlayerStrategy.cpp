@@ -4,6 +4,7 @@
 #include "../entity/Character.h"
 #include "../entity/GamePlayer.h"
 #include "../entity/repo/MapRepository.h"
+#include "../entity/repo/ItemRepository.h"
 #include "../utils/IOUtils.h"
 #include "../utils/LogUtils.h"
 #include "../controller/MapInteractionHelper.h"
@@ -50,7 +51,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
     int col = exitDoor.column;
     int row = exitDoor.row;
     stringstream stringStream;
-    stringStream << "What you want to do next[i]?"
+    stringStream << "What you want to do next?"
                << "\nTURN ACTION"
                << "\n    - Enter map location to move"
                << "\n    - Press 'a' for attack"
@@ -60,11 +61,11 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                << "\n    - Press 'i' to see game info"
                << "\n    - Press 's' for settings"
                << "\n    - Press 'q' to quit"
-               << "\nYour choice[i]: ";
+               << "\nYour choice: ";
     do {
 
         turnDone = true;
-        goTo = MapInteractionHelper::readMapLocationWhileInGame(map, stringStream.str(), "i");
+        goTo = MapInteractionHelper::readMapLocationWhileInGame(map, stringStream.str(), "");
         if (goTo == "bp") {
             turnDone = false;
             this->backpackOption(character);
@@ -84,7 +85,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         }
         else if (goTo == "i") {
             turnDone = false;
-            // TODO Display detailed info about the game
+            this->showElementDetail(map);
             map->render();
 
         }
@@ -95,6 +96,10 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
         }
         else if (goTo == "f") {
             turnDone = true;
+            map->render();
+        }
+        else if (goTo =="") {
+            turnDone = false;
             map->render();
         }
         else {
@@ -397,4 +402,62 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
                 // true; WHAT IS THAT CONDITION FOR?
             }
 
+}
+
+void UserPlayerStrategy::showElementDetail(Map* map) {
+
+    do {
+        cout << "Selet the game elemnt you want to visualize:" <<endl;
+        cout << "1. Game Players" << endl;
+        cout << "2. Game Items" << endl;
+        cout << "3. Me" << endl;
+        cout << "4. Exit" << endl;
+        int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, 4);
+
+        switch (choice) {
+        case 1:
+            this->showGamePlayerDetails(map);
+            break;
+        case 2:
+            this->showGameItemDetails(map);
+            break;
+        case 3:
+            map->getUserGamePlayer()->getInGameCharacter()->display();
+            break;
+        case 4:
+            return;
+        }
+    }while (true);
+
+}
+
+void UserPlayerStrategy::showGamePlayerDetails(Map* map) {
+
+    GamePlayer* gamePlayer;
+    Character* character;
+    cout << "Select game player: " << endl;
+    for(size_t i = 0; i < map->getGamePlayers()->size(); i++) {
+        gamePlayer = map->getGamePlayers()->at(i);
+        cout << (i+1) << ". ";
+        gamePlayer->display();
+    }
+    int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, map->getGamePlayers()->size());
+    gamePlayer = map->getGamePlayers()->at(choice-1);
+    character = gamePlayer->getInGameCharacter();
+    character->display();
+}
+
+void UserPlayerStrategy::showGameItemDetails(Map* map) {
+    GameItem* gameItem;
+    Item* item;
+    cout << "Select game item: " << endl;
+    for(size_t i = 0; i < map->getGameItems()->size(); i++) {
+        gameItem = map->getGameItems()->at(i);
+        cout << (i+1) << ". ";
+         gameItem->display();
+    }
+    int choice = readIntegerInputWithRange("Your choice[1]: ", 1, 1, map->getGameItems()->size());
+    gameItem = map->getGameItems()->at(choice-1);
+    item = ItemRepository::instance()->getEntity(gameItem->getElementReference());
+    item->displayItem();
 }

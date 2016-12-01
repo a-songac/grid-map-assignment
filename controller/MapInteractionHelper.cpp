@@ -89,8 +89,9 @@ string MapInteractionHelper::readMapLocationWhileInGame(Map* map, string message
             return input;
         } else if (input == "f") {
             return input;
-        }
-        else {
+        } else if (input == "") {
+            return input;
+        } else {
             error = true;
             cout << "Invalid input, please retry" << endl;
         }
