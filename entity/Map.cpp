@@ -215,14 +215,16 @@ void Map::setInGamePlayers(Character* character) {
     Character* realCharacter;
     Character* inGameCharacterCopy;
     GamePlayer* gamePlayer;
-	
+    CharacterView* characView;
+
     for (size_t i = 0; i < this->gamePlayers->size(); i++) {
 		gamePlayer = this->gamePlayers->at(i);
 		realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
 		inGameCharacterCopy = new Character(realCharacter);
+		characView = new CharacterView(inGameCharacterCopy);
 		srand(time(NULL));
 		int result = (rand() % 3);
-		
+
 
 		switch (result) {
 		case 0:
@@ -234,10 +236,10 @@ void Map::setInGamePlayers(Character* character) {
 		case 2:
 			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 0.5));
 			break;
-		case 3: 
+		case 3:
 			gamePlayer->setInGameCharacter(factorBy(character, inGameCharacterCopy, 2));
 			break;
-			
+
 		}
 
     }
@@ -255,7 +257,7 @@ void Map::unsetInGamePlayers() {
 }
 
 Character* Map::factorBy(Character* character, Character* characterCopy,double factor){
-	
+
 	characterCopy->setLevel(character->getLevel());
 	characterCopy->setStrength(floor(character->getStrength()*factor));
 	characterCopy->setCharisma(floor(character->getCharisma()*factor));

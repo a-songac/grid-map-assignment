@@ -32,6 +32,8 @@ class GameItem : public GameElement
         bool getCollected() { return collected; }
         void setCollected(bool val) { collected = val; }
 
+        void display();
+
     protected:
 
     private:

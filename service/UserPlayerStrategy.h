@@ -26,5 +26,8 @@ class UserPlayerStrategy : public PlayerStrategy {
         void backpackOption(Character* character);
         bool postAttack(Character* character, Map* map);
         void endGameLevelUp(Character* character);
+        void showElementDetail(Map* map);
+        void showGamePlayerDetails(Map* map);
+        void showGameItemDetails(Map* map);
 
 };
