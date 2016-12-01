@@ -188,7 +188,6 @@ void CharacterEditorController::editExistingcharacter() {
 	string goTo;
 	Item* chosenItem;
 	int input;
-	//TODO call a selectCharacter from CharacterInteractionHelper.cpp
 	Character* character = CharacterInteractionHelper::selectCharacter();
 	do {
 

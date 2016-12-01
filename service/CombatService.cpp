@@ -56,12 +56,24 @@ bool CombatService::attack(Character* attacker, Character* victim, bool melee) {
 			baseAttackBonus = attacker->getLevel();
 		}
 		else if (i == 1) {
+			sstream << "Attack number: " << i + 1;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 			baseAttackBonus = attacker->getLevel() - 5;
 		}
 		else if (i == 2) {
+			sstream << "Attack number: " << i + 1;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 			baseAttackBonus = attacker->getLevel() - 10;
 		}
 		else if (i == 3) {
+			sstream << "Attack number: " << i + 1;
+			if (SETTINGS::LOG_CHAR)
+				logInfo("Character", "attack", sstream.str());
+			sstream.str("");
 			baseAttackBonus = attacker->getLevel() - 15;
 		}
 

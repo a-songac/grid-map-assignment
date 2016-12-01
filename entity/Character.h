@@ -128,6 +128,7 @@ public:
 	vector<std::string>* wornItems;
 	//display Items
 	void displayItemsHelper(std::vector<string>* items);
+	vector<Item*>* getAllItems(vector<string>* items);
 	void displayBackpack();
 	void displayWornItems();
 	//get item
@@ -145,13 +146,14 @@ public:
 	void lootItems(GameItem *chest);
 	
 	int getNumberOfattack();
-
+	
 	int getArmorPoints();
 	void setArmorPoints(int);
 
 	int getShieldPoints();
 	void setShieldPoints(int);
 
+	int getInitialHP();
 private:
 	vector<Item> items;
 	int lvl;
@@ -162,6 +164,7 @@ private:
 	int ac;
 	int armorPoints = 0;
 	int shieldPoints = 0;
+	int initialHitPoints = 0;
 	int currentHitPoints = 0;
 	int attPerRound = 1;
 	std::string name;

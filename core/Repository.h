@@ -374,9 +374,13 @@ template <class T>
 Character* Repository<T>::loadCharacter(string fileName) {
     Character* character = new Character();
     character->loadCharacter("characters/" + fileName);
+	character->numberOfAttack();
     character->armorClass();
     character->attackBonus();
     character->damageBonus();
+	for (size_t i = 0; i < character->getLevel() - 1; i++) {
+		character->nextHitPoints();
+	}
     character->setName(fileName);
 	CharacterView* charView = new CharacterView(character);
     return character;

@@ -220,10 +220,10 @@ void Map::setInGamePlayers(Character* character) {
 		gamePlayer = this->gamePlayers->at(i);
 		realCharacter = CharacterRepository::instance()->getEntity(gamePlayer->getElementReference());
 		inGameCharacterCopy = new Character(realCharacter);
-		srand(time(NULL));
+		srand((unsigned)time(0));
 		int result = (rand() % 3);
 		
-
+		cout << result << endl;
 		switch (result) {
 		case 0:
 			gamePlayer->setInGameCharacter(inGameCharacterCopy);
@@ -273,6 +273,7 @@ Character* Map::factorBy(Character* character, Character* characterCopy,double f
 	characterCopy->attackBonus();
 	characterCopy->damageBonus();
 	characterCopy->numberOfAttack();
+	characterCopy->setHitPoints(character->getHitPoints()*factor);
 	return characterCopy;
 
 

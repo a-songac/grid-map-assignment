@@ -107,6 +107,7 @@ bool UserPlayerStrategy::turn(GamePlayer* player, Map* map) {
                if (nextPosition.row == row && nextPosition.column == col
                     && readYesNoInput("You have reached the exit door, do you want to finish the map?[Y/n] ", true))
                {
+					character->setHitPoints(character->getInitialHP());
                     character->levelUp();
                     cout << "++++++++++++++++++++++++Level Up!++++++++++++++++++++++"<< endl;
                     string name;
