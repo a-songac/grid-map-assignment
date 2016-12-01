@@ -84,7 +84,7 @@ Character::Character(int strength, int dexterity, int intelligence, int charisma
 Character::Character(Character* character) {
 
     this->setLevel(character->getLevel());
-	
+
     this->name = character->getName();
     //modifiers
 	modifiers[0] = modifier(character->getStrength());
@@ -246,7 +246,7 @@ void Character::updateStatsAtEquip(Item* equipment) {
 			if (eVec[i].getType() == "Constitution")
 			{
 				if (this->getLevel() < 3) {
-					this->setConstitution(this->getConstitution() + eVec[i].getBonus());
+					this->setConstitution(this->getConstitution() + 1);
 					this->setModConstitution(modifier(this->getConstitution()));
 				}
 				else if (this->getLevel() > 2 && this->getLevel() < 6) {
@@ -312,8 +312,8 @@ void Character::updateStatsAtEquip(Item* equipment) {
 					}
 					this->armorClass();
 				}
-				
-				
+
+
 			}
 			if (eVec[i].getType() == "DmgBonus"){
 				if (this->getLevel() < 3) {
@@ -352,7 +352,7 @@ void Character::updateStatsAtEquip(Item* equipment) {
 
 			}
 		}
-		
+
 
 }
 int Character::getArmorPoints(){
@@ -398,7 +398,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 				this->setModStrength(modifier(this->getStrength()));
 				this->attackBonus();
 			}
-		}		
+		}
 		if (eVec[i].getType() == "Dexterity")
 		{
 			if (this->getLevel() < 3) {
@@ -492,7 +492,7 @@ void Character::updateStatsAtUnequip(Item* equipment) {
 				this->setWisdom(this->getWisdom() - 4);
 				this->setModWisdom(modifier(this->getWisdom()));
 			}
-			else 
+			else
 			{
 				this->setWisdom(this->getWisdom() - 5);
 				this->setModWisdom(modifier(this->getWisdom()));
@@ -884,7 +884,7 @@ bool Character::loadCharacter(string name1)
 	}
 	f.close();
 	GenerateModifiers();
-	
+
 	return true;
 
 }

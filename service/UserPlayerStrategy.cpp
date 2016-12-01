@@ -331,24 +331,36 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
                     cout << "3-Intelligence " << endl;
                     cout << "4-Charisma" << endl;
                     cout << "5-Constitution" << endl;
-                    input2 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
+                    cout << "6-Wisdom" << endl;
+                    input2 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 6);
                     switch (input2)
                     {
 
                     case 1:
                         character->setStrength(character->getStrength() + 2);
+                        character->setModStrength(character->modifier(character->getStrength()));
+                        character->attackBonus();
                         break;
                     case 2:
                         character->setDexterity(character->getDexterity() + 2);
+                        character->setModDexterity(character->modifier(character->getDexterity()));
+                        character->armorClass();
                         break;
                     case 3:
                         character->setIntelligence(character->getIntelligence() + 2);
+                        character->setModIntelligence(character->modifier(character->getIntelligence()));
                         break;
                     case 4:
                         character->setCharisma(character->getCharisma() + 2);
+                        character->setModCharisma(character->modifier(character->getCharisma()));
                         break;
                     case 5:
                         character->setConstitution(character->getConstitution() + 2);
+                        character->setModConstitution(character->modifier(character->getConstitution()));
+                        break;
+                    case 6:
+                        character->setCharisma(character->getCharisma() + 2);
+                        character->setModCharisma(character->modifier(character->getCharisma()));
                         break;
 
                     }break;
@@ -365,28 +377,40 @@ void UserPlayerStrategy::endGameLevelUp(Character* character) {
                         cout << "3-Intelligence " << endl;
                         cout << "4-Charisma" << endl;
                         cout << "5-Constitution" << endl;
-                        input3 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 5);
+                        cout << "6-Wisdom" << endl;
+                        input3 = readIntegerInputWithRange("Your selection[1]: ", 1, 1, 6);
                         switch (input3)
                         {
                         case 1:
                             character->setStrength(character->getStrength() + 1);
+                            character->setModStrength(character->modifier(character->getStrength()));
+                            character->attackBonus();
                             i++;
                             break;
                         case 2:
                             character->setDexterity(character->getDexterity() + 1);
+                            character->setModDexterity(character->modifier(character->getDexterity()));
+                            character->armorClass();
                             i++;
                             break;
                         case 3:
                             character->setIntelligence(character->getIntelligence() + 1);
+                            character->setModIntelligence(character->modifier(character->getIntelligence()));
                             i++;
                             break;
                         case 4:
                             character->setCharisma(character->getCharisma() + 1);
+                            character->setModCharisma(character->modifier(character->getCharisma()));
                             i++;
                             break;
                         case 5:
                             character->setConstitution(character->getConstitution() + 1);
+                            character->setModConstitution(character->modifier(character->getConstitution()));
                             i++;
+                            break;
+                        case 6:
+                            character->setCharisma(character->getCharisma() + 1);
+                            character->setModCharisma(character->modifier(character->getCharisma()));
                             break;
                         }
                     }

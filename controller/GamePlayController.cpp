@@ -175,7 +175,7 @@ void GamePlayController::startGame(Game* game) {
 
             if(game->getMapIndex() == (this->campaign->getMaps()->size()-1)){
                 //campaign completed
-                cout << "Campaign Completed!" << endl;
+                cout << "\n\n!!!!!!!!!!!!!!!!!!!!!!!\nCampaign Completed!\n!!!!!!!!!!!!!!!!!\n\n" << endl;
                 //Reset Campaign
                 game->setMapIndex(0);
                 gameOver=true;
