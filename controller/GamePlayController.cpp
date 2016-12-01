@@ -184,6 +184,11 @@ void GamePlayController::startGame(Game* game) {
             else{
                 MapRepository::instance()->clearEntity(this->map->getName());
                 string nextMapName = this->campaign->getMaps()->at(game->getMapIndex()+1);
+                if(SETTINGS::LOG_MAP) {
+                    stringstream ss;
+                    ss << "Campaign progress: Completed map, load next map: " << nextMapName;
+                    logInfo("GamePlayController", "startGame", ss.str());
+                }
                 this->map = MapRepository::instance()->getEntity(nextMapName);
                 game->setMapIndex(game->getMapIndex()+1);
                 map->unsetInGamePlayers();

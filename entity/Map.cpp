@@ -2,6 +2,7 @@
 #include <random>
 #include <ctime>
 #include <algorithm>
+#include <sstream>
 #include "Map.h"
 #include "../service/MapValidator.h"
 #include "../utils/ArrayUtils.h"
@@ -216,6 +217,13 @@ void Map::setInGamePlayers(Character* character) {
     Character* inGameCharacterCopy;
     GamePlayer* gamePlayer;
     CharacterView* characView;
+    stringstream ss;
+
+    if(SETTINGS::LOG_GAME) {
+        ss << "Setting game characters: create game specific copies and adapt levels to user";
+        logInfo("Map.cpp", "setInGamePlayers", ss.str());
+        ss.str("");
+    }
 
     for (size_t i = 0; i < this->gamePlayers->size(); i++) {
 		gamePlayer = this->gamePlayers->at(i);
@@ -225,6 +233,9 @@ void Map::setInGamePlayers(Character* character) {
 		int result = (rand() % 3 + 1);
 		cout << result << endl;
 		characView = new CharacterView(inGameCharacterCopy);
+        if(SETTINGS::LOG_GAME) {
+            logInfo("Map.cpp", "setInGamePlayers","Initialize " + inGameCharacterCopy->getName());
+        }
 
 		switch (result) {
 		case 1:
@@ -245,6 +256,10 @@ void Map::unsetInGamePlayers() {
 
     GamePlayer* gamePlayer;
     Character* character;
+    if(SETTINGS::LOG_GAME) {
+        logInfo("Map.cpp", "unsetInGamePlayers","Reset map characters after game end");
+    }
+
     for (size_t i = 0; i < this->gamePlayers->size(); i++) {
         gamePlayer = this->gamePlayers->at(i);
         character = gamePlayer->getInGameCharacter();
